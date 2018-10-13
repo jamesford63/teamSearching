@@ -2,7 +2,7 @@ package com.example.server.entity.loader;
 
 import com.example.server.entity.Admin;
 import com.example.server.entity.loader.utils.Creator;
-import com.example.server.repository.AdminRepository;
+import com.example.server.repository.ProfAreaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -13,14 +13,14 @@ import javax.annotation.PostConstruct;
 
 @Component
 @Slf4j
-public class AdminLoader {
+public class ProfAreaLoader {
     private Creator creator;
 
     @Autowired
     private ElasticsearchOperations operations;
 
     @Autowired
-    private AdminRepository adminRepository;
+    private ProfAreaRepository profAreaRepository;
 
     @PostConstruct
     @Transactional
@@ -28,9 +28,8 @@ public class AdminLoader {
         operations.putMapping(Admin.class);
         log.info("Loading Data");
         for (int i = 0; i < 10; i++) {
-            adminRepository.save(creator.randomAdmin());
+            profAreaRepository.save(creator.randomProfArea());
         }
         log.info("Loading Completed");
     }
 }
-

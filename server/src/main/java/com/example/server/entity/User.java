@@ -22,7 +22,7 @@ public class User {
     private String name;
     private String lastName;
     private String city;
-    private List<ProfArea> profAreaIds;
+    private List<ProfArea> profAreas;
     private List<Project> projectsCreated;
     private List<Project> projectsParticipated;
     private UserStatus userStatus;

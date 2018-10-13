@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @ToString
 @EqualsAndHashCode
-@Document(indexName = "teamSearching", type = "projects", shards = 1)
+@Document(indexName = "project", shards = 1)
 public class Project {
     @Id
     private UUID id;

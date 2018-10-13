@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +22,8 @@ public class NotificationService {
 
     public List<Notification> getAllNotifications() {
         log.info("Request to get all notifications. BEGIN");
-        List<Notification> notifications = (List<Notification>) notificationRepository.findAll();
+        List<Notification> notifications = new ArrayList<>();
+        notificationRepository.findAll().forEach(notifications::add);
         log.info("Request to get all notifications. END - SUCCESS. Size: {}", notifications.size());
 
         return notifications;
@@ -29,7 +31,7 @@ public class NotificationService {
 
     public Notification getNotificationById(UUID notificationId) {
         log.info("Request to get notification by id = {}. BEGIN", notificationId);
-        Notification notification = notificationRepository.findById(notificationId);
+        Notification notification = notificationRepository.findById(notificationId).get();
         log.info("Request to get notification by id. END - SUCCESS.");
 
         return notification;
@@ -62,7 +64,7 @@ public class NotificationService {
 
     public Notification updateNotification(Notification notification) {
         log.info("Request to update notification with id = {}. BEGIN", notification.getId());
-        Notification existedNotification = notificationRepository.findById(notification.getId());
+        Notification existedNotification = notificationRepository.findById(notification.getId()).get();
         if(notification.getDescription() != null)
             existedNotification.setDescription(notification.getDescription());
         if(notification.getFrom() != null)

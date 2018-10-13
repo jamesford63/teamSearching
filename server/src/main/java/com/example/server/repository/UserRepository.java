@@ -7,6 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.UUID;
 
 public interface UserRepository
-        extends ElasticsearchRepository<User, Long>, PagingAndSortingRepository<User, Long> {
-    User findById(UUID id);
+        extends ElasticsearchRepository<User, UUID>, PagingAndSortingRepository<User, UUID> {
 }

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +22,8 @@ public class AdminService {
 
     public List<Admin> getAllAdmins() {
         log.info("Request to get all admins. BEGIN");
-        List<Admin> admins = (List<Admin>) adminRepository.findAll();
+        List<Admin> admins = new ArrayList<>();
+        adminRepository.findAll().forEach(admins::add);
         log.info("Request to get all admins. END - SUCCESS. Size: {}", admins.size());
 
         return admins;
@@ -29,7 +31,7 @@ public class AdminService {
 
     public Admin getAdminById(UUID adminId) {
         log.info("Request to get admin by id = {}. BEGIN", adminId);
-        Admin admin = adminRepository.findById(adminId);
+        Admin admin = adminRepository.findById(adminId).get();
         log.info("Request to get admin by id. END - SUCCESS.");
 
         return admin;
@@ -62,7 +64,7 @@ public class AdminService {
 
     public Admin updateAdmin(Admin admin) {
         log.info("Request to update admin with id = {}. BEGIN", admin.getId());
-        Admin existedAdmin = adminRepository.findById(admin.getId());
+        Admin existedAdmin = adminRepository.findById(admin.getId()).get();
         if(admin.getLogin() != null)
             existedAdmin.setLogin(admin.getLogin());
         if(admin.getPassword() != null)

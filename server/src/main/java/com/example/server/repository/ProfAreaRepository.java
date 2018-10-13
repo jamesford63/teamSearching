@@ -7,6 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.UUID;
 
 public interface ProfAreaRepository
-        extends ElasticsearchRepository<ProfArea, Long>, PagingAndSortingRepository<ProfArea, Long> {
-    ProfArea findById(UUID id);
+        extends ElasticsearchRepository<ProfArea, UUID>, PagingAndSortingRepository<ProfArea, UUID> {
 }

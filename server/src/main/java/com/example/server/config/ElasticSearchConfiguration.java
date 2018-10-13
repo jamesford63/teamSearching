@@ -19,14 +19,14 @@ import java.net.UnknownHostException;
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "com.example.server.repository")
 public class ElasticSearchConfiguration {
-    @Value("${elasticsearch.home:C:\\Users\\dmsa0618\\Documents\\java\\elasticsearch-6.4.2}")
+    @Value("${elasticsearch.home}")
     private String elasticsearchHome;
 
     @Bean
     public Client client() throws UnknownHostException {
         Settings elasticsearchSettings = Settings.builder()
                 .put("client.transport.sniff", true)
-                .put("path.home", "C:\\Users\\dmsa0618\\Documents\\java\\elasticsearch-6.4.2")
+                .put("path.home", elasticsearchHome)
                 .put("cluster.name", "elasticsearch")
                 .build();
         TransportClient client = new PreBuiltTransportClient(elasticsearchSettings);

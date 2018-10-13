@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @ToString
 @EqualsAndHashCode
-@Document(indexName = "teamSearching", type = "notifications", shards = 1)
+@Document(indexName = "notification", shards = 1)
 public class Notification {
     @Id
     private UUID id;

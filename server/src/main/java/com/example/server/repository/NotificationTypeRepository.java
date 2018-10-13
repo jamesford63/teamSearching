@@ -7,6 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.UUID;
 
 public interface NotificationTypeRepository
-        extends ElasticsearchRepository<NotificationType, Long>, PagingAndSortingRepository<NotificationType, Long> {
-    NotificationType findById(UUID id);
+        extends ElasticsearchRepository<NotificationType, UUID>, PagingAndSortingRepository<NotificationType, UUID> {
 }

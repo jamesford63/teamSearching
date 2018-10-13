@@ -7,6 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.UUID;
 
 public interface TagRepository
-        extends ElasticsearchRepository<Tag, Long>, PagingAndSortingRepository<Tag, Long> {
-    Tag findById(UUID id);
+        extends ElasticsearchRepository<Tag, UUID>, PagingAndSortingRepository<Tag, UUID> {
 }

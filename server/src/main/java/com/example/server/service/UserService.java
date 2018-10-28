@@ -72,4 +72,12 @@ public class UserService {
 
         return user;
     }
+
+    public User getUserByLogin(String login) {
+        log.info("Request to get user by login = {}. BEGIN", login);
+        User user = userRepository.findByLogin(login);
+        log.info("Request to get user by login. END - SUCCESS.");
+
+        return user;
+    }
 }

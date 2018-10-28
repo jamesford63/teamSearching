@@ -7,4 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.UUID;
 
 public interface AdminRepository extends ElasticsearchRepository<Admin, UUID>, PagingAndSortingRepository<Admin, UUID> {
+    Admin findByLogin(String login);
 }

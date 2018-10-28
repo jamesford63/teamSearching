@@ -1,4 +1,4 @@
-package com.example.server.entity;
+package com.example.server.entity.enums;
 
 // TODO add user statuses
 public enum UserStatus {

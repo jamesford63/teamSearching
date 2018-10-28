@@ -74,4 +74,12 @@ public class AdminService {
 
         return admin;
     }
+
+    public Admin getAdminByLogin(String login) {
+        log.info("Request to get admin by login = {}. BEGIN", login);
+        Admin admin = adminRepository.findByLogin(login);
+        log.info("Request to get admin by login. END - SUCCESS.");
+
+        return admin;
+    }
 }

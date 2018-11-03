@@ -1,5 +1,6 @@
 package com.example.server.entity;
 
+import com.example.server.entity.enums.UserStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

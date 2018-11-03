@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface UserRepository
         extends ElasticsearchRepository<User, UUID>, PagingAndSortingRepository<User, UUID> {
+    User findByLogin(String login);
 }

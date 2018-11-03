@@ -12,6 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/prof-areas")
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class ProfAreaController {
 	private ProfAreaService profAreaService;
 

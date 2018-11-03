@@ -4,6 +4,7 @@ import com.example.server.entity.User;
 import com.example.server.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,10 +15,12 @@ import java.util.UUID;
 @Component
 public class UserService {
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public void setUserRepository(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAllUsers() {
@@ -54,7 +57,7 @@ public class UserService {
     public User createUser(User user) {
         log.info("Request to save user. BEGIN");
         User savedUser;
-        if(user.getId() == null)
+        if (user.getId() == null)
             user.setId(UUID.randomUUID());
         savedUser = userRepository.save(user);
         log.info("Request to save user. END - SUCCESS. Id = {}", savedUser.getId());
@@ -65,10 +68,28 @@ public class UserService {
     public User updateUser(User user) {
         log.info("Request to update user with id = {}. BEGIN", user.getId());
         User existedUser = userRepository.findById(user.getId()).get();
-        if(user.getName() != null)
+        if (user.getName() != null)
             existedUser.setName(user.getName());
+        if (user.getLastName() != null)
+            existedUser.setLastName(user.getLastName());
+        if (user.getCity() != null)
+            existedUser.setCity(user.getCity());
+        if (user.getDescription() != null)
+            existedUser.setDescription(user.getDescription());
+        if (user.getEmail() != null)
+            existedUser.setEmail(user.getEmail());
+        if (user.getPassword() != null)
+            existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(existedUser);
         log.info("Request to update user. END - SUCCESS.");
+
+        return user;
+    }
+
+    public User getUserByLogin(String login) {
+        log.info("Request to get user by login = {}. BEGIN", login);
+        User user = userRepository.findByLogin(login);
+        log.info("Request to get user by login. END - SUCCESS.");
 
         return user;
     }

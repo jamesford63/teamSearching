@@ -43,7 +43,7 @@ public class Creator {
         }
     }
 
-    public Admin randomAdmin() {
+    private Admin randomAdmin() {
         Admin admin = new Admin();
         admin.setId(UUID.randomUUID());
         admin.setLogin(RandomStringUtils.randomAlphabetic(length));
@@ -52,7 +52,7 @@ public class Creator {
         return admin;
     }
 
-    public Notification randomNotification() {
+    private Notification randomNotification() {
         Notification notification = new Notification();
         notification.setId(UUID.randomUUID());
         notification.setStatus(NotificationStatus.UNREAD);
@@ -64,7 +64,7 @@ public class Creator {
         return notification;
     }
 
-    public User randomUser() {
+    private User randomUser() {
         User user = new User();
         user.setId(UUID.randomUUID());
         user.setLogin(RandomStringUtils.randomAlphabetic(length));
@@ -90,7 +90,7 @@ public class Creator {
         return user;
     }
 
-    public Project randomProject() {
+    private Project randomProject() {
         Project project = new Project();
         project.setId(UUID.randomUUID());
         project.setProfArea(profAreas.get(random.nextInt(profAreas.size())));
@@ -109,7 +109,7 @@ public class Creator {
         return project;
     }
 
-    public Tag randomTag() {
+    private Tag randomTag() {
         Tag tag = new Tag();
         tag.setId(UUID.randomUUID());
         tag.setName(RandomStringUtils.randomAlphabetic(length));
@@ -117,7 +117,7 @@ public class Creator {
         return tag;
     }
 
-    public ProfArea randomProfArea() {
+    private ProfArea randomProfArea() {
         ProfArea profArea = new ProfArea();
         profArea.setId(UUID.randomUUID());
         profArea.setName(RandomStringUtils.randomAlphabetic(length));
@@ -133,7 +133,7 @@ public class Creator {
     }
 
 
-    public NotificationType randomNotificationType() {
+    private NotificationType randomNotificationType() {
         NotificationType notificationType = new NotificationType();
         notificationType.setId(UUID.randomUUID());
         notificationType.setName(RandomStringUtils.randomAlphabetic(length));

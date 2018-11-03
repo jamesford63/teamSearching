@@ -6,6 +6,7 @@ import com.example.server.entity.enums.UserRole;
 import com.example.server.service.AdminService;
 import com.example.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,16 +29,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Set<GrantedAuthority> roles = new HashSet<>();
-        UserDetails userDetails = null;
-        try {
-            User user = userService.getUserByLogin(login);
+        UserDetails userDetails;
+        User user = userService.getUserByLogin(username);
+        if (user != null) {
             roles.add(new SimpleGrantedAuthority(UserRole.USER.name()));
             userDetails =
                     new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), roles);
-        } catch (Exception ignored) {
-            Admin admin = adminService.getAdminByLogin(login);
+        } else {
+            Admin admin = adminService.getAdminByLogin(username);
             roles.add(new SimpleGrantedAuthority(UserRole.ADMIN.name()));
             userDetails =
                     new org.springframework.security.core.userdetails.User(admin.getLogin(), admin.getPassword(), roles);

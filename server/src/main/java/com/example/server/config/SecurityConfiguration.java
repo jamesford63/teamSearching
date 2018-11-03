@@ -3,29 +3,29 @@ package com.example.server.config;
 import com.example.server.entity.enums.UserRole;
 import com.example.server.service.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsServiceImpl userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SecurityConfiguration(UserDetailsServiceImpl userDetailsService) {
+    public SecurityConfiguration(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-                .passwordEncoder(encoder());
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .anyRequest().authenticated()
-                .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name());
+                .antMatchers("/admins/**").hasRole(UserRole.ADMIN.name());
 
         http.formLogin()
                 .loginPage("/login")
@@ -44,14 +44,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.logout()
                 .permitAll()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/login?logout")
+                .logoutUrl("/logout")
                 .invalidateHttpSession(true);
 
-    }
-
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
     }
 }

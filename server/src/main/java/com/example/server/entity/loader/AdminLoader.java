@@ -30,7 +30,7 @@ public class AdminLoader implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (!needToLoad) {
+        if (needToLoad) {
             operations.putMapping(Admin.class);
             log.info("Loading admins data");
             for (int i = 0; i < 10; i++) {

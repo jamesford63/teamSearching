@@ -17,7 +17,7 @@ public class Creator {
     private List<NotificationType> notificationTypes;
     private List<Tag> tags;
     private List<ProfArea> profAreas;
-    private Random random;
+    private Random random = new Random();
 
     public void init(int depth) {
         admins = new ArrayList<>();
@@ -37,6 +37,8 @@ public class Creator {
         }
         for (int i = 0; i < depth; i++) {
             users.add(randomUser());
+        }
+        for (int i = 0; i < depth; i++) {
             projects.add(randomProject());
         }
     }
@@ -82,8 +84,8 @@ public class Creator {
                 areas.add(profArea);
         }
         user.setProfAreas(areas);
-        user.setProjectsCreated(Collections.singletonList(randomProject()));
-        user.setProjectsParticipated(Collections.singletonList(randomProject()));
+        user.setProjectsCreated(Collections.emptyList());
+        user.setProjectsParticipated(Collections.emptyList());
 
         return user;
     }
@@ -92,8 +94,8 @@ public class Creator {
         Project project = new Project();
         project.setId(UUID.randomUUID());
         project.setProfArea(profAreas.get(random.nextInt(profAreas.size())));
-        project.setParticipants(Collections.singletonList(randomUser()));
-        project.setOwner(randomUser());
+        project.setParticipants(Collections.singletonList(users.get(random.nextInt(users.size()))));
+        project.setOwner(users.get(random.nextInt(users.size())));
         project.setDescription(RandomStringUtils.randomAlphabetic(length));
         List<Tag> relatedTags = new ArrayList<>();
         int num = random.nextInt(tags.size());

@@ -12,6 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/projects")
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class ProjectController {
 	private ProjectService projectService;
 

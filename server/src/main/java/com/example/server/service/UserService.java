@@ -70,6 +70,16 @@ public class UserService {
         User existedUser = userRepository.findById(user.getId()).get();
         if (user.getName() != null)
             existedUser.setName(user.getName());
+        if (user.getLastName() != null)
+            existedUser.setLastName(user.getLastName());
+        if (user.getCity() != null)
+            existedUser.setCity(user.getCity());
+        if (user.getDescription() != null)
+            existedUser.setDescription(user.getDescription());
+        if (user.getEmail() != null)
+            existedUser.setEmail(user.getEmail());
+        if (user.getPassword() != null)
+            existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(existedUser);
         log.info("Request to update user. END - SUCCESS.");
 

@@ -72,7 +72,7 @@ public class AdminService {
         if (admin.getLogin() != null)
             existedAdmin.setLogin(admin.getLogin());
         if (admin.getPassword() != null)
-            existedAdmin.setPassword(admin.getPassword());
+            existedAdmin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin = adminRepository.save(existedAdmin);
         log.info("Request to update admin. END - SUCCESS.");
 

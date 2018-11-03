@@ -3,14 +3,13 @@ package com.example.server.entity.loader;
 import com.example.server.entity.User;
 import com.example.server.entity.loader.utils.Creator;
 import com.example.server.repository.UserRepository;
+import com.example.server.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 @Component
 @Slf4j
@@ -21,12 +20,12 @@ public class UserLoader implements InitializingBean {
 
     private ElasticsearchOperations operations;
 
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    public UserLoader(ElasticsearchOperations operations, UserRepository userRepository) {
+    public UserLoader(ElasticsearchOperations operations, UserService userService) {
         this.operations = operations;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -35,7 +34,7 @@ public class UserLoader implements InitializingBean {
             operations.putMapping(User.class);
             log.info("Loading users data");
             for (int i = 0; i < 10; i++) {
-                userRepository.save(creator.randomUser());
+                userService.createUser(creator.randomUser());
             }
             log.info("Loading Completed");
         } else {

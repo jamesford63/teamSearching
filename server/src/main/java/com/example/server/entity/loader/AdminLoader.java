@@ -35,7 +35,6 @@ public class AdminLoader implements InitializingBean {
             log.info("Loading admins data");
             for (int i = 0; i < 10; i++) {
                 Admin admin = creator.randomAdmin();
-                System.out.println(admin);
                 adminService.createAdmin(admin);
             }
             log.info("Loading Completed");

@@ -6,7 +6,6 @@ import com.example.server.entity.enums.UserRole;
 import com.example.server.service.AdminService;
 import com.example.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

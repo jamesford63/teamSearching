@@ -1,35 +1,44 @@
 package com.example.server.entity.loader;
 
-import com.example.server.entity.Admin;
+import com.example.server.entity.Notification;
 import com.example.server.entity.loader.utils.Creator;
 import com.example.server.repository.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-
 @Component
 @Slf4j
-public class NotificationLoader {
-    private Creator creator;
+public class NotificationLoader implements InitializingBean {
+    private Creator creator = new Creator();
+    @Value("${need.to.load}")
+    private boolean needToLoad;
 
-    @Autowired
     private ElasticsearchOperations operations;
 
-    @Autowired
     private NotificationRepository notificationRepository;
 
-    @PostConstruct
-    @Transactional
-    public void loadAll(){
-        operations.putMapping(Admin.class);
-        log.info("Loading Data");
-        for (int i = 0; i < 10; i++) {
-            notificationRepository.save(creator.randomNotification());
+    @Autowired
+    public NotificationLoader(ElasticsearchOperations operations, NotificationRepository notificationRepository) {
+        this.operations = operations;
+        this.notificationRepository = notificationRepository;
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        if (needToLoad) {
+            operations.putMapping(Notification.class);
+            log.info("Loading notifications data");
+            for (int i = 0; i < 10; i++) {
+                notificationRepository.save(creator.randomNotification());
+            }
+            log.info("Loading Completed");
+        } else {
+            log.info("No need to load notifications data");
         }
-        log.info("Loading Completed");
     }
 }

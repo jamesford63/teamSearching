@@ -4,6 +4,7 @@ import com.example.server.entity.Admin;
 import com.example.server.repository.AdminRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,10 +15,12 @@ import java.util.UUID;
 @Component
 public class AdminService {
     private AdminRepository adminRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public void setAdminRepository(AdminRepository adminRepository) {
+    public void setAdminRepository(AdminRepository adminRepository, PasswordEncoder passwordEncoder) {
         this.adminRepository = adminRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Admin> getAllAdmins() {
@@ -54,8 +57,9 @@ public class AdminService {
     public Admin createAdmin(Admin admin) {
         log.info("Request to save admin. BEGIN");
         Admin savedAdmin;
-        if(admin.getId() == null)
+        if (admin.getId() == null)
             admin.setId(UUID.randomUUID());
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         savedAdmin = adminRepository.save(admin);
         log.info("Request to save admin. END - SUCCESS. Id = {}", savedAdmin.getId());
 
@@ -65,9 +69,9 @@ public class AdminService {
     public Admin updateAdmin(Admin admin) {
         log.info("Request to update admin with id = {}. BEGIN", admin.getId());
         Admin existedAdmin = adminRepository.findById(admin.getId()).get();
-        if(admin.getLogin() != null)
+        if (admin.getLogin() != null)
             existedAdmin.setLogin(admin.getLogin());
-        if(admin.getPassword() != null)
+        if (admin.getPassword() != null)
             existedAdmin.setPassword(admin.getPassword());
         admin = adminRepository.save(existedAdmin);
         log.info("Request to update admin. END - SUCCESS.");

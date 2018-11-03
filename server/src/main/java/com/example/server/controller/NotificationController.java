@@ -31,6 +31,11 @@ public class NotificationController {
 		return new ResponseEntity<>(notificationService.getNotificationById(id), HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<Notification>> getUserNotifications(@PathVariable UUID id) {
+		return new ResponseEntity<>(notificationService.getUserNotifications(id), HttpStatus.OK);
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Notification> createNotification(@RequestBody Notification notification) {
 		return new ResponseEntity<>(notificationService.createNotification(notification), HttpStatus.CREATED);

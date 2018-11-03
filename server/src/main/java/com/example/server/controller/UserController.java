@@ -1,6 +1,7 @@
 package com.example.server.controller;
 
 import com.example.server.entity.User;
+import com.example.server.entity.requests.UserQueryRequest;
 import com.example.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,11 @@ public class UserController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> getUserById(@PathVariable UUID id) {
 		return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/filter", method = RequestMethod.POST)
+	public ResponseEntity<List<User>> filterUsers(@RequestBody UserQueryRequest filter) {
+		return new ResponseEntity<>(userService.filterUsers(filter), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

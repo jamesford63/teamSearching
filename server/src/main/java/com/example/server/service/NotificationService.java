@@ -1,7 +1,9 @@
 package com.example.server.service;
 
 import com.example.server.entity.Notification;
+import com.example.server.entity.User;
 import com.example.server.repository.NotificationRepository;
+import com.example.server.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,10 +16,12 @@ import java.util.UUID;
 @Component
 public class NotificationService {
     private NotificationRepository notificationRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public void setNotificationRepository(NotificationRepository notificationRepository) {
+    public NotificationService(NotificationRepository notificationRepository, UserRepository userRepository) {
         this.notificationRepository = notificationRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Notification> getAllNotifications() {
@@ -54,7 +58,7 @@ public class NotificationService {
     public Notification createNotification(Notification notification) {
         log.info("Request to save notification. BEGIN");
         Notification savedNotification;
-        if(notification.getId() == null)
+        if (notification.getId() == null)
             notification.setId(UUID.randomUUID());
         savedNotification = notificationRepository.save(notification);
         log.info("Request to save notification. END - SUCCESS. Id = {}", savedNotification.getId());
@@ -65,19 +69,28 @@ public class NotificationService {
     public Notification updateNotification(Notification notification) {
         log.info("Request to update notification with id = {}. BEGIN", notification.getId());
         Notification existedNotification = notificationRepository.findById(notification.getId()).get();
-        if(notification.getDescription() != null)
+        if (notification.getDescription() != null)
             existedNotification.setDescription(notification.getDescription());
-        if(notification.getFrom() != null)
+        if (notification.getFrom() != null)
             existedNotification.setFrom(notification.getFrom());
-        if(notification.getTo() != null)
+        if (notification.getTo() != null)
             existedNotification.setFrom(notification.getTo());
-        if(notification.getStatus() != null)
+        if (notification.getStatus() != null)
             existedNotification.setStatus(notification.getStatus());
-        if(notification.getType() != null)
+        if (notification.getType() != null)
             existedNotification.setType(notification.getType());
         notification = notificationRepository.save(existedNotification);
         log.info("Request to update notification. END - SUCCESS.");
 
         return notification;
+    }
+
+    public List<Notification> getUserNotifications(UUID userId) {
+        log.info("Request to get notifications of user with id = {}. BEGIN", userId);
+        User user = userRepository.findById(userId).get();
+        List<Notification> notifications = notificationRepository.findNotificationsByTo(user);
+        log.info("Request to get notifications of user with id. END - SUCCESS.");
+
+        return notifications;
     }
 }

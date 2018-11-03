@@ -1,6 +1,7 @@
 package com.example.server.controller;
 
 import com.example.server.entity.Project;
+import com.example.server.entity.requests.ProjectQueryRequest;
 import com.example.server.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,11 @@ public class ProjectController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Project> getProjectById(@PathVariable UUID id) {
 		return new ResponseEntity<>(projectService.getProjectById(id), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/filter", method = RequestMethod.POST)
+	public ResponseEntity<List<Project>> filterProjects(@RequestBody ProjectQueryRequest filter) {
+		return new ResponseEntity<>(projectService.filterProjects(filter), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

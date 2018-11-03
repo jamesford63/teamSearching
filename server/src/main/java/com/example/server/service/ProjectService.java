@@ -1,23 +1,34 @@
 package com.example.server.service;
 
+import com.example.server.entity.ProfArea;
 import com.example.server.entity.Project;
+import com.example.server.entity.requests.ProjectQueryRequest;
 import com.example.server.repository.ProjectRepository;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Slf4j
 @Component
 public class ProjectService {
     private ProjectRepository projectRepository;
+    private Client client;
 
     @Autowired
-    public void setProjectRepository(ProjectRepository projectRepository) {
+    public void setProjectRepository(ProjectRepository projectRepository, Client client) {
         this.projectRepository = projectRepository;
+        this.client = client;
     }
 
     public List<Project> getAllProjects() {
@@ -54,7 +65,7 @@ public class ProjectService {
     public Project createProject(Project project) {
         log.info("Request to save project. BEGIN");
         Project savedProject;
-        if(project.getId() == null)
+        if (project.getId() == null)
             project.setId(UUID.randomUUID());
         savedProject = projectRepository.save(project);
         log.info("Request to save project. END - SUCCESS. Id = {}", savedProject.getId());
@@ -65,21 +76,48 @@ public class ProjectService {
     public Project updateProject(Project project) {
         log.info("Request to update project with id = {}. BEGIN", project.getId());
         Project existedProject = projectRepository.findById(project.getId()).get();
-        if(project.getOwner() != null)
+        if (project.getOwner() != null)
             existedProject.setOwner(project.getOwner());
-        if(project.getName() != null)
+        if (project.getName() != null)
             existedProject.setName(project.getName());
-        if(project.getDescription() != null)
+        if (project.getDescription() != null)
             existedProject.setDescription(project.getDescription());
-        if(project.getParticipants() != null)
+        if (project.getParticipants() != null)
             existedProject.setParticipants(project.getParticipants());
-        if(project.getProfArea() != null)
+        if (project.getProfArea() != null)
             existedProject.setProfArea(project.getProfArea());
-        if(project.getTags() != null)
+        if (project.getTags() != null)
             existedProject.setTags(project.getTags());
         project = projectRepository.save(existedProject);
         log.info("Request to update project. END - SUCCESS.");
 
         return project;
+    }
+
+    public List<Project> filterProjects(ProjectQueryRequest filter) {
+        log.info("Request to get all projects matching filter: {}. BEGIN", filter);
+        List<Project> projects = new ArrayList<>();
+        if (filter != null) {
+            SearchResponse searchResponse = client.prepareSearch("project")
+                    .setQuery(boolQuery()
+                            .should(regexpQuery("name", filter.getName()))
+                            .should(regexpQuery("description", filter.getDescription()))
+                            .should(termsQuery("profArea.name",
+                                    filter.getProfAreas().
+                                            stream()
+                                            .map(ProfArea::getName)
+                                            .toArray()))
+                            .should(termQuery("tags", filter.getTags())))
+                    .setFrom(0).setSize(60).setExplain(true)
+                    .get();
+            Gson gson = new Gson();
+            projects = Arrays.stream(searchResponse.getHits().getHits()).
+                    map(hit -> gson.fromJson(hit.getSourceAsString(), Project.class))
+                    .collect(Collectors.toList());
+        } else {
+            projectRepository.findAll().forEach(projects::add);
+        }
+        log.info("Request to get all projects matching filter. END - SUCCESS");
+        return projects;
     }
 }

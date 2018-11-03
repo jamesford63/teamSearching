@@ -1,5 +1,6 @@
 package com.example.server.entity;
 
+import com.example.server.entity.enums.ProjectStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -22,4 +23,5 @@ public class Project {
     private User owner;
     private List<Tag> tags;
     private String description;
+    private ProjectStatus projectStatus;
 }

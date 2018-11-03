@@ -3,6 +3,8 @@ package com.example.server.service;
 import com.example.server.entity.Admin;
 import com.example.server.repository.AdminRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

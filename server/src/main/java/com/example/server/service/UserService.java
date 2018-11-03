@@ -1,27 +1,40 @@
 package com.example.server.service;
 
+import com.example.server.entity.ProfArea;
+import com.example.server.entity.Project;
 import com.example.server.entity.User;
+import com.example.server.entity.requests.UserQueryRequest;
 import com.example.server.repository.UserRepository;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Slf4j
 @Component
 public class UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private Client client;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, Client client) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.client = client;
     }
+
 
     public List<User> getAllUsers() {
         log.info("Request to get all users. BEGIN");
@@ -92,5 +105,31 @@ public class UserService {
         log.info("Request to get user by login. END - SUCCESS.");
 
         return user;
+    }
+
+    public List<User> filterUsers(UserQueryRequest filter) {
+        log.info("Request to get all users matching filter: {}. BEGIN", filter);
+        List<User> users = new ArrayList<>();
+        if (filter != null) {
+            SearchResponse searchResponse = client.prepareSearch("user")
+                    .setQuery(boolQuery()
+                            .should(regexpQuery("name", filter.getCity()))
+                            .should(regexpQuery("description", filter.getDescription()))
+                            .should(termsQuery("profArea.name",
+                                    filter.getProfAreas().
+                                            stream()
+                                            .map(ProfArea::getName)
+                                            .toArray())))
+                    .setFrom(0).setSize(60).setExplain(true)
+                    .get();
+            Gson gson = new Gson();
+            users = Arrays.stream(searchResponse.getHits().getHits()).
+                    map(hit -> gson.fromJson(hit.getSourceAsString(), User.class))
+                    .collect(Collectors.toList());
+        } else {
+            userRepository.findAll().forEach(users::add);
+        }
+        log.info("Request to get all users matching filter. END - SUCCESS");
+        return users;
     }
 }

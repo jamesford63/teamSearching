@@ -14,13 +14,13 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a routerLink="/start-page" class="nav-link">Главная</a>
+        <a routerLink="/start-page" class="nav-link">Главная страница</a>
       </li>
       <li class="nav-item active">
         <a href="#" class="nav-link">Войти</a>
       </li>
       <li class="nav-item">
-        <a routerLink="/client-reg" class="nav-link">Зарегистрироваться</a>
+        <a routerLink="/user-reg" class="nav-link">Зарегистрироваться</a>
       </li>
     </ul>
   </div>
@@ -37,18 +37,18 @@
     <h3 align="center"> Войти</h3>
     <table align="center">
       <tr>
-        <td class="sr-only">Login</td>
+        <td class="sr-only">Логин</td>
         <td><input type="email" class="form-control mr-sm-2" formControlName="login" placeholder="Login" aria-label="Login"></td>
         <td><label *ngIf="userAuthForm.get('login').invalid && processValidation" [ngClass] = "'error'" > Login is required. </label></td>
       </tr>
       <tr>
-        <td class="sr-only">Password</td>
+        <td class="sr-only">Пароль</td>
         <td><input type="password" class="form-control mr-sm-2" formControlName="password" placeholder="Password" aria-label="Password"></td>
         <td><label *ngIf="userAuthForm.get('password').invalid && processValidation" [ngClass] = "'error'"> Password is required. </label></td>
       </tr>
       <tr>
         <td align="right" colspan="2">
-          <button class="btn btn-outline-success my-2 my-sm-0">OK</button>
+          <button class="btn btn-outline-success my-2 my-sm-0">Войти</button>
         </td>
       </tr>
     </table>

@@ -5,15 +5,15 @@ import {User} from "../table-classes/user";
 import {UserService} from "../services/user.service";
 
 @Component({
-  selector: 'app-user-auth',
-  templateUrl: './user-auth.component.html',
-  styleUrls: ['./user-auth.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class UserAuthComponent implements OnInit {
+export class LoginComponent implements OnInit {
   statusCode: number;
   user: User;
 
-  userAuthForm = new FormGroup({
+  loginForm = new FormGroup({
     login: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
   });
@@ -24,14 +24,14 @@ export class UserAuthComponent implements OnInit {
   }
 
   // onUserFormSubmit() {
-  //   if (this.userAuthForm.invalid) {
+  //   if (this.loginForm.invalid) {
   //     return; // Validation failed, exit from method.
   //   }
   //   // Form is valid, now perform create
   //   this.preProcessConfigurations();
-  //   const login = this.userAuthForm.get('login').value.trim();
-  //   const password = this.userAuthForm.get('password').value.trim();
-  //   this.userService.getUser(login, password).
+  //   const login = this.loginForm.get('login').value.trim();
+  //   const password = this.loginForm.get('password').value.trim();
+  //   this.userService.authorize(login, password).
   //     subscribe(data => {
   //       this.user = data;
   //       if (this.user.role === 1) {
@@ -48,7 +48,7 @@ export class UserAuthComponent implements OnInit {
   //     );
   // }
   // Perform preliminary processing configurations
-  preProcessConfigurations() {
-    this.statusCode = null;
-  }
+  // preProcessConfigurations() {
+  //   this.statusCode = null;
+  // }
 }

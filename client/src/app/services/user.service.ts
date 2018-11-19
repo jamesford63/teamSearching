@@ -44,6 +44,12 @@ export class UserService {
       ,catchError(this.handleError))
   }
 
+  authorize(userLogin: string, userPassword: string): Observable<User> {
+    return this.http.get(this.userUrl + '/' + userLogin)
+      .pipe(map(this.extractData)
+        ,catchError(this.handleError))
+  }
+
   private extractData(res: Response) {
     return res.json();
   }

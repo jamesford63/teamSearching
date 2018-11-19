@@ -13,11 +13,16 @@ import {NotificationTypeService} from "./services/notification-type.service";
 import {ProfAreaService} from "./services/prof-area.service";
 import {ProjectService} from "./services/project.service";
 import {TagService} from "./services/tag.service";
+import {CarouselModule} from "angular2-carousel";
+import {RegistrationComponent} from "./registration/registration.component";
+import {AppService} from "./services/app.service";
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    StartPageComponent
+    StartPageComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +30,7 @@ import {TagService} from "./services/tag.service";
     ReactiveFormsModule,
     AppRoutingModule,
     FormsModule,
+    CarouselModule,
     BrowserAnimationsModule
   ],
   providers: [
@@ -33,7 +39,8 @@ import {TagService} from "./services/tag.service";
     NotificationTypeService,
     ProfAreaService,
     ProjectService,
-    TagService
+    TagService,
+    AppService
   ],
   bootstrap: [AppComponent]
 })

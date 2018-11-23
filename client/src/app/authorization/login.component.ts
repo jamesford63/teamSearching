@@ -1,0 +1,54 @@
+import { Component, OnInit } from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {User} from "../table-classes/user";
+import {UserService} from "../services/user.service";
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+  statusCode: number;
+  user: User;
+
+  loginForm = new FormGroup({
+    login: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+  });
+
+  constructor(private userService: UserService, private router: Router) { }
+
+  ngOnInit() {
+  }
+
+  // onUserFormSubmit() {
+  //   if (this.loginForm.invalid) {
+  //     return; // Validation failed, exit from method.
+  //   }
+  //   // Form is valid, now perform create
+  //   this.preProcessConfigurations();
+  //   const login = this.loginForm.get('login').value.trim();
+  //   const password = this.loginForm.get('password').value.trim();
+  //   this.userService.authorize(login, password).
+  //     subscribe(data => {
+  //       this.user = data;
+  //       if (this.user.role === 1) {
+  //         this.router.navigate(['/lkadmin/' + login + '/' + password]);
+  //       }
+  //       if (this.user.role === 2) {
+  //         this.router.navigate(['/lkclient/' + login + '/' + password]);
+  //       }
+  //       if (this.user.role === 3) {
+  //         this.router.navigate(['/lkworker/' + login + '/' + password]);
+  //     }
+  //     },
+  //     errorCode => this.statusCode = errorCode
+  //     );
+  // }
+  // Perform preliminary processing configurations
+  // preProcessConfigurations() {
+  //   this.statusCode = null;
+  // }
+}

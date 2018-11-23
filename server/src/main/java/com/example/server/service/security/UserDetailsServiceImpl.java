@@ -1,9 +1,7 @@
 package com.example.server.service.security;
 
-import com.example.server.entity.Admin;
 import com.example.server.entity.User;
 import com.example.server.entity.enums.UserRole;
-import com.example.server.service.AdminService;
 import com.example.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,12 +16,10 @@ import java.util.Set;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private AdminService adminService;
     private UserService userService;
 
     @Autowired
-    public UserDetailsServiceImpl(AdminService adminService, UserService userService) {
-        this.adminService = adminService;
+    public UserDetailsServiceImpl(UserService userService) {
         this.userService = userService;
     }
 

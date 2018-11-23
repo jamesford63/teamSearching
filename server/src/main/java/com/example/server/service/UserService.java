@@ -72,6 +72,7 @@ public class UserService {
         User savedUser;
         if (user.getId() == null)
             user.setId(UUID.randomUUID());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         savedUser = userRepository.save(user);
         log.info("Request to save user. END - SUCCESS. Id = {}", savedUser.getId());
 
@@ -111,15 +112,24 @@ public class UserService {
         log.info("Request to get all users matching filter: {}. BEGIN", filter);
         List<User> users = new ArrayList<>();
         if (filter != null) {
+            String cityRegExp = filter.getCity();
+            if (cityRegExp == null || cityRegExp.isEmpty())
+                cityRegExp = "*";
+            String descriptionRegExp = filter.getDescription();
+            if (descriptionRegExp == null || descriptionRegExp.isEmpty())
+                descriptionRegExp = "*";
+            List<ProfArea> profAreas = filter.getProfAreas();
+            List<String> profAreaTerms = new ArrayList<>();
+            if (profAreas != null) {
+                profAreas.forEach(profArea -> profAreaTerms.add(profArea.getName()));
+            }
             SearchResponse searchResponse = client.prepareSearch("user")
                     .setQuery(boolQuery()
-                            .should(regexpQuery("name", filter.getCity()))
-                            .should(regexpQuery("description", filter.getDescription()))
-                            .should(termsQuery("profArea.name",
-                                    filter.getProfAreas().
-                                            stream()
-                                            .map(ProfArea::getName)
-                                            .toArray())))
+                                    .should(regexpQuery("name", cityRegExp))
+                                    .should(regexpQuery("description", descriptionRegExp))
+//                            .should(matchQuery("profArea.name",
+//                                    profAreaTerms))
+                    )
                     .setFrom(0).setSize(60).setExplain(true)
                     .get();
             Gson gson = new Gson();

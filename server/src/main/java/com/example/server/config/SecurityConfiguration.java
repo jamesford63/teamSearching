@@ -1,6 +1,5 @@
 package com.example.server.config;
 
-import com.example.server.entity.enums.UserRole;
 import com.example.server.service.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .disable();
 
         http.authorizeRequests()
-                .anyRequest().authenticated()
-                .antMatchers("/admins/**").hasRole(UserRole.ADMIN.name());
+                .anyRequest().authenticated();
 
         http.formLogin()
                 .loginPage("/login")

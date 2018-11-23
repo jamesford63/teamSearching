@@ -10,7 +10,6 @@ import java.util.*;
 @Data
 public class Creator {
     private int length = 6;
-    private List<Admin> admins;
     private List<Notification> notifications;
     private List<User> users;
     private List<Project> projects;
@@ -20,7 +19,6 @@ public class Creator {
     private Random random = new Random();
 
     public void init(int depth) {
-        admins = new ArrayList<>();
         notifications = new ArrayList<>();
         users = new ArrayList<>();
         profAreas = new ArrayList<>();
@@ -30,7 +28,6 @@ public class Creator {
         for (int i = 0; i < depth; i++) {
             tags.add(randomTag());
             notificationTypes.add(randomNotificationType());
-            admins.add(randomAdmin());
         }
         for (int i = 0; i < depth; i++) {
             profAreas.add(randomProfArea());
@@ -41,15 +38,6 @@ public class Creator {
         for (int i = 0; i < depth; i++) {
             projects.add(randomProject());
         }
-    }
-
-    private Admin randomAdmin() {
-        Admin admin = new Admin();
-        admin.setId(UUID.randomUUID());
-        admin.setLogin(RandomStringUtils.randomAlphabetic(length));
-        admin.setPassword(RandomStringUtils.randomAlphabetic(length));
-
-        return admin;
     }
 
     private Notification randomNotification() {

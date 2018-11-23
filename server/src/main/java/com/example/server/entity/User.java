@@ -26,6 +26,6 @@ public class User {
     private List<ProfArea> profAreas;
     private List<Project> projectsCreated;
     private List<Project> projectsParticipated;
-    private int userStatus;
+    private UserStatus userStatus;
     private String description;
 }

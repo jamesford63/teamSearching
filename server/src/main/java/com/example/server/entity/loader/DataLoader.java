@@ -22,18 +22,16 @@ public class DataLoader implements InitializingBean {
     private NotificationRepository notificationRepository;
     private NotificationTypeRepository notificationTypeRepository;
     private ProfAreaRepository profAreaRepository;
-    private TagRepository tagRepository;
     private ProjectRepository projectRepository;
 
     @Autowired
     public DataLoader(ElasticsearchOperations operations, UserService userService, NotificationRepository notificationRepository,
-                      NotificationTypeRepository notificationTypeRepository, ProfAreaRepository profAreaRepository, TagRepository tagRepository, ProjectRepository projectRepository) {
+                      NotificationTypeRepository notificationTypeRepository, ProfAreaRepository profAreaRepository, ProjectRepository projectRepository) {
         this.operations = operations;
         this.userService = userService;
         this.notificationRepository = notificationRepository;
         this.notificationTypeRepository = notificationTypeRepository;
         this.profAreaRepository = profAreaRepository;
-        this.tagRepository = tagRepository;
         this.projectRepository = projectRepository;
     }
 
@@ -45,10 +43,8 @@ public class DataLoader implements InitializingBean {
             operations.putMapping(ProfArea.class);
             operations.putMapping(Project.class);
             operations.putMapping(User.class);
-            operations.putMapping(Tag.class);
             creator.init(10);
             log.info("Loading data");
-            creator.getTags().forEach(tag -> tagRepository.save(tag));
             creator.getNotifications().forEach(notification -> notificationRepository.save(notification));
             creator.getNotificationTypes().forEach(notificationType -> notificationTypeRepository.save(notificationType));
             creator.getProfAreas().forEach(profArea -> profAreaRepository.save(profArea));

@@ -65,8 +65,6 @@ public class ProfAreaService {
     public ProfArea updateProfArea(ProfArea profArea) {
         log.info("Request to update profArea with id = {}. BEGIN", profArea.getId());
         ProfArea existedProfArea = profAreaRepository.findById(profArea.getId()).get();
-        if(profArea.getRelatedTags() != null)
-            existedProfArea.setRelatedTags(profArea.getRelatedTags());
         if(profArea.getName() != null)
             existedProfArea.setName(profArea.getName());
         profArea = profAreaRepository.save(existedProfArea);

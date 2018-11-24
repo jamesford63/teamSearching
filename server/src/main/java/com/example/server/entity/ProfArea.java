@@ -17,5 +17,4 @@ public class ProfArea {
     @Id
     private UUID id;
     private String name;
-    private List<Tag> relatedTags;
 }

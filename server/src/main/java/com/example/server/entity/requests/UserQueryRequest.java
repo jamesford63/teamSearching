@@ -9,5 +9,6 @@ import java.util.List;
 public class UserQueryRequest {
     String city;
     List<ProfArea> profAreas;
+    List<String> tags;
     String description;
 }

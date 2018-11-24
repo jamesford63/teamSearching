@@ -24,6 +24,7 @@ public class User {
     private String lastName;
     private String city;
     private List<ProfArea> profAreas;
+    private List<String> tags;
     private List<Project> projectsCreated;
     private List<Project> projectsParticipated;
     private UserStatus userStatus;

@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {AppService} from "./services/app.service";
-import 'rxjs/add/operator/finally';
 import {finalize} from "rxjs/internal/operators";
-
 
 @Component({
   selector: 'app-root',

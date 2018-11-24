@@ -14,7 +14,7 @@ public class Creator {
     private List<User> users;
     private List<Project> projects;
     private List<NotificationType> notificationTypes;
-    private List<Tag> tags;
+    private List<String> tags;
     private List<ProfArea> profAreas;
     private Random random = new Random();
 
@@ -26,7 +26,7 @@ public class Creator {
         tags = new ArrayList<>();
         notificationTypes = new ArrayList<>();
         for (int i = 0; i < depth; i++) {
-            tags.add(randomTag());
+            tags.add(RandomStringUtils.randomAlphabetic(length));
             notificationTypes.add(randomNotificationType());
         }
         for (int i = 0; i < depth; i++) {
@@ -71,6 +71,7 @@ public class Creator {
             if(!areas.contains(profArea))
                 areas.add(profArea);
         }
+        user.setTags(Collections.emptyList());
         user.setProfAreas(areas);
         user.setProjectsCreated(Collections.emptyList());
         user.setProjectsParticipated(Collections.emptyList());
@@ -85,10 +86,10 @@ public class Creator {
         project.setParticipants(Collections.singletonList(users.get(random.nextInt(users.size()))));
         project.setOwner(users.get(random.nextInt(users.size())));
         project.setDescription(RandomStringUtils.randomAlphabetic(length));
-        List<Tag> relatedTags = new ArrayList<>();
+        List<String> relatedTags = new ArrayList<>();
         int num = random.nextInt(tags.size());
         for (int i = 0; i < num; i++) {
-            Tag tag = tags.get(random.nextInt(tags.size()));
+            String tag = tags.get(random.nextInt(tags.size()));
             if(!relatedTags.contains(tag))
                 relatedTags.add(tag);
         }
@@ -97,26 +98,10 @@ public class Creator {
         return project;
     }
 
-    private Tag randomTag() {
-        Tag tag = new Tag();
-        tag.setId(UUID.randomUUID());
-        tag.setName(RandomStringUtils.randomAlphabetic(length));
-
-        return tag;
-    }
-
     private ProfArea randomProfArea() {
         ProfArea profArea = new ProfArea();
         profArea.setId(UUID.randomUUID());
         profArea.setName(RandomStringUtils.randomAlphabetic(length));
-        int num = random.nextInt(tags.size());
-        List<Tag> relatedTags = new ArrayList<>();
-        for (int i = 0; i < num; i++) {
-            Tag tag = tags.get(random.nextInt(tags.size()));
-            if(!relatedTags.contains(tag))
-                relatedTags.add(tag);
-        }
-        profArea.setRelatedTags(relatedTags);
         return profArea;
     }
 

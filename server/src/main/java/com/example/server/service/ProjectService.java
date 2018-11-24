@@ -42,7 +42,7 @@ public class ProjectService {
 
     public Project getProjectById(UUID projectId) {
         log.info("Request to get project by id = {}. BEGIN", projectId);
-        Project project = projectRepository.findById(projectId).get();
+        Project project = projectRepository.findById(projectId).orElse(null);
         log.info("Request to get project by id. END - SUCCESS.");
 
         return project;
@@ -75,7 +75,8 @@ public class ProjectService {
 
     public Project updateProject(Project project) {
         log.info("Request to update project with id = {}. BEGIN", project.getId());
-        Project existedProject = projectRepository.findById(project.getId()).get();
+        Project existedProject = projectRepository.findById(project.getId()).orElse(null);
+
         if (project.getOwner() != null)
             existedProject.setOwner(project.getOwner());
         if (project.getName() != null)
@@ -88,7 +89,9 @@ public class ProjectService {
             existedProject.setProfArea(project.getProfArea());
         if (project.getTags() != null)
             existedProject.setTags(project.getTags());
+
         project = projectRepository.save(existedProject);
+
         log.info("Request to update project. END - SUCCESS.");
 
         return project;

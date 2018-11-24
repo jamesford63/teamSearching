@@ -35,7 +35,7 @@ public class NotificationService {
 
     public Notification getNotificationById(UUID notificationId) {
         log.info("Request to get notification by id = {}. BEGIN", notificationId);
-        Notification notification = notificationRepository.findById(notificationId).get();
+        Notification notification = notificationRepository.findById(notificationId).orElse(null);
         log.info("Request to get notification by id. END - SUCCESS.");
 
         return notification;
@@ -68,7 +68,7 @@ public class NotificationService {
 
     public Notification updateNotification(Notification notification) {
         log.info("Request to update notification with id = {}. BEGIN", notification.getId());
-        Notification existedNotification = notificationRepository.findById(notification.getId()).get();
+        Notification existedNotification = notificationRepository.findById(notification.getId()).orElse(null);
         if (notification.getDescription() != null)
             existedNotification.setDescription(notification.getDescription());
         if (notification.getFrom() != null)
@@ -87,7 +87,7 @@ public class NotificationService {
 
     public List<Notification> getUserNotifications(UUID userId) {
         log.info("Request to get notifications of user with id = {}. BEGIN", userId);
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).orElse(null);
         List<Notification> notifications = notificationRepository.findNotificationsByTo(user);
         log.info("Request to get notifications of user with id. END - SUCCESS.");
 

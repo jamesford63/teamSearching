@@ -31,7 +31,7 @@ public class ProfAreaService {
 
     public ProfArea getProfAreaById(UUID profAreaId) {
         log.info("Request to get profArea by id = {}. BEGIN", profAreaId);
-        ProfArea profArea = profAreaRepository.findById(profAreaId).get();
+        ProfArea profArea = profAreaRepository.findById(profAreaId).orElse(null);
         log.info("Request to get profArea by id. END - SUCCESS.");
 
         return profArea;
@@ -64,7 +64,7 @@ public class ProfAreaService {
 
     public ProfArea updateProfArea(ProfArea profArea) {
         log.info("Request to update profArea with id = {}. BEGIN", profArea.getId());
-        ProfArea existedProfArea = profAreaRepository.findById(profArea.getId()).get();
+        ProfArea existedProfArea = profAreaRepository.findById(profArea.getId()).orElse(null);
         if(profArea.getName() != null)
             existedProfArea.setName(profArea.getName());
         profArea = profAreaRepository.save(existedProfArea);

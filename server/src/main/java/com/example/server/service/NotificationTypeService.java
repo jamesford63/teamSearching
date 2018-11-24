@@ -31,7 +31,7 @@ public class NotificationTypeService {
 
     public NotificationType getNotificationTypeById(UUID notificationTypeId) {
         log.info("Request to get notificationType type by id = {}. BEGIN", notificationTypeId);
-        NotificationType notificationType = notificationTypeRepository.findById(notificationTypeId).get();
+        NotificationType notificationType = notificationTypeRepository.findById(notificationTypeId).orElse(null);
         log.info("Request to get notificationType by id. END - SUCCESS.");
 
         return notificationType;
@@ -64,7 +64,7 @@ public class NotificationTypeService {
 
     public NotificationType updateNotificationType(NotificationType notificationType) {
         log.info("Request to update notificationType with id = {}. BEGIN", notificationType.getId());
-        NotificationType existedNotificationType = notificationTypeRepository.findById(notificationType.getId()).get();
+        NotificationType existedNotificationType = notificationTypeRepository.findById(notificationType.getId()).orElse(null);
         if(notificationType.getName() != null)
             existedNotificationType.setName(notificationType.getName());
         notificationType = notificationTypeRepository.save(existedNotificationType);

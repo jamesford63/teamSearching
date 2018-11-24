@@ -47,7 +47,7 @@ public class UserService {
 
     public User getUserById(UUID userId) {
         log.info("Request to get user by id = {}. BEGIN", userId);
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).orElse(null);
         log.info("Request to get user by id. END - SUCCESS.");
 
         return user;
@@ -81,7 +81,7 @@ public class UserService {
 
     public User updateUser(User user) {
         log.info("Request to update user with id = {}. BEGIN", user.getId());
-        User existedUser = userRepository.findById(user.getId()).get();
+        User existedUser = userRepository.findById(user.getId()).orElse(null);
         if (user.getName() != null)
             existedUser.setName(user.getName());
         if (user.getLastName() != null)

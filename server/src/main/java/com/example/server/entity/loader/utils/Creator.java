@@ -67,7 +67,7 @@ public class Creator {
         List<ProfArea> areas = new ArrayList<>();
         int num = random.nextInt(profAreas.size());
         for (int i = 0; i < num; i++) {
-            ProfArea profArea = profAreas.get(random.nextInt(tags.size()));
+            ProfArea profArea = profAreas.get(random.nextInt(profAreas.size()));
             if(!areas.contains(profArea))
                 areas.add(profArea);
         }

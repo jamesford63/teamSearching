@@ -43,7 +43,7 @@ export class RegistrationComponent implements OnInit {
     const city = this.registrationForm.get('city').value.trim();
     const email = this.registrationForm.get('email').value;
     // Handle create user
-    const user = new User(UUID.UUID(), login, password, email, name, lastName, city, null, null, null,0,null);
+    const user = new User(UUID.UUID(), login, password, email, name, lastName, city, null, null, null,null,0,null);
     this.userService.createUser(user)
       .subscribe(successCode => {
           this.statusCode = successCode;

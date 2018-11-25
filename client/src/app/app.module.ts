@@ -17,6 +17,8 @@ import {AppService} from "./services/app.service";
 import {LoginComponent} from "./authorization/login.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {HttpModule} from "@angular/http";
+import {AccordionModule} from "ngx-accordion";
+import {LkComponent} from "./lk/lk.component";
 
 
 @NgModule({
@@ -24,7 +26,8 @@ import {HttpModule} from "@angular/http";
     AppComponent,
     StartPageComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    LkComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,8 @@ import {HttpModule} from "@angular/http";
     FormsModule,
     CarouselModule,
     BrowserAnimationsModule,
-    HttpModule
+    HttpModule,
+    AccordionModule
   ],
   providers: [
     UserService,

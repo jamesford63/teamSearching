@@ -20,44 +20,50 @@ export class LkComponent implements OnInit {
   processValidationUser = false;
   requestProcessing = false;
   statusCodeUser: number;
+  statusCodeTag: number;
+  statusCodeProfArea: number;
   profAreas: ProfArea[];
-
-  userForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
-    login: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
-    city: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.required)
-  });
-
-  newTagForm = new FormGroup({
-    tag: new FormControl('', Validators.required)
-  });
-
-  newProfAreaForm = new FormGroup({
-    profArea: new FormControl('', Validators.required)
-  });
+  userForm: FormGroup;
+  newTagForm: FormGroup;
+  newProfAreaForm: FormGroup;
 
   constructor(
               private userService: UserService,
               private profAreaService: ProfAreaService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router) {}
 
   ngOnInit() {
+    this.userForm = new FormGroup({
+      name: new FormControl('name', Validators.required),
+      lastName: new FormControl('lastName', Validators.required),
+      login: new FormControl('login', Validators.required),
+      password: new FormControl('password', Validators.required),
+      email: new FormControl('email', Validators.required),
+      city: new FormControl('city', Validators.required),
+      description: new FormControl('description', Validators.required)
+    });
+
+    this.newTagForm = new FormGroup({
+      tag: new FormControl('', Validators.required)
+    });
+
+    this.newProfAreaForm = new FormGroup({
+      profArea: new FormControl('', Validators.required)
+    });
+
     this.profAreaService.getAllProfAreas()
       .subscribe(data => this.profAreas = data);
     this.getUser("????");
     this.loadUserToEdit();
   }
 
+
   getUser(userLogin: string) {
     this.userService.getUserByLogin(userLogin)
       .subscribe(
         data => {this.userSource = data; },
-        errorCode => this.statusCode);
+        errorCode => this.statusCodeUser);
   }
 
   onUserFormSubmit() {
@@ -74,8 +80,8 @@ export class LkComponent implements OnInit {
     const city = this.userForm.get('city').value;
     const email = this.userForm.get('email').value;
     const description = this.userForm.get('description').value;
-    // Handle update client
-    const user = new User(this.userIdToUpdate, login, password, email, name, lastName,city, this.userSource.profAreas,
+    // Handle update user
+    const user = new User(this.userSource.id, login, password, email, name, lastName,city, this.userSource.profAreas,
       this.userSource.tags, this.userSource.projectsCreated, this.userSource.projectsParticipated,
       this.userSource.userStatus, description);
     this.userService.updateUser(user)
@@ -147,7 +153,7 @@ export class LkComponent implements OnInit {
         this.backToCreateUser();
         this.backToCreateProfArea();
       }, errorCode =>
-        this.statusCodeUser = errorCode);
+        this.statusCodeProfArea = errorCode);
   }
 
   onNewTagFormSubmit() {
@@ -165,7 +171,7 @@ export class LkComponent implements OnInit {
         this.backToCreateUser();
         this.backToCreateTag();
       }, errorCode =>
-        this.statusCodeUser = errorCode);
+        this.statusCodeTag = errorCode);
   }
 
   deleteUserTag(tag: String) {
@@ -176,7 +182,7 @@ export class LkComponent implements OnInit {
         this.loadUserToEdit();
         this.backToCreateUser();
       }, errorCode =>
-        this.statusCodeUser = errorCode);
+        this.statusCodeTag = errorCode);
   }
 
   deleteUserProfArea(profArea: ProfArea) {
@@ -187,7 +193,7 @@ export class LkComponent implements OnInit {
         this.loadUserToEdit();
         this.backToCreateUser();
       }, errorCode =>
-        this.statusCodeUser = errorCode);
+        this.statusCodeProfArea = errorCode);
   }
 
   preProcessConfigurations() {

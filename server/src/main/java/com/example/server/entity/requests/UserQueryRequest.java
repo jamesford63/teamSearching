@@ -11,4 +11,5 @@ public class UserQueryRequest {
     List<ProfArea> profAreas;
     List<String> tags;
     String description;
+    String name;
 }

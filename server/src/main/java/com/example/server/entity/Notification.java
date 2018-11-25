@@ -18,6 +18,7 @@ public class Notification {
     private NotificationType type;
     private User from;
     private User to;
+    private Project project;
     private NotificationStatus status;
     private String description;
 }

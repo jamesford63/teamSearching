@@ -2,7 +2,7 @@ package com.example.server.service;
 
 import com.example.server.entity.ProfArea;
 import com.example.server.entity.Project;
-import com.example.server.entity.requests.ProjectQueryRequest;
+import com.example.server.entity.requests.FilterRequest;
 import com.example.server.repository.ProjectRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.client.Client;
@@ -84,6 +84,8 @@ public class ProjectService {
             existedProject.setProfArea(project.getProfArea());
         if (project.getTags() != null)
             existedProject.setTags(project.getTags());
+        if (project.getCity() != null)
+            existedProject.setCity(project.getCity());
 
         project = projectRepository.save(existedProject);
 
@@ -92,7 +94,7 @@ public class ProjectService {
         return project;
     }
 
-    public List<Project> filterProjects(ProjectQueryRequest filter) {
+    public List<Project> filterProjects(FilterRequest filter) {
         log.info("Request to get all projects matching filter: {}. BEGIN", filter);
         List<Project> projects = new ArrayList<>();
         if (filter != null) {
@@ -106,7 +108,8 @@ public class ProjectService {
                     profAreasNames,
                     tags,
                     filter.getName(),
-                    filter.getDescription());
+                    filter.getDescription(),
+                    filter.getCity());
         } else {
             projectRepository.findAll().forEach(projects::add);
         }

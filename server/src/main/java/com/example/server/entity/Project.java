@@ -24,4 +24,5 @@ public class Project {
     private List<String> tags;
     private String description;
     private ProjectStatus projectStatus;
+    private String city;
 }

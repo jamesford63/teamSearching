@@ -94,6 +94,7 @@ public class Creator {
                 relatedTags.add(tag);
         }
         project.setTags(relatedTags);
+        project.setCity(RandomStringUtils.randomAlphabetic(length));
 
         return project;
     }

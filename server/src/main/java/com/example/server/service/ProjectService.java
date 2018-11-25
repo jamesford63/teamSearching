@@ -4,20 +4,15 @@ import com.example.server.entity.ProfArea;
 import com.example.server.entity.Project;
 import com.example.server.entity.requests.ProjectQueryRequest;
 import com.example.server.repository.ProjectRepository;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Slf4j
 @Component
@@ -101,22 +96,17 @@ public class ProjectService {
         log.info("Request to get all projects matching filter: {}. BEGIN", filter);
         List<Project> projects = new ArrayList<>();
         if (filter != null) {
-            SearchResponse searchResponse = client.prepareSearch("project")
-                    .setQuery(boolQuery()
-                            .should(regexpQuery("name", filter.getName()))
-                            .should(regexpQuery("description", filter.getDescription()))
-                            .should(termsQuery("profArea.name",
-                                    filter.getProfAreas().
-                                            stream()
-                                            .map(ProfArea::getName)
-                                            .toArray()))
-                            .should(termQuery("tags", filter.getTags())))
-                    .setFrom(0).setSize(60).setExplain(true)
-                    .get();
-            Gson gson = new Gson();
-            projects = Arrays.stream(searchResponse.getHits().getHits()).
-                    map(hit -> gson.fromJson(hit.getSourceAsString(), Project.class))
-                    .collect(Collectors.toList());
+            String tags = "", profAreasNames = "";
+            if (filter.getTags() != null && !filter.getTags().isEmpty())
+                tags = String.join(" ", filter.getTags());
+            if (filter.getProfAreas() != null && !filter.getProfAreas().isEmpty())
+                profAreasNames = filter.getProfAreas()
+                        .stream().map(ProfArea::getName).collect(Collectors.joining(" "));
+            projects = projectRepository.filterProjects(
+                    profAreasNames,
+                    tags,
+                    filter.getName(),
+                    filter.getDescription());
         } else {
             projectRepository.findAll().forEach(projects::add);
         }

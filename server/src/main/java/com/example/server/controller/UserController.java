@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -63,7 +64,7 @@ public class UserController {
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     @ResponseBody
-    public User currentUserNameSimple(HttpServletRequest request) {
+    public User currentUser(HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         return userService.getUserByLogin(principal.getName());
     }

@@ -79,6 +79,8 @@ public class NotificationService {
             existedNotification.setStatus(notification.getStatus());
         if (notification.getType() != null)
             existedNotification.setType(notification.getType());
+        if (notification.getProject() != null)
+            existedNotification.setProject(notification.getProject());
         notification = notificationRepository.save(existedNotification);
         log.info("Request to update notification. END - SUCCESS.");
 

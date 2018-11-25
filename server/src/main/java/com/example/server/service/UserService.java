@@ -1,25 +1,19 @@
 package com.example.server.service;
 
 import com.example.server.entity.ProfArea;
-import com.example.server.entity.Project;
 import com.example.server.entity.User;
 import com.example.server.entity.requests.UserQueryRequest;
 import com.example.server.repository.UserRepository;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Slf4j
 @Component
@@ -112,30 +106,18 @@ public class UserService {
         log.info("Request to get all users matching filter: {}. BEGIN", filter);
         List<User> users = new ArrayList<>();
         if (filter != null) {
-            String cityRegExp = filter.getCity();
-            if (cityRegExp == null || cityRegExp.isEmpty())
-                cityRegExp = "*";
-            String descriptionRegExp = filter.getDescription();
-            if (descriptionRegExp == null || descriptionRegExp.isEmpty())
-                descriptionRegExp = "*";
-            List<ProfArea> profAreas = filter.getProfAreas();
-            List<String> profAreaTerms = new ArrayList<>();
-            if (profAreas != null) {
-                profAreas.forEach(profArea -> profAreaTerms.add(profArea.getName()));
-            }
-            SearchResponse searchResponse = client.prepareSearch("user")
-                    .setQuery(boolQuery()
-                                    .should(regexpQuery("name", cityRegExp))
-                                    .should(regexpQuery("description", descriptionRegExp))
-//                            .should(matchQuery("profArea.name",
-//                                    profAreaTerms))
-                    )
-                    .setFrom(0).setSize(60).setExplain(true)
-                    .get();
-            Gson gson = new Gson();
-            users = Arrays.stream(searchResponse.getHits().getHits()).
-                    map(hit -> gson.fromJson(hit.getSourceAsString(), User.class))
-                    .collect(Collectors.toList());
+            String tags = "", profAreasNames = "";
+            if (filter.getTags() != null && !filter.getTags().isEmpty())
+                tags = String.join(" ", filter.getTags());
+            if (filter.getProfAreas() != null && !filter.getProfAreas().isEmpty())
+                profAreasNames = filter.getProfAreas()
+                        .stream().map(ProfArea::getName).collect(Collectors.joining(" "));
+            users = userRepository.filterUsers(
+                    profAreasNames,
+                    tags,
+                    filter.getCity(),
+                    filter.getDescription(),
+                    filter.getName());
         } else {
             userRepository.findAll().forEach(users::add);
         }

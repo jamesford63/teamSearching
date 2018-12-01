@@ -6,9 +6,10 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ProjectQueryRequest {
-    String name;
+public class FilterRequest {
+    String city;
     List<ProfArea> profAreas;
     List<String> tags;
     String description;
+    String name;
 }

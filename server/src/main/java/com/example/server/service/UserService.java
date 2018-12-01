@@ -2,7 +2,7 @@ package com.example.server.service;
 
 import com.example.server.entity.ProfArea;
 import com.example.server.entity.User;
-import com.example.server.entity.requests.UserQueryRequest;
+import com.example.server.entity.requests.FilterRequest;
 import com.example.server.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.client.Client;
@@ -102,7 +102,7 @@ public class UserService {
         return user;
     }
 
-    public List<User> filterUsers(UserQueryRequest filter) {
+    public List<User> filterUsers(FilterRequest filter) {
         log.info("Request to get all users matching filter: {}. BEGIN", filter);
         List<User> users = new ArrayList<>();
         if (filter != null) {

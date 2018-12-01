@@ -1,7 +1,7 @@
 package com.example.server.controller;
 
 import com.example.server.entity.User;
-import com.example.server.entity.requests.UserQueryRequest;
+import com.example.server.entity.requests.FilterRequest;
 import com.example.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -36,7 +35,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/filter", method = RequestMethod.POST)
-    public ResponseEntity<List<User>> filterUsers(@RequestBody UserQueryRequest filter) {
+    public ResponseEntity<List<User>> filterUsers(@RequestBody FilterRequest filter) {
         return new ResponseEntity<>(userService.filterUsers(filter), HttpStatus.OK);
     }
 

@@ -20,7 +20,6 @@ export class LkComponent implements OnInit {
   processValidationUser = false;
   requestProcessing = false;
   statusCodeUser: number;
-  statusCodeTag: number;
   statusCodeProfArea: number;
   profAreas: ProfArea[];
   userForm: FormGroup;
@@ -35,13 +34,13 @@ export class LkComponent implements OnInit {
 
   ngOnInit() {
     this.userForm = new FormGroup({
-      name: new FormControl('name', Validators.required),
-      lastName: new FormControl('lastName', Validators.required),
-      login: new FormControl('login', Validators.required),
-      password: new FormControl('password', Validators.required),
-      email: new FormControl('email', Validators.required),
-      city: new FormControl('city', Validators.required),
-      description: new FormControl('description', Validators.required)
+      name: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      login: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+      email: new FormControl('', Validators.required),
+      city: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required)
     });
 
     this.newTagForm = new FormGroup({
@@ -52,18 +51,25 @@ export class LkComponent implements OnInit {
       profArea: new FormControl('', Validators.required)
     });
 
-    this.profAreaService.getAllProfAreas()
-      .subscribe(data => this.profAreas = data);
     this.getUser("????");
+    this.getAllProfAreas();
     this.loadUserToEdit();
   }
 
-
   getUser(userLogin: string) {
+    this.preProcessConfigurations();
     this.userService.getUserByLogin(userLogin)
       .subscribe(
         data => {this.userSource = data; },
         errorCode => this.statusCodeUser);
+  }
+
+  getAllProfAreas(){
+    this.preProcessConfigurations();
+    this.profAreaService.getAllProfAreas()
+      .subscribe(
+        data => {this.profAreas = data; },
+        errorCode => this.statusCodeProfArea);
   }
 
   onUserFormSubmit() {
@@ -153,7 +159,7 @@ export class LkComponent implements OnInit {
         this.backToCreateUser();
         this.backToCreateProfArea();
       }, errorCode =>
-        this.statusCodeProfArea = errorCode);
+        this.statusCodeUser = errorCode);
   }
 
   onNewTagFormSubmit() {
@@ -161,6 +167,7 @@ export class LkComponent implements OnInit {
       return; // Validation failed, exit from method.
     }
     // Form is valid, now perform create
+    this.preProcessConfigurations();
     let tag = this.newTagForm.get('tag').value;
 
     this.userSource.tags.push(tag);
@@ -171,10 +178,11 @@ export class LkComponent implements OnInit {
         this.backToCreateUser();
         this.backToCreateTag();
       }, errorCode =>
-        this.statusCodeTag = errorCode);
+        this.statusCodeUser = errorCode);
   }
 
   deleteUserTag(tag: String) {
+    this.preProcessConfigurations();
     this.userSource.tags = this.userSource.tags.filter(item => item !== tag);
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {
@@ -182,10 +190,11 @@ export class LkComponent implements OnInit {
         this.loadUserToEdit();
         this.backToCreateUser();
       }, errorCode =>
-        this.statusCodeTag = errorCode);
+        this.statusCodeUser = errorCode);
   }
 
   deleteUserProfArea(profArea: ProfArea) {
+    this.preProcessConfigurations();
     this.userSource.profAreas = this.userSource.profAreas.filter(item => item !== profArea);
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {
@@ -193,14 +202,9 @@ export class LkComponent implements OnInit {
         this.loadUserToEdit();
         this.backToCreateUser();
       }, errorCode =>
-        this.statusCodeProfArea = errorCode);
+        this.statusCodeUser = errorCode);
   }
 
-  preProcessConfigurations() {
-    this.statusCode = null;
-    this.statusCodeUser = null;
-    this.requestProcessing = true;
-  }
 
   backToCreateUser() {
     this.userIdToUpdate = null;
@@ -214,5 +218,12 @@ export class LkComponent implements OnInit {
   backToCreateTag(){
     this.newTagForm.reset();
   }
+
+  preProcessConfigurations() {
+    this.statusCode = null;
+    this.statusCodeUser = null;
+    this.requestProcessing = true;
+  }
+
 
 }

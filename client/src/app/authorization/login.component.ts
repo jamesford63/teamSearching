@@ -11,7 +11,9 @@ import {UserService} from "../services/user.service";
 })
 export class LoginComponent implements OnInit {
   statusCode: number;
-  user: User;
+  statusCodeUser: number;
+  requestProcessing = false;
+  userSource: User;
 
   loginForm = new FormGroup({
     login: new FormControl('', Validators.required),
@@ -23,32 +25,26 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  // onUserFormSubmit() {
-  //   if (this.loginForm.invalid) {
-  //     return; // Validation failed, exit from method.
-  //   }
-  //   // Form is valid, now perform create
-  //   this.preProcessConfigurations();
-  //   const login = this.loginForm.get('login').value.trim();
-  //   const password = this.loginForm.get('password').value.trim();
-  //   this.userService.authorize(login, password).
-  //     subscribe(data => {
-  //       this.user = data;
-  //       if (this.user.role === 1) {
-  //         this.router.navigate(['/lkadmin/' + login + '/' + password]);
-  //       }
-  //       if (this.user.role === 2) {
-  //         this.router.navigate(['/lkclient/' + login + '/' + password]);
-  //       }
-  //       if (this.user.role === 3) {
-  //         this.router.navigate(['/lkworker/' + login + '/' + password]);
-  //     }
-  //     },
-  //     errorCode => this.statusCode = errorCode
-  //     );
-  // }
-  // Perform preliminary processing configurations
-  // preProcessConfigurations() {
-  //   this.statusCode = null;
-  // }
+  onUserFormSubmit() {
+    if (this.loginForm.invalid) {
+      return; // Validation failed, exit from method.
+    }
+    // Form is valid, now perform create
+    this.preProcessConfigurations();
+    const login = this.loginForm.get('login').value.trim();
+    const password = this.loginForm.get('password').value.trim();
+    this.userService.authorize(login, password).
+      subscribe(data => {
+        this.userSource = data;
+          this.router.navigate(['/lk']);
+      },
+      errorCode => this.statusCodeUser = errorCode
+      );
+  }
+
+  preProcessConfigurations() {
+    this.statusCode = null;
+    this.statusCodeUser = null;
+    this.requestProcessing = true;
+  }
 }

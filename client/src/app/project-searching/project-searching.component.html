@@ -1,0 +1,137 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <a href="#" class="navbar-brand">
+    <img src="https://taylorstano.files.wordpress.com/2015/01/cropped-ts-logo.png"
+         width="80" height="40" alt="logo">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a routerLink="/start-page" class="nav-link">Главная страница</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/user-reg" class="nav-link">Личный кабинет</a>
+      </li>
+      <li class="nav-item active">
+        <a routerLink="/project-searching" class="nav-link">Поиск проекта</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<p>&#160;</p>
+
+<div class="filter">
+Укажите фильтры, чтобы проще было найти проект, подходящий вам
+<p>&#160;</p>
+<div [formGroup]="nameForm">
+  <table>
+    <tr>
+      <td width="200">Имя проекта</td>
+      <td><input formControlName="name" class="form-control mr-sm-2"></td>
+      <td>&nbsp;&nbsp;<label *ngIf="nameForm.get('name').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
+    </tr>
+  </table>
+</div>
+&nbsp;
+<div [formGroup]="descriptionForm">
+  <table>
+    <tr>
+      <td width="200">Поиск по описанию</td>
+      <td><textarea cols="38" rows="5" formControlName="description" class="form-control mr-sm-2"></textarea></td>
+      <td>&nbsp;&nbsp;<label *ngIf="descriptionForm.get('description').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
+    </tr>
+  </table>
+</div>
+&nbsp;
+<div [formGroup]="tagForm" (ngSubmit)="onTagFormSubmit()">
+  <table>
+    <tr>
+      <td width="200">Введите тег</td>
+      <td><input formControlName="tag" class="form-control mr-sm-2"></td>
+      <td>&nbsp;&nbsp;<label *ngIf="tagForm.get('tag').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
+      <td align="right"><button (click)="onTagFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
+    </tr>
+    <tr>
+      <td width="200">Добавленные теги:</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr *ngFor="let tag of tagFilterArray" >
+      <td></td>
+      <td>{{tag}}</td>
+      <td></td>
+      <td><button type="button" (click)="deleteTagFilter(tag)" class="btn btn-danger">Удалить</button></td>
+    </tr>
+  </table>
+</div>
+&nbsp;
+<div [formGroup]="profAreaForm" (ngSubmit)="onProfAreaFormSubmit()">
+  <table>
+    <tr>
+      <td width="200">Введите проф. область&nbsp;&nbsp;&nbsp;</td>
+      <td><select name="select" formControlName="profArea" class="form-control mr-sm-2">
+        <option *ngFor="let profArea of profAreas" value={{profArea.id}}>{{profArea.name}}</option>
+      </select></td>
+      <td><label *ngIf="profAreaForm.get('profArea').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
+      <td align="right"><button (click)="onProfAreaFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
+    </tr>
+    <tr>
+      <td>Добавлено в фильтр:</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr *ngFor="let profArea of profAreaFilterArray" >
+      <td></td>
+      <td>{{profArea?.name}}</td>
+      <td></td>
+      <td><button type="button" (click)="deleteProfAreaFilter(profArea)" class="btn btn-danger">Удалить</button></td>
+    </tr>
+  </table>
+</div>
+<p>&#160;</p>
+<button type="button" (click)="filter()" class="btn btn-outline-success my-2 my-sm-0">Применить фильтры</button>
+</div>
+
+<div class="projects">
+  <table>
+    <tr>
+      <td>Название</td>
+      <td>Проф. область</td>
+      <td>Теги</td>
+      <td>Описание</td>
+      <td>Статус проекта</td>
+      <td></td>
+    </tr>
+    <tr *ngFor="let project of filteredProjects">
+      <td>{{project?.name}}</td>
+      <td>{{project.getAllProfAreas()}}</td>
+      <td>{{project?.tags.join(", ")}}</td>
+      <td>{{project?.description}}</td>
+      <td>{{project?.projectStatus}}</td>
+      <td><button type="button" (click)="sendRequestToOwner(project);hide()" class="btn btn-outline-success my-2 my-sm-0">Отправить запрос на участие</button></td>
+    </tr>
+  </table>
+</div>
+
+
+
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+

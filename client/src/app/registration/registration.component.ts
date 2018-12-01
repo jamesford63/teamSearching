@@ -56,7 +56,7 @@ export class RegistrationComponent implements OnInit {
   preProcessConfigurations() {
     this.statusCode = null;
   }
-  // Go back from update to create
+
   backToCreateClient() {
     this.registrationForm.reset();
     this.processValidation = false;

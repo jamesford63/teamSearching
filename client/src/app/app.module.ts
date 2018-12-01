@@ -19,6 +19,16 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {HttpModule} from "@angular/http";
 import {AccordionModule} from "ngx-accordion";
 import {LkComponent} from "./lk/lk.component";
+import {ProjectSearchingComponent} from "./project-searching/project-searching.component";
+import {CreateProjectComponent} from "./create-project/create-project.component";
+import {MyHammerConfig} from "angular2-carousel/src/carousel.module";
+import {MyProjectsComponent} from "./my-projects/my-projects.component";
+import {ParticipationsComponent} from "./participations/participations.component";
+import {UserSearchingComponent} from "./user-searching/user-searching.component";
+import {
+  MatAccordion, MatButtonModule, MatCheckboxModule, MatExpansionModule,
+  MatExpansionPanel
+} from "@angular/material";
 
 
 @NgModule({
@@ -27,7 +37,12 @@ import {LkComponent} from "./lk/lk.component";
     StartPageComponent,
     RegistrationComponent,
     LoginComponent,
-    LkComponent
+    LkComponent,
+    ProjectSearchingComponent,
+    CreateProjectComponent,
+    MyProjectsComponent,
+    ParticipationsComponent,
+    UserSearchingComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +53,10 @@ import {LkComponent} from "./lk/lk.component";
     CarouselModule,
     BrowserAnimationsModule,
     HttpModule,
-    AccordionModule
+    AccordionModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatExpansionModule
   ],
   providers: [
     UserService,

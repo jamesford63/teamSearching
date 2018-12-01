@@ -26,6 +26,18 @@ export class ProjectService {
         ,catchError(this.handleError));
   }
 
+  getUserProjects(userLogin: string): Observable<Project[]> {
+    return this.http.get(this.projectUrl + '?user-login=' + userLogin)
+      .pipe(map(this.extractData)
+        ,catchError(this.handleError))
+  }
+
+  getUserParticipatedProjects(userLogin: string): Observable<Project[]> {
+    return this.http.get(this.projectUrl + '/participation?user-login=' + userLogin)
+      .pipe(map(this.extractData)
+        ,catchError(this.handleError))
+  }
+
   createProject(project: Project): Observable<any> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({headers: cpHeaders});

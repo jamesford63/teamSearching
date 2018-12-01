@@ -1,4 +1,4 @@
-export class NotificationType {
-  constructor(public id: string, public name: string) {
-  }
+export enum NotificationType {
+  NOTIFICATION,
+  REQUEST
 }

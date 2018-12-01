@@ -32,19 +32,19 @@
 
 
 <div>
-  <form class="form-signin" [formGroup]="userAuthForm" (ngSubmit)="onUserFormSubmit()">
+  <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onUserFormSubmit()">
     <h1 class="h1 mb-3 font-weight-normal" font="normal" weight="normal" align="center">Авторизация</h1>
     <h3 align="center"> Войти</h3>
     <table align="center">
       <tr>
         <td class="sr-only">Логин</td>
         <td><input type="email" class="form-control mr-sm-2" formControlName="login" placeholder="Login" aria-label="Login"></td>
-        <td><label *ngIf="userAuthForm.get('login').invalid && processValidation" [ngClass] = "'error'" > Login is required. </label></td>
+        <td><label *ngIf="loginForm.get('login').invalid && processValidation" [ngClass] = "'error'" > Login is required. </label></td>
       </tr>
       <tr>
         <td class="sr-only">Пароль</td>
         <td><input type="password" class="form-control mr-sm-2" formControlName="password" placeholder="Password" aria-label="Password"></td>
-        <td><label *ngIf="userAuthForm.get('password').invalid && processValidation" [ngClass] = "'error'"> Password is required. </label></td>
+        <td><label *ngIf="loginForm.get('password').invalid && processValidation" [ngClass] = "'error'"> Password is required. </label></td>
       </tr>
       <tr>
         <td align="right" colspan="2">

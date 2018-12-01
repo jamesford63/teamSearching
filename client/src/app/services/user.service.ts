@@ -2,7 +2,8 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {User} from '../table-classes/user';
 import {Injectable} from "@angular/core";
 import {catchError, map} from "rxjs/operators";
-import {Observable} from "rxjs/index";
+import {Observable, throwError} from "rxjs/index";
+import {FilterRequest} from "../table-classes/filter-request";
 
 @Injectable()
 export class UserService {
@@ -14,6 +15,14 @@ export class UserService {
     return this.http.get(this.userUrl)
       .pipe(map(this.extractData)
       ,catchError(this.handleError))
+  }
+
+  getFilteredUsers(filterRequest: FilterRequest): Observable<User[]> {
+    const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({headers: cpHeaders});
+    return this.http.put(this.userUrl + '/filter', filterRequest, options)
+      .pipe(map(this.extractData)
+        ,catchError(this.handleError));
   }
 
   createUser(user: User): Observable<any> {
@@ -62,6 +71,6 @@ export class UserService {
 
   private handleError (error: Response | any) {
     console.error(error.message || error);
-    return Observable.throw(error.status);
+    return throwError(new Error(error.status))
   }
 }

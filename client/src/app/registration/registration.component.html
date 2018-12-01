@@ -34,32 +34,32 @@
       <tr>
         <td>Логин</td>
         <td><input formControlName="login" class="form-control mr-sm-2" ></td>
-        <td><label *ngIf="clientForm.get('login').invalid && processValidation" class="text-danger" > Логин не указан </label></td>
+        <td><label *ngIf="registrationForm.get('login').invalid && processValidation" class="text-danger" > Логин не указан </label></td>
       </tr>
       <tr>
         <td>Пароль</td>
         <td><input formControlName="password" class="form-control mr-sm-2"></td>
-        <td><label *ngIf="clientForm.get('password').invalid && processValidation" class="text-danger"> Пароль не указан </label></td>
+        <td><label *ngIf="registrationForm.get('password').invalid && processValidation" class="text-danger"> Пароль не указан </label></td>
       </tr>
       <tr>
         <td>Имя</td>
         <td><input formControlName="name" class="form-control mr-sm-2"></td>
-        <td><label *ngIf="clientForm.get('name').invalid && processValidation" class="text-danger"> Имя не указано </label></td>
+        <td><label *ngIf="registrationForm.get('name').invalid && processValidation" class="text-danger"> Имя не указано </label></td>
       </tr>
       <tr>
         <td>Фамилия</td>
-        <td><input formControlName="fname" class="form-control mr-sm-2"></td>
-        <td><label *ngIf="clientForm.get('fname').invalid && processValidation" class="text-danger"> Фамилия не указана </label></td>
+        <td><input formControlName="lastName" class="form-control mr-sm-2"></td>
+        <td><label *ngIf="registrationForm.get('lastName').invalid && processValidation" class="text-danger"> Фамилия не указана </label></td>
       </tr>
       <tr>
         <td>Город</td>
         <td><input formControlName="city" class="form-control mr-sm-2"></td>
-        <td><label *ngIf="clientForm.get('city').invalid && processValidation" class="text-danger"> Город не указан </label></td>
+        <td><label *ngIf="registrationForm.get('city').invalid && processValidation" class="text-danger"> Город не указан </label></td>
       </tr>
       <tr>
         <td>Электронная почта</td>
         <td><input formControlName="email" class="form-control mr-sm-2"></td>
-        <td><label *ngIf="clientForm.get('email').invalid && processValidation" class="text-danger"> Email не указан </label></td>
+        <td><label *ngIf="registrationForm.get('email').invalid && processValidation" class="text-danger"> Email не указан </label></td>
       </tr>
       <tr>
         <td>

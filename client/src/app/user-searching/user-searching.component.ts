@@ -7,7 +7,7 @@ import {ProfArea} from "../table-classes/prof-area";
 import {ProfAreaService} from "../services/prof-area.service";
 import {ProjectService} from "../services/project.service";
 import {Project} from "../table-classes/project";
-import {UserQueryRequest} from "../table-classes/user-query-request";
+import {FilterRequest} from "../table-classes/filter-request";
 
 @Component({
   selector: 'app-user-searching',
@@ -30,7 +30,7 @@ export class UserSearchingComponent implements OnInit {
   cityForm: FormGroup;
   profAreaFilterArray: ProfArea[] = null;
   tagFilterArray: string[] = null;
-  userQueryRequest: UserQueryRequest = null;
+  filterRequest: FilterRequest = null;
   profAreas: ProfArea[];
   filteredUsers: Project[];
 
@@ -110,7 +110,7 @@ export class UserSearchingComponent implements OnInit {
 
     let description = this.descriptionForm.get('description').value;
 
-    this.userQueryRequest.description = description;
+    this.filterRequest.description = description;
   }
 
   onNameFormSubmit() {
@@ -120,7 +120,7 @@ export class UserSearchingComponent implements OnInit {
 
     let name = this.nameForm.get('name').value;
 
-    this.userQueryRequest.name = name;
+    this.filterRequest.name = name;
   }
 
   onCityFormSubmit() {
@@ -130,7 +130,7 @@ export class UserSearchingComponent implements OnInit {
 
     let city = this.cityForm.get('city').value;
 
-    this.userQueryRequest.city = city;
+    this.filterRequest.city = city;
   }
 
 
@@ -144,9 +144,9 @@ export class UserSearchingComponent implements OnInit {
 
   filter(){
     this.preProcessConfigurations();
-    this.userQueryRequest.tags = this.tagFilterArray;
-    this.userQueryRequest.profAreas = this.profAreaFilterArray;
-    this.projectService.getFilteredProjects(this.userQueryRequest)
+    this.filterRequest.tags = this.tagFilterArray;
+    this.filterRequest.profAreas = this.profAreaFilterArray;
+    this.projectService.getFilteredProjects(this.filterRequest)
       .subscribe(
         data => {this.filteredUsers = data; },
         errorCode => this.statusCodeUsers);

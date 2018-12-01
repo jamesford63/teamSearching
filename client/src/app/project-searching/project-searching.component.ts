@@ -6,12 +6,11 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ProfArea} from "../table-classes/prof-area";
 import {ProfAreaService} from "../services/prof-area.service";
 import {ProjectService} from "../services/project.service";
-import {ProjectQueryRequest} from "../table-classes/project-query-request";
+import {FilterRequest} from "../table-classes/filter-request";
 import {Notification} from "../table-classes/notification";
 import {Project} from "../table-classes/project";
 import {log} from "util";
 import {NotificationType} from "../table-classes/notification-type";
-import {NotificationTypeService} from "../services/notification-type.service";
 import {UUID} from "angular2-uuid";
 import {NotificationStatus} from "../table-classes/notification-status";
 import {NotificationService} from "../services/notification.service";
@@ -37,7 +36,7 @@ export class ProjectSearchingComponent implements OnInit {
   nameForm: FormGroup;
   profAreaFilterArray: ProfArea[] = null;
   tagFilterArray: string[] = null;
-  projectQueryRequest: ProjectQueryRequest = new ProjectQueryRequest;
+  filterRequest: FilterRequest = null;
   profAreas: ProfArea[] = [new ProfArea("1","assLeaking"),new ProfArea("2","cocksucking"),new ProfArea("3","dicksucking")];
   notificationTypes: NotificationType[];
   filteredProjects: Project[];
@@ -46,7 +45,6 @@ export class ProjectSearchingComponent implements OnInit {
     private userService: UserService,
     private profAreaService: ProfAreaService,
     private projectService: ProjectService,
-    private notificationTypeService: NotificationTypeService,
     private notification: Notification,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
@@ -145,15 +143,15 @@ export class ProjectSearchingComponent implements OnInit {
 
     let name = this.nameForm.get('name').value;
     console.log(name);
-    this.projectQueryRequest.name = name;
+    this.filterRequest.name = name;
 
     let description = this.descriptionForm.get('description').value;
-    this.projectQueryRequest.description = description;
+    this.filterRequest.description = description;
 
-    this.projectQueryRequest.tags = this.tagFilterArray;
-    this.projectQueryRequest.profAreas = this.profAreaFilterArray;
-    console.log(this.projectQueryRequest);
-    this.projectService.getFilteredProjects(this.projectQueryRequest)
+    this.filterRequest.tags = this.tagFilterArray;
+    this.filterRequest.profAreas = this.profAreaFilterArray;
+    console.log(this.filterRequest);
+    this.projectService.getFilteredProjects(this.filterRequest)
       .subscribe(
         data => {this.filteredProjects = data; },
         errorCode => this.statusCodeProjects);

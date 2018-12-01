@@ -4,7 +4,7 @@ import {Project} from '../table-classes/project';
 import {map} from "rxjs/operators";
 import {catchError} from "rxjs/internal/operators";
 import {Observable} from "rxjs/index";
-import {ProjectQueryRequest} from "../table-classes/project-query-request";
+import {FilterRequest} from "../table-classes/filter-request";
 
 @Injectable()
 export class ProjectService {
@@ -18,10 +18,10 @@ export class ProjectService {
       ,catchError(this.handleError))
   }
 
-  getFilteredProjects(projectQueryRequest: ProjectQueryRequest): Observable<Project[]> {
+  getFilteredProjects(filterRequest: FilterRequest): Observable<Project[]> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({headers: cpHeaders});
-    return this.http.put(this.projectUrl + '/filter', projectQueryRequest, options)
+    return this.http.put(this.projectUrl + '/filter', filterRequest, options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError));
   }

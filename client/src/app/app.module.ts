@@ -8,7 +8,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {UserService} from "./services/user.service";
 import {NotificationService} from "./services/notification.service";
-import {NotificationTypeService} from "./services/notification-type.service";
 import {ProfAreaService} from "./services/prof-area.service";
 import {ProjectService} from "./services/project.service";
 import {CarouselModule} from "angular2-carousel";
@@ -61,7 +60,6 @@ import {
   providers: [
     UserService,
     NotificationService,
-    NotificationTypeService,
     ProfAreaService,
     ProjectService,
     AppService

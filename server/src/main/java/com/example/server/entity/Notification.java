@@ -1,5 +1,7 @@
 package com.example.server.entity;
 
+import com.example.server.entity.enums.NotificationStatus;
+import com.example.server.entity.enums.NotificationType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

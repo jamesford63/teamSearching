@@ -1,6 +1,7 @@
 package com.example.server.service;
 
 import com.example.server.entity.ProfArea;
+import com.example.server.entity.Tag;
 import com.example.server.entity.User;
 import com.example.server.entity.requests.FilterRequest;
 import com.example.server.repository.UserRepository;
@@ -88,6 +89,8 @@ public class UserService {
             existedUser.setEmail(user.getEmail());
         if (user.getPassword() != null)
             existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getTags() != null)
+            existedUser.setTags(user.getTags());
         user = userRepository.save(existedUser);
         log.info("Request to update user. END - SUCCESS.");
 
@@ -108,7 +111,8 @@ public class UserService {
         if (filter != null) {
             String tags = "", profAreasNames = "";
             if (filter.getTags() != null && !filter.getTags().isEmpty())
-                tags = String.join(" ", filter.getTags());
+                tags = String.join(" ",
+                        filter.getTags().stream().map(Tag::getName).collect(Collectors.toList()));
             if (filter.getProfAreas() != null && !filter.getProfAreas().isEmpty())
                 profAreasNames = filter.getProfAreas()
                         .stream().map(ProfArea::getName).collect(Collectors.joining(" "));

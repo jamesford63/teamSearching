@@ -2,6 +2,7 @@ package com.example.server.service;
 
 import com.example.server.entity.ProfArea;
 import com.example.server.entity.Project;
+import com.example.server.entity.Tag;
 import com.example.server.entity.requests.FilterRequest;
 import com.example.server.repository.ProjectRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -100,7 +101,8 @@ public class ProjectService {
         if (filter != null) {
             String tags = "", profAreasNames = "";
             if (filter.getTags() != null && !filter.getTags().isEmpty())
-                tags = String.join(" ", filter.getTags());
+                tags = String.join(" ",
+                        filter.getTags().stream().map(Tag::getName).collect(Collectors.toList()));
             if (filter.getProfAreas() != null && !filter.getProfAreas().isEmpty())
                 profAreasNames = filter.getProfAreas()
                         .stream().map(ProfArea::getName).collect(Collectors.joining(" "));

@@ -21,7 +21,7 @@ public class Project {
     private ProfArea profArea;
     private List<User> participants;
     private User owner;
-    private List<String> tags;
+    private List<Tag> tags;
     private String description;
     private ProjectStatus projectStatus;
     private String city;

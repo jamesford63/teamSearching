@@ -1,6 +1,8 @@
 package com.example.server.entity.loader.utils;
 
 import com.example.server.entity.*;
+import com.example.server.entity.enums.NotificationStatus;
+import com.example.server.entity.enums.NotificationType;
 import com.example.server.entity.enums.UserStatus;
 import lombok.Data;
 import org.apache.commons.lang.RandomStringUtils;
@@ -13,8 +15,7 @@ public class Creator {
     private List<Notification> notifications;
     private List<User> users;
     private List<Project> projects;
-    private List<NotificationType> notificationTypes;
-    private List<String> tags;
+    private List<Tag> tags;
     private List<ProfArea> profAreas;
     private Random random = new Random();
 
@@ -24,10 +25,8 @@ public class Creator {
         profAreas = new ArrayList<>();
         projects = new ArrayList<>();
         tags = new ArrayList<>();
-        notificationTypes = new ArrayList<>();
         for (int i = 0; i < depth; i++) {
-            tags.add(RandomStringUtils.randomAlphabetic(length));
-            notificationTypes.add(randomNotificationType());
+            tags.add(randomTag());
         }
         for (int i = 0; i < depth; i++) {
             profAreas.add(randomProfArea());
@@ -44,7 +43,7 @@ public class Creator {
         Notification notification = new Notification();
         notification.setId(UUID.randomUUID());
         notification.setStatus(NotificationStatus.UNREAD);
-        notification.setType(randomNotificationType());
+        notification.setType(NotificationType.INFORMATION);
         notification.setFrom(randomUser());
         notification.setTo(randomUser());
         notification.setDescription(RandomStringUtils.randomAlphabetic(length));
@@ -71,6 +70,12 @@ public class Creator {
             if(!areas.contains(profArea))
                 areas.add(profArea);
         }
+        List<Tag> relatedTags = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            Tag tag = tags.get(random.nextInt(tags.size()));
+            if(!relatedTags.contains(tag))
+                relatedTags.add(tag);
+        }
         user.setTags(Collections.emptyList());
         user.setProfAreas(areas);
         user.setProjectsCreated(Collections.emptyList());
@@ -86,10 +91,10 @@ public class Creator {
         project.setParticipants(Collections.singletonList(users.get(random.nextInt(users.size()))));
         project.setOwner(users.get(random.nextInt(users.size())));
         project.setDescription(RandomStringUtils.randomAlphabetic(length));
-        List<String> relatedTags = new ArrayList<>();
+        List<Tag> relatedTags = new ArrayList<>();
         int num = random.nextInt(tags.size());
         for (int i = 0; i < num; i++) {
-            String tag = tags.get(random.nextInt(tags.size()));
+            Tag tag = tags.get(random.nextInt(tags.size()));
             if(!relatedTags.contains(tag))
                 relatedTags.add(tag);
         }
@@ -106,12 +111,11 @@ public class Creator {
         return profArea;
     }
 
+    private Tag randomTag() {
+        Tag tag = new Tag();
+        tag.setId(UUID.randomUUID());
+        tag.setName(RandomStringUtils.randomAlphabetic(length));
 
-    private NotificationType randomNotificationType() {
-        NotificationType notificationType = new NotificationType();
-        notificationType.setId(UUID.randomUUID());
-        notificationType.setName(RandomStringUtils.randomAlphabetic(length));
-
-        return notificationType;
+        return tag;
     }
 }

@@ -11,8 +11,8 @@ import java.util.UUID;
 @Data
 @ToString
 @EqualsAndHashCode
-@Document(indexName = "notificationtype", shards = 1)
-public class NotificationType {
+@Document(indexName = "tag", shards = 1)
+public class Tag {
     @Id
     private UUID id;
     private String name;

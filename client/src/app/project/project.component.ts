@@ -25,7 +25,7 @@ export class ProjectComponent implements OnInit {
     private router: Router) {}
 
   ngOnInit(){
-    this.getUser("????");
+    this.getUser();
   }
 
   getUser() {

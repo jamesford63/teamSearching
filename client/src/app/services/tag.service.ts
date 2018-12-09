@@ -48,6 +48,13 @@ export class TagService {
         ,catchError(this.handleError))
   }
 
+  getTagByName(tagName: string): Observable<Tag> {
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.get(this.tagUrl + '/' + tagName, options)
+      .pipe(map(this.extractData)
+        ,catchError(this.handleError))
+  }
+
   private extractData(res: Response) {
     return res.json();
   }

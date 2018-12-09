@@ -64,13 +64,11 @@ export class UserService {
         ,catchError(this.handleError))
   }
 
-  authorize(userLogin: string, userPassword: string): Observable<User> {
-    const cpHeaders = new Headers({ 'Content-Type':'application/json',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods':'OPTIONS, HEAD, GET, POST, PUT, DELETE'});
+  authorize(userLogin: string, userPassword: string): Observable<any> {
+    const cpHeaders = new Headers({'Access-Control-Allow-Origin': '*'});
     const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
     return this.http.post('http://localhost:9090/login?username=' + userLogin + '&password=' + userPassword, options)
-      .pipe(map(this.extractData),
+      .pipe(map(success => success.status),
       catchError(this.handleError))
   }
 

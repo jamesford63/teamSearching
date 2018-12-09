@@ -26,6 +26,7 @@ export class LkComponent implements OnInit {
   statusCodeTag: number;
   profAreas: ProfArea[];
   tags: Tag[];
+  tag: Tag;
   userForm: FormGroup;
   newTagForm: FormGroup;
   newProfAreaForm: FormGroup;
@@ -183,20 +184,17 @@ export class LkComponent implements OnInit {
     // Form is valid, now perform create
     this.preProcessConfigurations();
     let tag = this.newTagForm.get('tag').value.trim();
-    for (const a of this.tags) {
-      if (a.id == tag) {
-        tag = a;
-      }
+    let tagFromDB = this.tagService.getTagByName(tag);
+    if(tagFromDB == null){
+      this.tagService.createTag(tag);
+      this.userSource.tags.push(tag);
+      this.userService.updateUser(this.userSource);
     }
-    this.userSource.tags.push(tag);
-    this.userService.updateUser(this.userSource)
-      .subscribe(successCode => {
-        this.statusCodeUser = successCode;
-        this.loadUserToEdit();
-        this.backToCreateUser();
-        this.backToCreateProfArea();
-      }, errorCode =>
-        this.statusCodeUser = errorCode);
+    else {
+      this.userSource.tags.push(tag);
+      this.userService.updateUser(this.userSource);
+    }
+    this.backToCreateTag();
   }
 
   deleteUserTag(tag: Tag) {

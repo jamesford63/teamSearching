@@ -31,6 +31,11 @@ public class TagController {
         return new ResponseEntity<>(tagService.getTagById(id), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    public ResponseEntity<Tag> getTagByName(@PathVariable String name) {
+        return new ResponseEntity<>(tagService.getTagByName(name), HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Tag> createTag(@RequestBody Tag tag) {
         return new ResponseEntity<>(tagService.createTag(tag), HttpStatus.CREATED);

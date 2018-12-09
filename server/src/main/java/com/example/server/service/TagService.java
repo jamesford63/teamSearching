@@ -37,6 +37,14 @@ public class TagService {
         return tag;
     }
 
+    public Tag getTagByName(String tagName) {
+        log.info("Request to get tag by name = {}. BEGIN", tagName);
+        Tag tag = tagRepository.findByName(tagName).get();
+        log.info("Request to get tag by name. END - SUCCESS.");
+
+        return tag;
+    }
+
     public void deleteTagById(UUID tagId) {
         log.info("Request to delete tag by id = {}. BEGIN", tagId);
         Tag tagToDelete = new Tag();

@@ -65,12 +65,12 @@ export class ProjectSearchingComponent implements OnInit {
       name: new FormControl('', Validators.required),
     });
 
-    this.getUser("????");
+    this.getUser();
 
     this.getAllProfAreas();
   }
 
-  getUser(userLogin: string) {
+  getUser() {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(

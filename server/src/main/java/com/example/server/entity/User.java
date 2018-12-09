@@ -26,10 +26,8 @@ public class User {
     private String city;
     private List<ProfArea> profAreas;
     private List<Tag> tags;
-    @JsonIgnore
-    private List<Project> projectsCreated;
-    @JsonIgnore
-    private List<Project> projectsParticipated;
+    private List<UUID> projectsCreated;
+    private List<UUID> projectsParticipated;
     private UserStatus userStatus;
     private String description;
 }

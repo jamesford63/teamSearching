@@ -12,14 +12,15 @@ export class UserService {
   constructor(private http: Http) {}
 
   getAllUsers(): Observable<User[]> {
-    return this.http.get(this.userUrl)
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.get(this.userUrl, options)
       .pipe(map(this.extractData)
       ,catchError(this.handleError))
   }
 
   getFilteredUsers(filterRequest: FilterRequest): Observable<User[]> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({headers: cpHeaders});
+    const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
     return this.http.put(this.userUrl + '/filter', filterRequest, options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError));
@@ -35,32 +36,40 @@ export class UserService {
 
   updateUser(user: User): Observable<any> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: cpHeaders });
+    const options = new RequestOptions({ headers: cpHeaders, withCredentials: true});
     return this.http.put(this.userUrl, user, options)
       .pipe(map(success => success.status)
       ,catchError(this.handleError))
   }
 
   deleteUser(userId: string): Observable<any> {
-    return this.http.delete(this.userUrl + '/' + userId)
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.delete(this.userUrl + '/' + userId, options)
       .pipe(map(success => success.status)
       ,catchError(this.handleError))
   }
 
   getUserById(userId: string): Observable<User> {
-    return this.http.get(this.userUrl + '/' + userId)
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.get(this.userUrl + '/' + userId, options)
       .pipe(map(this.extractData)
       ,catchError(this.handleError))
   }
 
-  getUserByLogin(userLogin: string): Observable<User> {
-    return this.http.get(this.userUrl + '/' + userLogin)
+  getCurrentUser(): Observable<User> {
+    const cpHeaders = new Headers({ 'Access-Control-Allow-Origin': '*', 'Content-Type':'application/json' });
+    const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
+    return this.http.get(this.userUrl + '/current', options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError))
   }
 
   authorize(userLogin: string, userPassword: string): Observable<User> {
-    return this.http.get(this.userUrl + '/' + userLogin)
+    const cpHeaders = new Headers({ 'Content-Type':'application/json',
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods':'OPTIONS, HEAD, GET, POST, PUT, DELETE'});
+    const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
+    return this.http.post('http://localhost:9090/login?username=' + userLogin + '&password=' + userPassword, options)
       .pipe(map(this.extractData),
       catchError(this.handleError))
   }

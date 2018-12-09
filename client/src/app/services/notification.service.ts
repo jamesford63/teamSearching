@@ -12,14 +12,18 @@ export class NotificationService {
   constructor(private http: Http) {}
 
   getAllNotifications(): Observable<Notification[]> {
-    return this.http.get(this.notificationUrl)
+    // return this.http.get(this.notificationUrl)
+    //   .pipe(map(this.extractData)
+    //   ,catchError(this.handleError))
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.get(this.notificationUrl, options)
       .pipe(map(this.extractData)
-      ,catchError(this.handleError))
+        ,catchError(this.handleError))
   }
 
   createNotification(notification: Notification): Observable<any> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({headers: cpHeaders});
+    const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
     return this.http.post(this.notificationUrl, notification, options)
       .pipe(map(success => success.status)
       ,catchError(this.handleError))
@@ -27,20 +31,22 @@ export class NotificationService {
 
   updateNotification(notification: Notification): Observable<any> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: cpHeaders });
+    const options = new RequestOptions({ headers: cpHeaders, withCredentials: true });
     return this.http.put(this.notificationUrl, notification, options)
       .pipe(map(success => success.status)
       ,catchError(this.handleError))
   }
 
   deleteNotification(notificationId: string): Observable<any> {
-    return this.http.delete(this.notificationUrl + '/' + notificationId)
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.delete(this.notificationUrl + '/' + notificationId, options)
       .pipe(map(success => success.status)
       ,catchError(this.handleError))
   }
 
   getNotification(notificationId: string): Observable<Notification> {
-    return this.http.get(this.notificationUrl + '/' + notificationId)
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.get(this.notificationUrl + '/' + notificationId, options)
       .pipe(map(this.extractData)
       ,catchError(this.handleError))
   }

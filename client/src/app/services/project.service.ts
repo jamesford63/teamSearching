@@ -13,34 +13,37 @@ export class ProjectService {
   constructor(private http: Http) {}
 
   getAllProjects(): Observable<Project[]> {
-    return this.http.get(this.projectUrl)
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.get(this.projectUrl, options)
       .pipe(map(this.extractData)
       ,catchError(this.handleError))
   }
 
   getFilteredProjects(filterRequest: FilterRequest): Observable<Project[]> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({headers: cpHeaders});
+    const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
     return this.http.put(this.projectUrl + '/filter', filterRequest, options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError));
   }
 
   getUserProjects(userLogin: string): Observable<Project[]> {
-    return this.http.get(this.projectUrl + '?user-login=' + userLogin)
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.get(this.projectUrl + '?user-login=' + userLogin, options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError))
   }
 
   getUserParticipatedProjects(userLogin: string): Observable<Project[]> {
-    return this.http.get(this.projectUrl + '/participation?user-login=' + userLogin)
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.get(this.projectUrl + '/participation?user-login=' + userLogin, options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError))
   }
 
   createProject(project: Project): Observable<any> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({headers: cpHeaders});
+    const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
     return this.http.post(this.projectUrl, project, options)
       .pipe(map(success => success.status)
       ,catchError(this.handleError))
@@ -48,20 +51,22 @@ export class ProjectService {
 
   updateProject(project: Project): Observable<any> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: cpHeaders });
+    const options = new RequestOptions({ headers: cpHeaders, withCredentials: true });
     return this.http.put(this.projectUrl, project, options)
       .pipe(map(success => success.status)
       ,catchError(this.handleError))
   }
 
   deleteProject(projectId: string): Observable<any> {
-    return this.http.delete(this.projectUrl + '?login=' + projectId)
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.delete(this.projectUrl + '?login=' + projectId, options)
       .pipe(map(success => success.status)
       ,catchError(this.handleError))
   }
 
   getProject(projectId: string): Observable<Project> {
-    return this.http.get(this.projectUrl + '/' + projectId)
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.get(this.projectUrl + '/' + projectId, options)
       .pipe(map(this.extractData)
       ,catchError(this.handleError))
   }

@@ -101,8 +101,7 @@ public class ProjectService {
         if (filter != null) {
             String tags = "", profAreasNames = "";
             if (filter.getTags() != null && !filter.getTags().isEmpty())
-                tags = String.join(" ",
-                        filter.getTags().stream().map(Tag::getName).collect(Collectors.toList()));
+                tags = filter.getTags().stream().map(Tag::getName).collect(Collectors.joining(" "));
             if (filter.getProfAreas() != null && !filter.getProfAreas().isEmpty())
                 profAreasNames = filter.getProfAreas()
                         .stream().map(ProfArea::getName).collect(Collectors.joining(" "));

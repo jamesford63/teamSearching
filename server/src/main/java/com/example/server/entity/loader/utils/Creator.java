@@ -76,7 +76,7 @@ public class Creator {
             if(!relatedTags.contains(tag))
                 relatedTags.add(tag);
         }
-        user.setTags(Collections.emptyList());
+        user.setTags(relatedTags);
         user.setProfAreas(areas);
         user.setProjectsCreated(Collections.emptyList());
         user.setProjectsParticipated(Collections.emptyList());

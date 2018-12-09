@@ -58,9 +58,9 @@ export class CreateProjectComponent implements OnInit {
               private projectService: ProjectService) { }
 
 
-  getUser(userLogin: string) {
+  getUser() {
     this.preProcessConfigurations();
-    this.userService.getUserByLogin(userLogin)
+    this.userService.getCurrentUser()
       .subscribe(
         data => {this.userSource = data; },
         errorCode => this.statusCodeUser);

@@ -5,6 +5,8 @@ import {User} from "../table-classes/user";
 import {UserService} from "../services/user.service";
 import {ProfAreaService} from "../services/prof-area.service";
 import {ProfArea} from "../table-classes/prof-area";
+import {Tag} from "../table-classes/tag";
+import {TagService} from "../services/tag.service";
 
 @Component({
   selector: 'app-lk',
@@ -21,7 +23,9 @@ export class LkComponent implements OnInit {
   requestProcessing = false;
   statusCodeUser: number;
   statusCodeProfArea: number;
+  statusCodeTag: number;
   profAreas: ProfArea[];
+  tags: Tag[];
   userForm: FormGroup;
   newTagForm: FormGroup;
   newProfAreaForm: FormGroup;
@@ -29,6 +33,7 @@ export class LkComponent implements OnInit {
   constructor(
               private userService: UserService,
               private profAreaService: ProfAreaService,
+              private tagService: TagService,
               private route: ActivatedRoute,
               private router: Router) {}
 
@@ -51,14 +56,15 @@ export class LkComponent implements OnInit {
       profArea: new FormControl('', Validators.required)
     });
 
-    this.getUser("????");
+    this.getUser();
     this.getAllProfAreas();
+    this.getAllTags();
     this.loadUserToEdit();
   }
 
-  getUser(userLogin: string) {
+  getUser() {
     this.preProcessConfigurations();
-    this.userService.getUserByLogin(userLogin)
+    this.userService.getCurrentUser()
       .subscribe(
         data => {this.userSource = data; },
         errorCode => this.statusCodeUser);
@@ -70,6 +76,14 @@ export class LkComponent implements OnInit {
       .subscribe(
         data => {this.profAreas = data; },
         errorCode => this.statusCodeProfArea);
+  }
+
+  getAllTags(){
+    this.preProcessConfigurations();
+    this.tagService.getAllTags()
+      .subscribe(
+        data => {this.tags = data; },
+        errorCode => this.statusCodeTag);
   }
 
   onUserFormSubmit() {
@@ -93,7 +107,7 @@ export class LkComponent implements OnInit {
     this.userService.updateUser(user)
       .subscribe(successCode => {
         this.statusCodeUser = successCode;
-        this.getUser(this.userSource.login);
+        this.getUser();
         this.userSource = user;
         this.loadUserToEdit();
         this.backToCreateUser();
@@ -104,7 +118,7 @@ export class LkComponent implements OnInit {
   loadUserToEdit() {
     this.preProcessConfigurations();
     if (this.userSource == null) {
-      this.userService.getUserByLogin("????")
+      this.userService.getCurrentUser()
         .subscribe(user => {
             this.userIdToUpdate = user.id;
             this.userForm.setValue({
@@ -121,7 +135,7 @@ export class LkComponent implements OnInit {
           },
           errorCode =>  this.statusCodeUser = errorCode);
     } else {
-      this.userService.getUserByLogin(this.userSource.login)
+      this.userService.getCurrentUser()
         .subscribe(user => {
             this.userIdToUpdate = user.id;
             this.userForm.setValue({
@@ -168,20 +182,24 @@ export class LkComponent implements OnInit {
     }
     // Form is valid, now perform create
     this.preProcessConfigurations();
-    let tag = this.newTagForm.get('tag').value;
-
+    let tag = this.newTagForm.get('tag').value.trim();
+    for (const a of this.tags) {
+      if (a.id == tag) {
+        tag = a;
+      }
+    }
     this.userSource.tags.push(tag);
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {
         this.statusCodeUser = successCode;
         this.loadUserToEdit();
         this.backToCreateUser();
-        this.backToCreateTag();
+        this.backToCreateProfArea();
       }, errorCode =>
         this.statusCodeUser = errorCode);
   }
 
-  deleteUserTag(tag: String) {
+  deleteUserTag(tag: Tag) {
     this.preProcessConfigurations();
     this.userSource.tags = this.userSource.tags.filter(item => item !== tag);
     this.userService.updateUser(this.userSource)

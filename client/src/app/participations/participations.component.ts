@@ -27,7 +27,7 @@ export class ParticipationsComponent implements OnInit {
 
   getUser(userLogin: string) {
     this.preProcessConfigurations();
-    this.userService.getUserByLogin(userLogin)
+    this.userService.getCurrentUser()
       .subscribe(
         data => {this.userSource = data; },
         errorCode => this.statusCodeUser);

@@ -65,7 +65,7 @@ export class UserSearchingComponent implements OnInit {
 
   getUser(userLogin: string) {
     this.preProcessConfigurations();
-    this.userService.getUserByLogin(userLogin)
+    this.userService.getCurrentUser(userLogin)
       .subscribe(
         data => {this.userSource = data; },
         errorCode => this.statusCodeUser);

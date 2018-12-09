@@ -10,7 +10,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import java.util.*;
 
 @Data
-public class Creator {
+public class Creator_v1 {
     private int length = 6;
     private List<Notification> notifications;
     private List<User> users;
@@ -76,7 +76,7 @@ public class Creator {
             if(!relatedTags.contains(tag))
                 relatedTags.add(tag);
         }
-        user.setTags(Collections.emptyList());
+        user.setTags(relatedTags);
         user.setProfAreas(areas);
         user.setProjectsCreated(Collections.emptyList());
         user.setProjectsParticipated(Collections.emptyList());

@@ -28,6 +28,7 @@ import {
   MatAccordion, MatButtonModule, MatCheckboxModule, MatExpansionModule,
   MatExpansionPanel
 } from "@angular/material";
+import {TagService} from "./services/tag.service";
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import {
     NotificationService,
     ProfAreaService,
     ProjectService,
-    AppService
+    AppService,
+    TagService
   ],
   bootstrap: [AppComponent]
 })

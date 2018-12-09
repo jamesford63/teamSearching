@@ -1,7 +1,7 @@
 package com.example.server.entity.loader;
 
 import com.example.server.entity.*;
-import com.example.server.entity.loader.utils.Creator;
+import com.example.server.entity.loader.utils.Creator_v2;
 import com.example.server.repository.*;
 import com.example.server.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class DataLoader implements InitializingBean {
-    private Creator creator = new Creator();
+    private Creator_v2 creatorV2 = new Creator_v2();
     @Value("${need.to.load}")
     private boolean needToLoad = true;
     private ElasticsearchOperations operations;
@@ -43,14 +43,14 @@ public class DataLoader implements InitializingBean {
             operations.putMapping(Project.class);
             operations.putMapping(User.class);
             operations.putMapping(Tag.class);
-            creator.init(10);
+            creatorV2.init(10);
             log.info("Loading data");
-            creator.getTags().forEach(tag -> tagRepository.save(tag));
-            creator.getNotifications().forEach(notification -> notificationRepository.save(notification));
-            creator.getProfAreas().forEach(profArea -> profAreaRepository.save(profArea));
-            creator.getProjects().forEach(project -> projectRepository.save(project));
-            System.out.println(creator.getUsers());
-            creator.getUsers().forEach(u -> userService.createUser(u));
+            creatorV2.getTags().forEach(tag -> tagRepository.save(tag));
+            creatorV2.getProfAreas().forEach(profArea -> profAreaRepository.save(profArea));
+            creatorV2.getProjects().forEach(project -> projectRepository.save(project));
+            System.out.println(creatorV2.getUsers());
+            creatorV2.getUsers().forEach(u -> userService.createUser(u));
+            creatorV2.getNotifications().forEach(notification -> notificationRepository.save(notification));
             log.info("Loading Completed");
         } else {
             log.info("No need to load data");

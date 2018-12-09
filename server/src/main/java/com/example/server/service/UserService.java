@@ -21,13 +21,11 @@ import java.util.stream.Collectors;
 public class UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    private Client client;
 
     @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, Client client) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.client = client;
     }
 
 
@@ -91,6 +89,8 @@ public class UserService {
             existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getTags() != null)
             existedUser.setTags(user.getTags());
+        if (user.getUserStatus() != null)
+            existedUser.setUserStatus(user.getUserStatus());
         user = userRepository.save(existedUser);
         log.info("Request to update user. END - SUCCESS.");
 
@@ -111,8 +111,7 @@ public class UserService {
         if (filter != null) {
             String tags = "", profAreasNames = "";
             if (filter.getTags() != null && !filter.getTags().isEmpty())
-                tags = String.join(" ",
-                        filter.getTags().stream().map(Tag::getName).collect(Collectors.toList()));
+                tags = filter.getTags().stream().map(Tag::getName).collect(Collectors.joining(" "));
             if (filter.getProfAreas() != null && !filter.getProfAreas().isEmpty())
                 profAreasNames = filter.getProfAreas()
                         .stream().map(ProfArea::getName).collect(Collectors.joining(" "));

@@ -64,4 +64,6 @@ export class RegistrationComponent implements OnInit {
     this.registrationForm.reset();
     this.processValidation = false;
   }
+
+
 }

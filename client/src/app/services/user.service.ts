@@ -28,7 +28,7 @@ export class UserService {
   createUser(user: User): Observable<any> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({headers: cpHeaders});
-    return this.http.post(this.userUrl, user, options)
+    return this.http.post(this.userUrl + '/register', user, options)
       .pipe(map(success => success.status),
       catchError(this.handleError));
   }

@@ -20,7 +20,9 @@ public class Project {
     private UUID id;
     private String name;
     private ProfArea profArea;
+    @JsonIgnore
     private List<User> participants;
+    @JsonIgnore
     private User owner;
     private List<Tag> tags;
     private String description;

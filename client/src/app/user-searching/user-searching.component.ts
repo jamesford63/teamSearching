@@ -58,14 +58,14 @@ export class UserSearchingComponent implements OnInit {
       city: new FormControl('', Validators.required),
     });
 
-    this.getUser("????");
+    this.getUser();
 
     this.getAllProfAreas();
   }
 
-  getUser(userLogin: string) {
+  getUser() {
     this.preProcessConfigurations();
-    this.userService.getCurrentUser(userLogin)
+    this.userService.getCurrentUser()
       .subscribe(
         data => {this.userSource = data; },
         errorCode => this.statusCodeUser);

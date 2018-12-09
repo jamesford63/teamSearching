@@ -47,7 +47,7 @@ export class CreateProjectComponent implements OnInit {
       description: new FormControl('', Validators.required),
     });
 
-    this.getUser("????");
+    this.getUser();
     this.getAllProfAreas();
 
   }

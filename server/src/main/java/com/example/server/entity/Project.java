@@ -1,6 +1,7 @@
 package com.example.server.entity;
 
 import com.example.server.entity.enums.ProjectStatus;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@ToString
+@ToString(exclude = {"participants", "owner"})
 @EqualsAndHashCode
 @Document(indexName = "project", shards = 1)
 public class Project {

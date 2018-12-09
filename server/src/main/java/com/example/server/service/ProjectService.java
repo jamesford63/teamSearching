@@ -117,4 +117,12 @@ public class ProjectService {
         log.info("Request to get all projects matching filter. END - SUCCESS");
         return projects;
     }
+
+    public List<Project> getProjectByIds(List<UUID> ids) {
+        log.info("Request to get all projects with ids: {}. BEGIN", ids);
+        List<Project> result = new ArrayList<>();
+        projectRepository.findAllById(ids).forEach(result::add);
+        log.info("Request to get all projects with ids. END - SUCCESS");
+        return result;
+    }
 }

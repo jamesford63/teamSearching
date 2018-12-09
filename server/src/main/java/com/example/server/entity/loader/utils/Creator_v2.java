@@ -105,13 +105,13 @@ public class Creator_v2 {
             num = random.nextInt(users.size() - 1);
             User owner = users.get(random.nextInt(users.size()));
             project.setOwner(owner);
-            owner.getProjectsCreated().add(project);
+            owner.getProjectsCreated().add(project.getId());
             List<User> participants = new ArrayList<>();
             for (int i = 0; i < num; i++) {
                 User user = users.get(random.nextInt(users.size()));
                 if (user != owner && !participants.contains(user)) {
                     participants.add(user);
-                    user.getProjectsParticipated().add(project);
+                    user.getProjectsParticipated().add(project.getId());
                 }
             }
             project.setParticipants(participants);

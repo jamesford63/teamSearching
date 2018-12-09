@@ -15,47 +15,52 @@ import java.util.UUID;
 @RequestMapping("/projects")
 @CrossOrigin(origins = {"http://localhost:4200"})
 public class ProjectController {
-	private ProjectService projectService;
+    private ProjectService projectService;
 
-	@Autowired
-	void setProjectService(ProjectService projectService) {
-		this.projectService = projectService;
-	}
+    @Autowired
+    void setProjectService(ProjectService projectService) {
+        this.projectService = projectService;
+    }
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Project>> getAllProjects() {
-		return new ResponseEntity<>(projectService.getAllProjects(), HttpStatus.OK);
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<Project>> getAllProjects() {
+        return new ResponseEntity<>(projectService.getAllProjects(), HttpStatus.OK);
+    }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Project> getProjectById(@PathVariable UUID id) {
-		return new ResponseEntity<>(projectService.getProjectById(id), HttpStatus.OK);
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Project> getProjectById(@PathVariable UUID id) {
+        return new ResponseEntity<>(projectService.getProjectById(id), HttpStatus.OK);
+    }
 
-	@RequestMapping(value = "/filter", method = RequestMethod.POST)
-	public ResponseEntity<List<Project>> filterProjects(@RequestBody FilterRequest filter) {
-		return new ResponseEntity<>(projectService.filterProjects(filter), HttpStatus.OK);
-	}
+    @RequestMapping(value = "/bulk", method = RequestMethod.POST)
+    public ResponseEntity<List<Project>> getProjectByIds(@RequestBody List<UUID> ids) {
+        return new ResponseEntity<>(projectService.getProjectByIds(ids), HttpStatus.OK);
+    }
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Project> createProject(@RequestBody Project project) {
-		return new ResponseEntity<>(projectService.createProject(project), HttpStatus.CREATED);
-	}
+    @RequestMapping(value = "/filter", method = RequestMethod.POST)
+    public ResponseEntity<List<Project>> filterProjects(@RequestBody FilterRequest filter) {
+        return new ResponseEntity<>(projectService.filterProjects(filter), HttpStatus.OK);
+    }
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<Project> updateProject(@RequestBody Project project) {
-		return new ResponseEntity<>(projectService.updateProject(project), HttpStatus.OK);
-	}
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Project> createProject(@RequestBody Project project) {
+        return new ResponseEntity<>(projectService.createProject(project), HttpStatus.CREATED);
+    }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteProjectById(@PathVariable UUID id) {
-		projectService.deleteProjectById(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<Project> updateProject(@RequestBody Project project) {
+        return new ResponseEntity<>(projectService.updateProject(project), HttpStatus.OK);
+    }
 
-	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteAllProjects() {
-		projectService.deleteAllProjects();
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteProjectById(@PathVariable UUID id) {
+        projectService.deleteProjectById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteAllProjects() {
+        projectService.deleteAllProjects();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

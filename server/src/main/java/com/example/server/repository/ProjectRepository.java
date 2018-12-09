@@ -8,6 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 import java.util.UUID;
 
+//TODO change filters
 public interface ProjectRepository
         extends ElasticsearchRepository<Project, UUID>, PagingAndSortingRepository<Project, UUID> {
     @Query("{\n" +
@@ -28,7 +29,7 @@ public interface ProjectRepository
             "        {\n" +
             "          \"query_string\": {\n" +
             "            \"fields\": [\n" +
-            "              \"tags\"\n" +
+            "              \"tags.name\"\n" +
             "            ],\n" +
             "            \"default_operator\": \"AND\",\n" +
             "            \"query\": \"?1\",\n" +

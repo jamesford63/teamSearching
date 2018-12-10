@@ -7,78 +7,77 @@ import {FilterRequest} from "../table-classes/filter-request";
 
 @Injectable()
 export class UserService {
-  userUrl = 'http://localhost:9090/users';
+  APP_URL = 'http://localhost:9090';
+  USERS_URL = '/users';
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+  }
 
   getAllUsers(): Observable<User[]> {
-    const options = new RequestOptions({ withCredentials: true});
-    return this.http.get(this.userUrl, options)
+    const options = new RequestOptions({withCredentials: true});
+    return this.http.get(this.APP_URL + this.USERS_URL, options)
       .pipe(map(this.extractData)
-      ,catchError(this.handleError))
+        , catchError(this.handleError))
   }
 
   getFilteredUsers(filterRequest: FilterRequest): Observable<User[]> {
-    const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
+    const cpHeaders = new Headers({'Content-Type': 'application/json'});
     const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
-    return this.http.put(this.userUrl + '/filter', filterRequest, options)
+    return this.http.put(this.APP_URL + + this.USERS_URL + '/filter', filterRequest, options)
       .pipe(map(this.extractData)
-        ,catchError(this.handleError));
+        , catchError(this.handleError));
   }
 
   createUser(user: User): Observable<any> {
-    const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
+    const cpHeaders = new Headers({'Content-Type': 'application/json'});
     const options = new RequestOptions({headers: cpHeaders});
-    return this.http.post(this.userUrl + '/register', user, options)
+    return this.http.post(this.APP_URL + + this.USERS_URL + '/register', user, options)
       .pipe(map(success => success.status),
-      catchError(this.handleError));
+        catchError(this.handleError));
   }
 
   updateUser(user: User): Observable<any> {
-    const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: cpHeaders, withCredentials: true});
-    return this.http.put(this.userUrl, user, options)
+    const cpHeaders = new Headers({'Content-Type': 'application/json'});
+    const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
+    return this.http.put(this.APP_URL + this.USERS_URL, user, options)
       .pipe(map(success => success.status)
-      ,catchError(this.handleError))
+        , catchError(this.handleError))
   }
 
   deleteUser(userId: string): Observable<any> {
-    const options = new RequestOptions({ withCredentials: true});
-    return this.http.delete(this.userUrl + '/' + userId, options)
+    const options = new RequestOptions({withCredentials:true});
+    return this.http.delete(this.APP_URL + this.USERS_URL + '/' + userId, options)
       .pipe(map(success => success.status)
-      ,catchError(this.handleError))
+        , catchError(this.handleError))
   }
 
   getUserById(userId: string): Observable<User> {
-    const options = new RequestOptions({ withCredentials: true});
-    return this.http.get(this.userUrl + '/' + userId, options)
+    const options = new RequestOptions({withCredentials: true});
+    return this.http.get(this.APP_URL + this.USERS_URL + '/' + userId, options)
       .pipe(map(this.extractData)
-      ,catchError(this.handleError))
+        , catchError(this.handleError))
   }
 
   getCurrentUser(): Observable<User> {
-    const cpHeaders = new Headers({ 'Access-Control-Allow-Origin': '*', 'Content-Type':'application/json' });
+    const cpHeaders = new Headers({'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'});
     const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
-    return this.http.get(this.userUrl + '/current', options)
+    return this.http.get(this.APP_URL + this.USERS_URL + '/current', options)
       .pipe(map(this.extractData)
-        ,catchError(this.handleError))
+        , catchError(this.handleError))
   }
 
-  authorize(userLogin: string, userPassword: string): Observable<User> {
-    const cpHeaders = new Headers({ 'Content-Type':'application/json',
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods':'OPTIONS, HEAD, GET, POST, PUT, DELETE'});
-    const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
-    return this.http.post('http://localhost:9090/login?username=' + userLogin + '&password=' + userPassword, options)
+  authorize(userLogin: string, userPassword: string): Observable<any> {
+    return this.http.post(this.APP_URL + '/login?username=' + userLogin + '&password=' + userPassword,
+      null, {withCredentials: true})
       .pipe(map(this.extractData),
-      catchError(this.handleError))
+        catchError(this.handleError))
   }
 
   private extractData(res: Response) {
     return res.json();
   }
 
-  private handleError (error: Response | any) {
+  private handleError(error: Response | any) {
     console.error(error.message || error);
     return throwError(new Error(error.status))
   }

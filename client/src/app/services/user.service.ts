@@ -65,7 +65,8 @@ export class UserService {
   }
 
   authorize(userLogin: string, userPassword: string): Observable<any> {
-    const cpHeaders = new Headers({'Access-Control-Allow-Origin': '*'});
+    const cpHeaders = new Headers({'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Credentials':'true',
+    'Access-Control-Allow-Methods': 'POST, GET, PUT, OPTIONS', 'Access-Control-Allow-Headers':'Content-Type, X-Requested-With'});
     const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
     return this.http.post('http://localhost:9090/login?username=' + userLogin + '&password=' + userPassword, options)
       .pipe(map(success => success.status),

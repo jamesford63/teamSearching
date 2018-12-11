@@ -45,7 +45,6 @@ export class ProjectSearchingComponent implements OnInit {
     private userService: UserService,
     private profAreaService: ProfAreaService,
     private projectService: ProjectService,
-    private notification: Notification,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router) {

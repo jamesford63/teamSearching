@@ -88,19 +88,19 @@ export class LkComponent implements OnInit {
   }
 
   onUserFormSubmit() {
+
     this.processValidationUser = true;
-    if (this.userForm.invalid) {
-      return; // Validation failed, exit from method.
-    }
     // Form is valid, now perform update
     this.preProcessConfigurations();
     const login = this.userForm.get('login').value;
-    const password = this.userForm.get('password').value;
+    let password = this.userForm.get('password').value;
     const name = this.userForm.get('name').value;
     const lastName = this.userForm.get('lastName').value;
     const city = this.userForm.get('city').value;
     const email = this.userForm.get('email').value;
     const description = this.userForm.get('description').value;
+    if(password == "")
+      password = this.userSource.password;
     // Handle update user
     const user = new User(this.userSource.id, login, password, email, name, lastName,city, this.userSource.profAreas,
       this.userSource.tags, this.userSource.projectsCreated, this.userSource.projectsParticipated,
@@ -124,7 +124,7 @@ export class LkComponent implements OnInit {
             this.userIdToUpdate = user.id;
             this.userForm.setValue({
               login: user.login,
-              password: user.password,
+              password: "",
               name: user.name,
               lastName: user.lastName,
               city: user.city,
@@ -141,7 +141,7 @@ export class LkComponent implements OnInit {
             this.userIdToUpdate = user.id;
             this.userForm.setValue({
               login: user.login,
-              password: user.password,
+              password: "",
               name: user.name,
               lastName: user.lastName,
               city: user.city,

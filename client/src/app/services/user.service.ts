@@ -31,7 +31,7 @@ export class UserService {
   createUser(user: User): Observable<any> {
     const cpHeaders = new Headers({'Content-Type': 'application/json'});
     const options = new RequestOptions({headers: cpHeaders});
-    return this.http.post(this.APP_URL + + this.USERS_URL + '/register', user, options)
+    return this.http.post(this.APP_URL + this.USERS_URL + '/register', user, options)
       .pipe(map(success => success.status),
         catchError(this.handleError));
   }
@@ -59,9 +59,7 @@ export class UserService {
   }
 
   getCurrentUser(): Observable<User> {
-    const cpHeaders = new Headers({'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'});
-    const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
-    return this.http.get(this.APP_URL + this.USERS_URL + '/current', options)
+    return this.http.get(this.APP_URL + this.USERS_URL + '/current', {withCredentials: true})
       .pipe(map(this.extractData)
         , catchError(this.handleError))
   }

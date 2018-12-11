@@ -13,7 +13,6 @@ export class LoginComponent implements OnInit {
   statusCode: number;
   statusCodeUser: number;
   requestProcessing = false;
-  userSource: User;
 
   loginForm = new FormGroup({
     login: new FormControl('', Validators.required),
@@ -33,13 +32,8 @@ export class LoginComponent implements OnInit {
     this.preProcessConfigurations();
     const login = this.loginForm.get('login').value.trim();
     const password = this.loginForm.get('password').value.trim();
-    this.userService.authorize(login, password).
-      subscribe(data => {
-        this.userSource = data;
-          this.router.navigate(['/lk']);
-      },
-      errorCode => this.statusCodeUser = errorCode
-      );
+    this.userService.authorize(login, password);
+    this.router.navigate(['/lk']);
   }
 
   preProcessConfigurations() {

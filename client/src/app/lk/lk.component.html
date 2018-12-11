@@ -53,7 +53,6 @@
     <th>Имя&#160;&#160;&#160;&#160;</th>
     <th>Фамилия&#160;&#160;&#160;&#160;</th>
     <th>Логин&#160;&#160;&#160;&#160;</th>
-    <th>Пароль&#160;&#160;&#160;&#160;</th>
     <th>Город&#160;&#160;&#160;&#160;</th>
     <th>Email&#160;&#160;&#160;&#160;</th>
     <th>Дополнительные данные&#160;&#160;&#160;&#160;</th>
@@ -62,7 +61,6 @@
     <td>{{userSource?.name}}</td>
     <td>{{userSource?.lastName}}</td>
     <td>{{userSource?.login}}</td>
-    <td>{{userSource?.password}}</td>
     <td>{{userSource?.city}}</td>
     <td>{{userSource?.email}}</td>
     <td>{{userSource?.description}}</td>
@@ -83,7 +81,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <div align="center">
-      <div [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()">
+      <form [formGroup]="userForm" (ngSubmit)="onUserFormSubmit()">
         <table>
           <tr>
             <td>Введите новый логин</td>
@@ -91,7 +89,7 @@
           </tr>
           <tr>
             <td>Введите новый пароль</td>
-            <td><input formControlName="password" class="form-control mr-sm-2"></td>
+            <td><input type="password" formControlName="password" class="form-control mr-sm-2"></td>
           </tr>
           <tr>
             <td>Введите новое имя</td>
@@ -134,7 +132,7 @@
             </td>
           </tr>
         </table>
-      </div>
+      </form>
     </div>
   </mat-expansion-panel>
 

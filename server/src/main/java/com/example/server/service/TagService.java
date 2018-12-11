@@ -31,8 +31,16 @@ public class TagService {
 
     public Tag getTagById(UUID tagId) {
         log.info("Request to get tag by id = {}. BEGIN", tagId);
-        Tag tag = tagRepository.findById(tagId).get();
+        Tag tag = tagRepository.findById(tagId).orElse(null);
         log.info("Request to get tag by id. END - SUCCESS.");
+
+        return tag;
+    }
+
+    public Tag getTagByName(String tagName) {
+        log.info("Request to get tag by name = {}. BEGIN", tagName);
+        Tag tag = tagRepository.findByName(tagName);
+        log.info("Request to get tag by name. END - SUCCESS.");
 
         return tag;
     }
@@ -53,8 +61,12 @@ public class TagService {
 
     public Tag createTag(Tag tag) {
         log.info("Request to save tag. BEGIN");
+        if (!checkIfNameUnique(tag)) {
+            log.warn("Request to save tag. END -FAILED. Name must be unique!", tag.getId());
+            throw new IllegalArgumentException("Name must be unique!");
+        }
         Tag savedTag;
-        if(tag.getId() == null)
+        if (tag.getId() == null)
             tag.setId(UUID.randomUUID());
         savedTag = tagRepository.save(tag);
         log.info("Request to save tag. END - SUCCESS. Id = {}", savedTag.getId());
@@ -64,12 +76,21 @@ public class TagService {
 
     public Tag updateTag(Tag tag) {
         log.info("Request to update tag with id = {}. BEGIN", tag.getId());
-        Tag existedTag = tagRepository.findById(tag.getId()).get();
-        if(tag.getName() != null)
+        if (!checkIfNameUnique(tag)) {
+            log.warn("Request to update tag with id = {}. END -FAILED. Name must be unique!", tag.getId());
+            throw new IllegalArgumentException("Name must be unique!");
+        }
+        Tag existedTag = tagRepository.findById(tag.getId()).orElse(null);
+        if (tag.getName() != null)
             existedTag.setName(tag.getName());
         tag = tagRepository.save(existedTag);
         log.info("Request to update tag. END - SUCCESS.");
 
         return tag;
+    }
+
+    private boolean checkIfNameUnique(Tag tag) {
+        Tag existed = tagRepository.findByName(tag.getName());
+        return existed == null;
     }
 }

@@ -31,14 +31,29 @@ public class TagController {
         return new ResponseEntity<>(tagService.getTagById(id), HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<Tag> getTagByName(@RequestParam String name) {
+        return new ResponseEntity<>(tagService.getTagByName(name), HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Tag> createTag(@RequestBody Tag tag) {
-        return new ResponseEntity<>(tagService.createTag(tag), HttpStatus.CREATED);
+        try {
+            Tag saved = tagService.createTag(tag);
+            return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        } catch (IllegalArgumentException iea) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<Tag> updateTag(@RequestBody Tag tag) {
-        return new ResponseEntity<>(tagService.updateTag(tag), HttpStatus.OK);
+        try {
+            Tag updated = tagService.updateTag(tag);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (IllegalArgumentException iea) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

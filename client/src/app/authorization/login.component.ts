@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {User} from "../table-classes/user";
 import {UserService} from "../services/user.service";
 
 @Component({
@@ -19,7 +18,8 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', Validators.required),
   });
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router) {
+  }
 
   ngOnInit() {
   }
@@ -32,8 +32,12 @@ export class LoginComponent implements OnInit {
     this.preProcessConfigurations();
     const login = this.loginForm.get('login').value.trim();
     const password = this.loginForm.get('password').value.trim();
-    this.userService.authorize(login, password);
-    this.router.navigate(['/lk']);
+    this.userService.authorize(login, password).subscribe(data => {
+        console.log(data);
+        this.router.navigate(['/lk']);
+      },
+      errorCode => this.statusCodeUser = errorCode
+    );
   }
 
   preProcessConfigurations() {

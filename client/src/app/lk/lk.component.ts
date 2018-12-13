@@ -67,7 +67,7 @@ export class LkComponent implements OnInit {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
-        data => {this.userSource = data; },
+        data => {this.userSource = data;console.log(this.userSource); },
         errorCode => this.statusCodeUser);
   }
 

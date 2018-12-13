@@ -45,7 +45,6 @@ export class ProjectSearchingComponent implements OnInit {
     private userService: UserService,
     private profAreaService: ProfAreaService,
     private projectService: ProjectService,
-    private notification: Notification,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router) {
@@ -65,12 +64,12 @@ export class ProjectSearchingComponent implements OnInit {
       name: new FormControl('', Validators.required),
     });
 
-    this.getUser("????");
+    this.getUser();
 
     this.getAllProfAreas();
   }
 
-  getUser(userLogin: string) {
+  getUser() {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(

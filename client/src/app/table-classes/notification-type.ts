@@ -1,4 +1,4 @@
 export enum NotificationType {
-  NOTIFICATION,
-  REQUEST
+  REQUEST,
+  INFORMATION
 }

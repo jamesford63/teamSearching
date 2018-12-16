@@ -50,7 +50,7 @@ export class TagService {
 
   getTagByName(tagName: string): Observable<Tag> {
     const options = new RequestOptions({ withCredentials: true});
-    return this.http.get(this.tagUrl + '/' + tagName, options)
+    return this.http.get(this.tagUrl + '?name=' + tagName, options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError))
   }

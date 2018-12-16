@@ -71,6 +71,12 @@ export class UserService {
         catchError(this.handleError))
   }
 
+  logout(): Observable<any> {
+    return this.http.get(this.APP_URL + '/logout', {withCredentials: true})
+      .pipe(map(this.extractData),
+        catchError(this.handleError))
+  }
+
   private extractData(res: Response) {
     return res.json();
   }

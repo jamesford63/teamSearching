@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import {UserService} from "../services/user.service";
+import {User} from "../table-classes/user";
+import {isSuccess} from "@angular/http/src/http_utils";
 
 
 @Component({
@@ -10,10 +13,23 @@ import {Router} from '@angular/router';
 export class StartPageComponent implements OnInit {
 
   statusCode: number;
+  userSource: User;
+  isAuthorized: boolean;
 
-  constructor( private router: Router) { }
+  constructor( private router: Router, private userService: UserService) { }
 
   ngOnInit() {
+    this.isAuthorized = false;
+    this.userService.getCurrentUser()
+      .subscribe(data => {
+        this.userSource = data;
+        this.isAuthorized = true;
+        },
+        errorCode => this.statusCode);
+  }
+
+  logout(){
+    this.userService.logout();
   }
 
   preProcessConfigurations() {

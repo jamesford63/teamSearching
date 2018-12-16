@@ -16,13 +16,13 @@
         <a routerLink="/start-page" class="nav-link">Главная страница</a>
       </li>
       <li class="nav-item">
-        <a routerLink="/user-reg" class="nav-link">Личный кабинет</a>
+        <a routerLink="/lk" class="nav-link">Личный кабинет</a>
       </li>
       <li class="nav-item">
-        <a routerLink="/create-project" class="nav-link">Мои проекты</a>
+        <a routerLink="/my-projects" class="nav-link">Мои проекты</a>
       </li>
       <li class="nav-item">
-        <a routerLink="/user-searching" class="nav-link">Участие в проектах</a>
+        <a routerLink="/participations" class="nav-link">Участие в проектах</a>
       </li>
       <li class="nav-item active">
         <a routerLink="/create-project" class="nav-link">Создать проект</a>
@@ -38,8 +38,52 @@
 </nav>
 <p>&#160;</p>
 
+<div align="center">
+  <form [formGroup]="nameForm" (ngSubmit)="onNameFormSubmit()">
+    <table>
+      <tr>
+        <td>Имя проекта</td>
+        <td width="200"><input formControlName="name" class="form-control mr-sm-2"></td>
+      </tr>
+    </table>
+  </form>
+</div>
+<div align="center">
+  <form [formGroup]="nameForm" (ngSubmit)="onNameFormSubmit()">
+    <table>
+      <tr>
+        <td>Имя проекта</td>
+        <td width="200"><input formControlName="name" class="form-control mr-sm-2"></td>
+      </tr>
+    </table>
+  </form>
+</div>
 
-
+<div [formGroup]="profAreaForm" (ngSubmit)="onProfAreaFormSubmit()">
+  <table>
+    <tr>
+      <td width="200">Введите проф. область&nbsp;&nbsp;&nbsp;</td>
+      <td><select name="select" formControlName="profArea" class="form-control mr-sm-2">
+        <option *ngFor="let profArea of profAreas" value={{profArea.id}}>{{profArea.name}}</option>
+      </select></td>
+      <td><label *ngIf="profAreaForm.get('profArea').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
+      <td align="right"><button (click)="onProfAreaFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
+    </tr>
+    <tr>
+      <td>Добавлено в фильтр:</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr *ngFor="let profArea of profAreaArray" >
+      <td></td>
+      <td>{{profArea?.name}}</td>
+      <td></td>
+      <td><button type="button" (click)="deleteProfAreaFilter(profArea)" class="btn btn-danger">Удалить</button></td>
+    </tr>
+  </table>
+</div>
 
 
 

@@ -32,8 +32,10 @@ export class LoginComponent implements OnInit {
     this.preProcessConfigurations();
     const login = this.loginForm.get('login').value.trim();
     const password = this.loginForm.get('password').value.trim();
+    console.log("AUTHORIZE BLYAT")
     this.userService.authorize(login, password);
-    this.router.navigate(['/lk']);
+    console.log("AUTHORIZE SUKA")
+    // this.router.navigate(['/lk']);
   }
 
   preProcessConfigurations() {

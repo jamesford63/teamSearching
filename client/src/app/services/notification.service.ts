@@ -16,7 +16,7 @@ export class NotificationService {
     //   .pipe(map(this.extractData)
     //   ,catchError(this.handleError))
     const options = new RequestOptions({ withCredentials: true});
-    return this.http.get(this.notificationUrl, options)
+    return this.http.get(this.notificationUrl)
       .pipe(map(this.extractData)
         ,catchError(this.handleError))
   }

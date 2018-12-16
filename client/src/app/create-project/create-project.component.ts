@@ -10,6 +10,8 @@ import {ProfAreaService} from "../services/prof-area.service";
 import {Project} from "../table-classes/project";
 import {UUID} from "angular2-uuid";
 import {ProjectStatus} from "../table-classes/project-status";
+import {Tag} from "../table-classes/tag";
+import {TagService} from "../services/tag.service";
 
 @Component({
   selector: 'app-create-project',
@@ -21,6 +23,7 @@ export class CreateProjectComponent implements OnInit {
   statusCode: number;
   statusCodeProject: number;
   statusCodeProfArea: number;
+  statusCodeTag: number;
   requestProcessing = false;
   userSource: User;
   statusCodeUser: number;
@@ -29,9 +32,10 @@ export class CreateProjectComponent implements OnInit {
   tagForm: FormGroup;
   descriptionForm: FormGroup;
   profAreaArray: ProfArea[] = null;
-  tagArray: string[] = null;
+  tags: Tag[];
   profAreas: ProfArea[];
   newProject: Project;
+  tagFromDB : Tag = null;
 
   ngOnInit() {
     this.nameForm = new FormGroup({
@@ -55,7 +59,8 @@ export class CreateProjectComponent implements OnInit {
   constructor(private userService: UserService,
               private router: Router,
               private profAreaService: ProfAreaService,
-              private projectService: ProjectService) { }
+              private projectService: ProjectService,
+              private tagService: TagService) { }
 
 
   getUser() {
@@ -94,8 +99,19 @@ export class CreateProjectComponent implements OnInit {
     }
     // Form is valid, now perform create
     let tag = this.tagForm.get('tag').value;
+    this.tagService.getTagByName(tag)
+      .subscribe(
+        data => {this.tagFromDB = data; },
+        errorCode => this.statusCodeTag);
 
-    this.tagArray.push(tag);
+    if(this.tagFromDB == null) {
+      let newTag = new Tag(UUID.UUID(),tag);
+      this.tagService.createTag(newTag);
+      this.tags.push(newTag);
+    }
+     else{
+      this.tags.push(this.tagFromDB);
+    }
   }
 
   onDescriptionFormSubmit() {
@@ -119,8 +135,8 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
-  deleteTagFilter(tag: String) {
-    this.tagArray = this.tagArray.filter(item => item !== tag);
+  deleteTagFilter(tag: Tag) {
+    this.tags = this.tags.filter(item => item !== tag);
   }
 
   deleteProfAreaFilter(profArea: ProfArea) {
@@ -130,7 +146,7 @@ export class CreateProjectComponent implements OnInit {
   createProject(){
     this.preProcessConfigurations()
     const project = new Project(UUID.UUID(), this.newProject.name, this.profAreaArray, null,
-                                this.userSource,this.tagArray,this.newProject.description,
+                                this.userSource,this.tags,this.newProject.description,
                                 ProjectStatus.OPEN)
     this.projectService.createProject(project)
       .subscribe(successCode => {

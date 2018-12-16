@@ -23,10 +23,10 @@ export class MyProjectsComponent implements OnInit {
     private router: Router) {}
 
   ngOnInit(){
-    this.getUser("????");
+    this.getUser();
   }
 
-  getUser(userLogin: string) {
+  getUser() {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(

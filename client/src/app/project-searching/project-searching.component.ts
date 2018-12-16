@@ -14,6 +14,7 @@ import {NotificationType} from "../table-classes/notification-type";
 import {UUID} from "angular2-uuid";
 import {NotificationStatus} from "../table-classes/notification-status";
 import {NotificationService} from "../services/notification.service";
+import {Tag} from "../table-classes/tag";
 
 @Component({
   selector: 'app-project-searching',
@@ -35,7 +36,7 @@ export class ProjectSearchingComponent implements OnInit {
   descriptionForm: FormGroup;
   nameForm: FormGroup;
   profAreaFilterArray: ProfArea[] = null;
-  tagFilterArray: string[] = null;
+  tagFilterArray: Tag[] = null;
   filterRequest: FilterRequest = null;
   profAreas: ProfArea[] = [new ProfArea("1","assLeaking"),new ProfArea("2","cocksucking"),new ProfArea("3","dicksucking")];
   notificationTypes: NotificationType[];
@@ -128,7 +129,7 @@ export class ProjectSearchingComponent implements OnInit {
     this.tagForm.reset();
   }
 
-  deleteTagFilter(tag: String) {
+  deleteTagFilter(tag: Tag) {
     this.tagFilterArray = this.tagFilterArray.filter(item => item !== tag);
     console.log(this.tagFilterArray);
   }

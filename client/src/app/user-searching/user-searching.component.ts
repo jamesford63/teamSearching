@@ -8,6 +8,8 @@ import {ProfAreaService} from "../services/prof-area.service";
 import {ProjectService} from "../services/project.service";
 import {Project} from "../table-classes/project";
 import {FilterRequest} from "../table-classes/filter-request";
+import {Tag} from "../table-classes/tag";
+import {TagService} from "../services/tag.service";
 
 @Component({
   selector: 'app-user-searching',
@@ -29,7 +31,7 @@ export class UserSearchingComponent implements OnInit {
   nameForm: FormGroup;
   cityForm: FormGroup;
   profAreaFilterArray: ProfArea[] = null;
-  tagFilterArray: string[] = null;
+  tagFilterArray: Tag[] = null;
   filterRequest: FilterRequest = null;
   profAreas: ProfArea[];
   filteredUsers: Project[];
@@ -38,6 +40,7 @@ export class UserSearchingComponent implements OnInit {
     private userService: UserService,
     private profAreaService: ProfAreaService,
     private projectService: ProjectService,
+    private tagService: TagService,
     private route: ActivatedRoute,
     private router: Router) {}
 
@@ -134,7 +137,7 @@ export class UserSearchingComponent implements OnInit {
   }
 
 
-  deleteTagFilter(tag: String) {
+  deleteTagFilter(tag: Tag) {
     this.tagFilterArray = this.tagFilterArray.filter(item => item !== tag);
   }
 

@@ -38,6 +38,22 @@
 </nav>
 <p>&#160;</p>
 
+<div *ngIf="userSource.projectsParticipated?.length!=0" class="projects">
+  <table align="center">
+    <tr>
+      <td><h5 style="text-decoration: underline;">Название</h5></td>
+    </tr>
+    <tr *ngFor="let project of userSource.projectsParticipated" >
+      <td ><h6 style="width: 700px;">{{project?.name}}</h6></td>
+      <td><button (click)="redirectToProject(project)" class="btn btn-success">Просмотреть/Выйти с проекта</button></td>
+    </tr>
+  </table>
+</div>
+
+<h3 *ngIf="userSource.projectsParticipated?.length==0" align="center">Вы еще нигде не участвуете! А стоило бы!</h3>
+
+<button (click)="redirect()" class="btn btn-success">Сюда</button>
+
 
 
 

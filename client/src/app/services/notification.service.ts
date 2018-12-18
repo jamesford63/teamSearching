@@ -12,9 +12,6 @@ export class NotificationService {
   constructor(private http: Http) {}
 
   getAllNotifications(): Observable<Notification[]> {
-    // return this.http.get(this.notificationUrl)
-    //   .pipe(map(this.extractData)
-    //   ,catchError(this.handleError))
     const options = new RequestOptions({ withCredentials: true});
     return this.http.get(this.notificationUrl)
       .pipe(map(this.extractData)
@@ -49,6 +46,13 @@ export class NotificationService {
     return this.http.get(this.notificationUrl + '/' + notificationId, options)
       .pipe(map(this.extractData)
       ,catchError(this.handleError))
+  }
+
+  getUserNotifications(userId: string): Observable<Notification[]> {
+    const options = new RequestOptions({ withCredentials: true});
+    return this.http.get(this.notificationUrl + '/user/' + userId, options)
+      .pipe(map(this.extractData)
+        ,catchError(this.handleError))
   }
 
   private extractData(res: Response) {

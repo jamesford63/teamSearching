@@ -19,7 +19,7 @@ public class Project {
     @Id
     private UUID id;
     private String name;
-    private ProfArea profArea;
+    private List<ProfArea> profArea;
     private List<User> participants;
     private User owner;
     private List<Tag> tags;

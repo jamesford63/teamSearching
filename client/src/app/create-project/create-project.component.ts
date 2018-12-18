@@ -31,11 +31,11 @@ export class CreateProjectComponent implements OnInit {
   profAreaForm: FormGroup;
   tagForm: FormGroup;
   descriptionForm: FormGroup;
-  profAreaArray: ProfArea[] = null;
-  tags: Tag[];
+  profAreaArray: ProfArea[] = [];
+  tagArray: Tag[] = [];
   profAreas: ProfArea[];
-  newProject: Project;
-  tagFromDB : Tag = null;
+  newProject: Project = new Project(UUID.UUID(),'',[],[],this.userSource,[],'',ProjectStatus.OPEN);
+  created : boolean = false;
 
   ngOnInit() {
     this.nameForm = new FormGroup({
@@ -50,7 +50,7 @@ export class CreateProjectComponent implements OnInit {
     this.descriptionForm = new FormGroup({
       description: new FormControl('', Validators.required),
     });
-
+    this.created = false;
     this.getUser();
     this.getAllProfAreas();
 
@@ -85,6 +85,11 @@ export class CreateProjectComponent implements OnInit {
     }
     // Form is valid, now perform create
     let profArea = this.profAreaForm.get('profArea').value.trim();
+    for(const a of this.profAreaArray){
+      if(a.id == profArea){
+        return;
+      }
+    }
     for (const a of this.profAreas) {
       if (a.id == profArea) {
         profArea = a;
@@ -98,20 +103,17 @@ export class CreateProjectComponent implements OnInit {
       return; // Validation failed, exit from method.
     }
     // Form is valid, now perform create
-    let tag = this.tagForm.get('tag').value;
-    this.tagService.getTagByName(tag)
-      .subscribe(
-        data => {this.tagFromDB = data; },
-        errorCode => this.statusCodeTag);
-
-    if(this.tagFromDB == null) {
-      let newTag = new Tag(UUID.UUID(),tag);
-      this.tagService.createTag(newTag);
-      this.tags.push(newTag);
+    let tag = this.tagForm.get('tag').value.trim();
+    for(const a of this.tagArray){
+      if(tag == a.name){
+        this.tagForm.reset();
+        return;
+      }
     }
-     else{
-      this.tags.push(this.tagFromDB);
-    }
+    let newTag = new Tag(UUID.UUID(),tag);
+    this.tagService.createTag(newTag);
+    this.tagArray.push(newTag);
+    this.tagForm.reset();
   }
 
   onDescriptionFormSubmit() {
@@ -130,23 +132,29 @@ export class CreateProjectComponent implements OnInit {
     }
     // Form is valid, now perform create
     let name = this.nameForm.get('name').value;
+    if(name == null){
+      name = '';
+      this.newProject.name = name;
+    }
+    else this.newProject.name = name;
 
-    this.newProject.name = name;
   }
 
 
-  deleteTagFilter(tag: Tag) {
-    this.tags = this.tags.filter(item => item !== tag);
+  deleteTag(tag: Tag) {
+    this.tagArray = this.tagArray.filter(item => item !== tag);
   }
 
-  deleteProfAreaFilter(profArea: ProfArea) {
+  deleteProfArea(profArea: ProfArea) {
     this.profAreaArray = this.profAreaArray.filter(item => item !== profArea);
   }
 
   createProject(){
     this.preProcessConfigurations()
+    this.onNameFormSubmit();
+    this.onDescriptionFormSubmit();
     const project = new Project(UUID.UUID(), this.newProject.name, this.profAreaArray, null,
-                                this.userSource,this.tags,this.newProject.description,
+                                this.userSource,this.tagArray,this.newProject.description,
                                 ProjectStatus.OPEN)
     this.projectService.createProject(project)
       .subscribe(successCode => {
@@ -155,13 +163,21 @@ export class CreateProjectComponent implements OnInit {
         },
         errorCode => this.statusCodeProject = errorCode);
 
-    this.userSource.projectsCreated.push(project);
+    console.log(project);
+    this.userSource.projectsCreated.push(project.id);
 
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {
         this.statusCodeUser = successCode;
       }, errorCode =>
         this.statusCodeUser = errorCode);
+    this.tagArray = [];
+    this.profAreaArray = [];
+    this.nameForm.reset();
+    this.descriptionForm.reset();
+    this.tagForm.reset();
+    this.created = true;
+    //this.router.navigate(['/my-projects']);
   }
 
   preProcessConfigurations() {

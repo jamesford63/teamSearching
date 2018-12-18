@@ -49,8 +49,9 @@ export class TagService {
   }
 
   getTagByName(tagName: string): Observable<Tag> {
-    const options = new RequestOptions({ withCredentials: true});
-    return this.http.get(this.tagUrl + '?name=' + tagName, options)
+    const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ withCredentials: true, headers : cpHeaders});
+    return this.http.get(this.tagUrl + '/name/' + tagName, options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError))
   }

@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   statusCode: number;
   statusCodeUser: number;
   requestProcessing = false;
+  userSource: User;
 
   loginForm = new FormGroup({
     login: new FormControl('', Validators.required),
@@ -32,10 +33,11 @@ export class LoginComponent implements OnInit {
     this.preProcessConfigurations();
     const login = this.loginForm.get('login').value.trim();
     const password = this.loginForm.get('password').value.trim();
-    console.log("AUTHORIZE BLYAT")
-    this.userService.authorize(login, password);
-    console.log("AUTHORIZE SUKA")
-    // this.router.navigate(['/lk']);
+    this.userService.authorize(login, password)
+      .subscribe(
+        data => {this.userSource = data;},
+        errorCode => this.statusCodeUser);
+    this.router.navigate(['/lk']);
   }
 
   preProcessConfigurations() {

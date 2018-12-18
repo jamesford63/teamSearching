@@ -43,17 +43,18 @@ export class RegistrationComponent implements OnInit {
     const city = this.registrationForm.get('city').value.trim();
     const email = this.registrationForm.get('email').value;
     // Handle create user
-    const user = new User(UUID.UUID(), login, password, email, name, lastName, city, null, null, null,null,0,null);
+    const user = new User(UUID.UUID(), login, password, email, name, lastName, city, [], [], [],[],0,'');
     this.userService.createUser(user)
       .subscribe(successCode => {
           this.statusCode = successCode;
           this.router.navigate(['/lk']);
           this.backToCreateClient();
-        },
+          this.userService.authorize(login, password)},
         errorCode => {
         this.statusCode = errorCode
          console.log(this.statusCode);
         });
+
   }
   // Perform preliminary processing configurations
   preProcessConfigurations() {

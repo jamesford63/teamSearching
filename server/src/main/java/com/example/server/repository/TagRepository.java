@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface TagRepository
         extends ElasticsearchRepository<Tag, UUID>, PagingAndSortingRepository<Tag, UUID> {
+    Tag findByName(String name);
 }

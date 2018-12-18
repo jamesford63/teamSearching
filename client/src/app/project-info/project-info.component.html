@@ -18,7 +18,7 @@
       <li class="nav-item">
         <a routerLink="/lk" class="nav-link">Личный кабинет</a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a routerLink="/my-projects" class="nav-link">Мои проекты</a>
       </li>
       <li class="nav-item">
@@ -38,33 +38,69 @@
 </nav>
 <p>&#160;</p>
 
-
-<div *ngIf="userProjects?.length!=0" class="projects">
-  <table align="center">
+<div class="nameForm">
+  <table>
     <tr>
-      <td><h5 style="text-decoration: underline;">Название</h5></td>
-    </tr>
-    <tr *ngFor="let project of userProjects" >
-      <td ><h6 style="width: 700px;">{{project?.name}}</h6></td>
-      <td><button (click)="redirectToProject(project)" class="btn btn-success">Изменить/Удалить</button></td>
+      <td style="text-decoration: underline; width: 200px; height: 35px;"><h5>Имя проекта</h5></td>
+      <td style="width: 500px; height: 35px;"><h6>{{projectSource?.name}}</h6></td>
     </tr>
   </table>
 </div>
 
-<h3 *ngIf="userProjects?.length==0" align="center">У вас нет еще ни одного проекта! Создайте новый! Быстрее!</h3>
+<div class="descriptionForm">
+  <table>
+    <tr>
+      <td style="text-decoration: underline; width: 200px; height: 35px;"><h5>Описание</h5></td>
+      <td style="width: 500px; height: 35px;"><h6>{{projectSource?.description}}</h6></td>
+    </tr>
+  </table>
+</div>
 
+<div class="filterForm">
+  <div class="filter">
+    <div class="profAreaForm">
+      <table>
+        <tr>
+          <td width="200px" style="text-decoration: underline;"><h5>Проф. области</h5></td>
+          <td></td>
+        </tr>
+        <tr *ngFor="let profArea of projectSource?.profArea" >
+          <td></td>
+          <td><h6>{{profArea?.name}}</h6></td>
+        </tr>
+      </table>
+    </div>
 
+    <div class="tagForm">
+      <table>
+        <tr>
+          <td width="200px" style="text-decoration: underline;"><h5>Теги</h5></td>
+          <td></td>
+        </tr>
+        <tr *ngFor="let tag of projectSource?.tags" >
+          <td></td>
+          <td><h6>{{tag?.name}}</h6></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="participants">
+    <table *ngIf="projectSource?.participants?.length != 0">
+      <tr>
+        <td width="200px" style="text-decoration: underline;"><h5>Участники</h5></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let user of projectSource?.participants">
+        <td></td>
+        <td><h6>{{user?.name}} {{user?.lastName}}</h6></td>
+      </tr>
+    </table>
+  </div>
+</div>
 
-
-
-
-
-
-
-
+<img src="http://itd3.mycdn.me/image?id=666852205026&t=20&plc=WEB&tkn=*-LrL6781mc2HZXI6bgYjOttqEhA" class="image" height="300" width="720">
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-

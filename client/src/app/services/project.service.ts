@@ -22,7 +22,7 @@ export class ProjectService {
   getFilteredProjects(filterRequest: FilterRequest): Observable<Project[]> {
     const cpHeaders = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
-    return this.http.put(this.projectUrl + '/filter', filterRequest, options)
+    return this.http.post(this.projectUrl + '/filter', filterRequest, options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError));
   }
@@ -30,13 +30,6 @@ export class ProjectService {
   getUserProjects(userLogin: string): Observable<Project[]> {
     const options = new RequestOptions({ withCredentials: true});
     return this.http.get(this.projectUrl + '?user-login=' + userLogin, options)
-      .pipe(map(this.extractData)
-        ,catchError(this.handleError))
-  }
-
-  getUserParticipatedProjects(userLogin: string): Observable<Project[]> {
-    const options = new RequestOptions({ withCredentials: true});
-    return this.http.get(this.projectUrl + '/participation?user-login=' + userLogin, options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError))
   }

@@ -9,6 +9,8 @@ import {CreateProjectComponent} from "./create-project/create-project.component"
 import {UserSearchingComponent} from "./user-searching/user-searching.component";
 import {MyProjectsComponent} from "./my-projects/my-projects.component";
 import {ParticipationsComponent} from "./participations/participations.component";
+import {ProjectComponent} from "./project/project.component";
+import {ProjectInfoComponent} from "./project-info/project-info.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'start-page', pathMatch: 'full'},
@@ -20,7 +22,9 @@ const routes: Routes = [
   { path: 'create-project', component: CreateProjectComponent},
   { path: 'user-searching', component: UserSearchingComponent},
   { path: 'my-projects', component: MyProjectsComponent},
-  { path: 'participations', component: ParticipationsComponent}
+  { path: 'participations', component: ParticipationsComponent},
+  { path: 'project/:id', component: ProjectComponent},
+  { path: 'project-info/:id', component: ProjectInfoComponent}
 ];
 
 @NgModule({

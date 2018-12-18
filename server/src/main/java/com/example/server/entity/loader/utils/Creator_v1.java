@@ -87,7 +87,7 @@ public class Creator_v1 {
     private Project randomProject() {
         Project project = new Project();
         project.setId(UUID.randomUUID());
-        project.setProfArea(profAreas.get(random.nextInt(profAreas.size())));
+        //project.setProfArea(profAreas.get(random.nextInt(profAreas.size())));
         project.setParticipants(Collections.singletonList(users.get(random.nextInt(users.size()))));
         project.setOwner(users.get(random.nextInt(users.size())));
         project.setDescription(RandomStringUtils.randomAlphabetic(length));

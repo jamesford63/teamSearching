@@ -22,15 +22,23 @@ export class ParticipationsComponent implements OnInit {
     private router: Router) {}
 
   ngOnInit(){
-    this.getUser("????");
+    this.getUser();
   }
 
-  getUser(userLogin: string) {
+  getUser() {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
         data => {this.userSource = data; },
         errorCode => this.statusCodeUser);
+  }
+
+  redirectToProject(project){
+    this.router.navigate(['/project/' + project.id]);
+  }
+
+  redirect(){
+    this.router.navigate(['/project-info/' + '1f309420-1e7d-b418-5426-fbfd3d054bb7']);
   }
 
 

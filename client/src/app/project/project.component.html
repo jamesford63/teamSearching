@@ -1,0 +1,152 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <a href="#" class="navbar-brand">
+    <img src="https://taylorstano.files.wordpress.com/2015/01/cropped-ts-logo.png"
+         width="80" height="40" alt="logo">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a routerLink="/start-page" class="nav-link">Главная страница</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/lk" class="nav-link">Личный кабинет</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/my-projects" class="nav-link">Мои проекты</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/participations" class="nav-link">Участие в проектах</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/create-project" class="nav-link">Создать проект</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/project-searching" class="nav-link">Поиск проекта</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/user-searching" class="nav-link">Найти команду</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<p>&#160;</p>
+
+<div *ngIf="!isDeleted" class="nameForm">
+  <form [formGroup]="nameForm" (ngSubmit)="onNameFormSubmit()">
+    <table>
+      <tr>
+        <td width="200px" style="text-decoration: underline;">Имя проекта</td>
+        <td></td>
+        <td width="200px"><input style="width: 500px; height: 35px;" formControlName="name" class="form-control mr-sm-2"></td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+<div *ngIf="!isDeleted" class="descriptionForm">
+  <form [formGroup]="descriptionForm" (ngSubmit)="onDescriptionFormSubmit()">
+    <table>
+      <tr>
+        <td width="200px" style="text-decoration: underline;">Описание</td>
+        <td width="200"><textarea style="width: 500px; height: 100px;" formControlName="description" class="form-control mr-sm-2"></textarea></td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+<div *ngIf="!isDeleted" class="filterForm">
+  <div *ngIf="!isDeleted" class="filter">
+    <div [formGroup]="profAreaForm" (ngSubmit)="onProfAreaFormSubmit()" class="profAreaForm">
+      <table>
+        <tr>
+          <td width="200px" style="text-decoration: underline;">Введите проф. область</td>
+          <td><select style="width: 250px;" name="select" formControlName="profArea" class="form-control mr-sm-2">
+            <option *ngFor="let profArea of profAreas" value={{profArea.id}}>{{profArea.name}}</option>
+          </select></td>
+          <td><label *ngIf="profAreaForm.get('profArea').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
+          <td><button (click)="onProfAreaFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
+        </tr>
+        <tr>
+          <td width="200px">Добавлено:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr *ngFor="let profArea of projectProfAreas" >
+          <td></td>
+          <td>{{profArea?.name}}</td>
+          <td></td>
+          <td><button type="button" (click)="deleteProfArea(profArea)" class="btn btn-danger">Удалить</button></td>
+        </tr>
+      </table>
+    </div>
+
+    <div *ngIf="!isDeleted" [formGroup]="tagForm" (ngSubmit)="onTagFormSubmit()" class="tagForm">
+      <table>
+        <tr>
+          <td width="200px" style="text-decoration: underline;">Введите название тега</td>
+          <td ><input style="width: 250px;" formControlName="tag" class="form-control mr-sm-2"></td>
+          <td><label *ngIf="tagForm.get('tag').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
+          <td ><button (click)="onTagFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
+        </tr>
+        <tr>
+          <td width="200px">Добавлено:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr *ngFor="let tag of projectTags" >
+          <td></td>
+          <td>{{tag?.name}}</td>
+          <td></td>
+          <td><button type="button" (click)="deleteTag(tag)" class="btn btn-danger">Удалить</button></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="!isDeleted && haveParticipants" class="participants">
+    <table>
+      <tr>
+        <td width="200px" style="text-decoration: underline;">Участники</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let user of projectSource.participants">
+        <td></td>
+        <td>{{user?.name}} {{user?.lastName}}</td>
+        <td><button type="button" (click)="removeParticipant(user)" class="btn btn-success">Послать его нахуй</button></td>
+      </tr>
+    </table>
+  </div>
+  <div *ngIf="!isDeleted && !haveParticipants" class="participants">
+    <table>
+      <tr>
+        <td width="200px" style="text-decoration: underline;">Участники</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Тут пока пусто (пора бы уже найти команду)</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<button *ngIf="!isDeleted" type="button" (click)="updateProject()" class="btn btn-success">Ок</button>
+<button *ngIf="!isDeleted" type="button" (click)="deleteProject()" class="btn-group-lg btn-danger">Удалить проект</button>
+
+<h4 *ngIf="isDeleted" align="center">Проект успешно удален!</h4>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

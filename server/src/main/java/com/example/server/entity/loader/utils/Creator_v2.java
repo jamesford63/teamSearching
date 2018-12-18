@@ -101,7 +101,7 @@ public class Creator_v2 {
             project.setId(UUID.randomUUID());
             int num = random.nextInt(names.size());
             project.setName(names.get(num));
-            project.setProfArea(profAreas.get(random.nextInt(profAreas.size())));
+            //project.setProfArea(profAreas.get(random.nextInt(profAreas.size())));
             num = random.nextInt(users.size() - 1);
             User owner = users.get(random.nextInt(users.size()));
             project.setOwner(owner);

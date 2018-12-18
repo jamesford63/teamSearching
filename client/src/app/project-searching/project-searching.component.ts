@@ -37,9 +37,8 @@ export class ProjectSearchingComponent implements OnInit {
   nameForm: FormGroup;
   profAreaFilterArray: ProfArea[] = null;
   tagFilterArray: Tag[] = null;
-  filterRequest: FilterRequest = null;
-  profAreas: ProfArea[] = [new ProfArea("1","assLeaking"),new ProfArea("2","cocksucking"),new ProfArea("3","dicksucking")];
-  notificationTypes: NotificationType[];
+  filterRequest: FilterRequest = new FilterRequest('',[],[],'','');
+  profAreas: ProfArea[];
   filteredProjects: Project[];
 
   constructor(
@@ -66,15 +65,15 @@ export class ProjectSearchingComponent implements OnInit {
     });
 
     this.getUser();
-
-    this.getAllProfAreas();
   }
 
   getUser() {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
-        data => {this.userSource = data; },
+        data => {this.userSource = data;
+        this.getAllProjects();
+        this.getAllProfAreas()},
         errorCode => this.statusCodeUser);
   }
 
@@ -84,6 +83,14 @@ export class ProjectSearchingComponent implements OnInit {
       .subscribe(
         data => {this.profAreas = data; },
         errorCode => this.statusCodeProfArea);
+  }
+
+  getAllProjects(){
+    this.preProcessConfigurations();
+    this.projectService.getAllProjects()
+      .subscribe(
+        data => {this.filteredProjects = data; },
+        errorCode => this.statusCodeProjects);
   }
 
   onProfAreaFormSubmit() {
@@ -124,7 +131,8 @@ export class ProjectSearchingComponent implements OnInit {
         break;
       }
     }
-    if(!was) this.tagFilterArray.push(tag);
+    let newTag = new Tag(UUID.UUID(),tag);
+    if(!was) this.tagFilterArray.push(newTag);
 
     this.tagForm.reset();
   }

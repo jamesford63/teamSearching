@@ -153,7 +153,7 @@
           <th>Название&#160;&#160;&#160;&#160;&#160;</th>
         </tr>
         <tr *ngFor="let tag of userSource?.tags" >
-          <td>{{tag}}</td>
+          <td>{{tag?.name}}</td>
           <td><button type="button" (click)="deleteUserTag(tag)" class="btn btn-danger">Удалить</button></td>
         </tr>
       </table>
@@ -183,8 +183,8 @@
             &nbsp;
           </tr>
           <tr>
+            <td align="left"><button class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
             <td>&nbsp;</td>
-            <td align="right"><button class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
           </tr>
           <tr>
             <td colspan="2">
@@ -220,7 +220,7 @@
           <th>Название&#160;&#160;&#160;&#160;&#160;</th>
         </tr>
         <tr *ngFor="let profArea of userSource?.profAreas" >
-          <td>{{profArea}}</td>
+          <td>{{profArea?.name}}</td>
           <td><button type="button" (click)="deleteUserProfArea(profArea)" class="btn btn-danger">Удалить</button></td>
         </tr>
       </table>

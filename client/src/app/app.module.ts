@@ -28,6 +28,8 @@ import {
 } from "@angular/material";
 import {TagService} from "./services/tag.service";
 import {NotificationService} from "./services/notification.service";
+import {ProjectComponent} from "./project/project.component";
+import {ProjectInfoComponent} from "./project-info/project-info.component";
 
 
 @NgModule({
@@ -41,7 +43,9 @@ import {NotificationService} from "./services/notification.service";
     CreateProjectComponent,
     MyProjectsComponent,
     ParticipationsComponent,
-    UserSearchingComponent
+    UserSearchingComponent,
+    ProjectComponent,
+    ProjectInfoComponent
   ],
   imports: [
     BrowserModule,

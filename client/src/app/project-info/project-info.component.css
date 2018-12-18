@@ -1,36 +1,40 @@
 .nameForm{
   position: absolute;
-  left: 300px;
+  left: 350px;
   width: 1000px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
-  top:170px;
-}
-
-.filter{
-  position: absolute;
-  left: 300px;
-  width: 900px; /* Ширина слоя */
-  padding: 10px; /* Поля вокруг текста */
-  top:350px;
+  top:70px;
 }
 
 .descriptionForm{
   position: absolute;
-  left: 300px;
+  left: 350px;
   width: 900px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
-  top:220px;
+  top:120px;
+}
+
+.filterForm{
+  position: absolute;
+  left: 350px;
+  width: 900px; /* Ширина слоя */
+  padding: 10px; /* Поля вокруг текста */
+  top:190px;
 }
 
 .tagForm{
   position: relative;
-  top:20px;
+  top:0px;
 }
 
-.btn-success{
+.participants{
+  position: relative;
+  top:0px;
+}
+
+.image{
   position: absolute;
-  left: 1050px;
-  top:180px;
+  left: 350px;
+  padding: 10px; /* Поля вокруг текста */
+  top:320px;
 }
-
-

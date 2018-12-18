@@ -9,12 +9,12 @@ export class Project {
               public projectStatus: ProjectStatus) {
   }
 
-  public getAllProfAreas(){
+  getAllProfAreas(){
     let profAreas = "";
     for(var i = 0; i < this.profArea.length; i++){
       profAreas = profAreas + this.profArea[i].name;
     }
-    return profAreas;
+    return profAreas.toString;
   }
 
   public getAllTags(){
@@ -22,6 +22,6 @@ export class Project {
     for(var i = 0; i < this.tags.length; i++){
       tags = tags + this.tags[i].name;
     }
-    return tags;
+    return tags.toString;
   }
 }

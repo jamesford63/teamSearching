@@ -7,6 +7,7 @@ import {ProfAreaService} from "../services/prof-area.service";
 import {ProfArea} from "../table-classes/prof-area";
 import {Tag} from "../table-classes/tag";
 import {TagService} from "../services/tag.service";
+import {UUID} from "angular2-uuid";
 
 @Component({
   selector: 'app-lk',
@@ -58,16 +59,25 @@ export class LkComponent implements OnInit {
     });
 
     this.getUser();
-    this.getAllProfAreas();
-    this.getAllTags();
-    this.loadUserToEdit();
   }
 
   getUser() {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
-        data => {this.userSource = data; },
+        user => {this.userSource = user;
+          this.getAllProfAreas();
+          this.getAllTags();
+          this.userForm.setValue({
+            login: user.login,
+            password: "",
+            name: user.name,
+            lastName: user.lastName,
+            city: user.city,
+            email: user.email,
+            description: user.description});
+          this.processValidationUser = true;
+          this.requestProcessing = false;},
         errorCode => this.statusCodeUser);
   }
 
@@ -114,6 +124,7 @@ export class LkComponent implements OnInit {
         this.backToCreateUser();
       }, errorCode =>
         this.statusCodeUser = errorCode);
+    console.log(this.userSource);
   }
 
   loadUserToEdit() {
@@ -184,16 +195,10 @@ export class LkComponent implements OnInit {
     // Form is valid, now perform create
     this.preProcessConfigurations();
     let tag = this.newTagForm.get('tag').value.trim();
-    let tagFromDB = this.tagService.getTagByName(tag);
-    if(tagFromDB == null){
-      this.tagService.createTag(tag);
-      this.userSource.tags.push(tag);
-      this.userService.updateUser(this.userSource);
-    }
-    else {
-      this.userSource.tags.push(tag);
-      this.userService.updateUser(this.userSource);
-    }
+    let newTag = new Tag(UUID.UUID(), tag);
+    this.tagService.createTag(newTag);
+    this.userSource.tags.push(newTag);
+    this.userService.updateUser(this.userSource);
     this.backToCreateTag();
   }
 

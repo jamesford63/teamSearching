@@ -78,7 +78,7 @@
     </tr>
     <tr *ngFor="let tag of tagFilterArray" >
       <td></td>
-      <td>{{tag}}</td>
+      <td>{{tag?.name}}</td>
       <td></td>
       <td><button type="button" (click)="deleteTagFilter(tag)" class="btn btn-danger">Удалить</button></td>
     </tr>
@@ -111,26 +111,22 @@
   </table>
 </div>
 <p>&#160;</p>
-<button type="button" (click)="filter()" class="btn btn-outline-success my-2 my-sm-0">Применить фильтры</button>
+<button type="button" (click)="filter()" class="btn btn-success">Применить фильтры</button>
 </div>
 
 <div class="projects">
   <table>
     <tr>
-      <td>Название</td>
-      <td>Проф. область</td>
-      <td>Теги</td>
-      <td>Описание</td>
-      <td>Статус проекта</td>
+      <td style="text-decoration: underline;"><h5>Название</h5></td>
+      <td style="text-decoration: underline;"><h5>Описание</h5></td>
+      <td style="text-decoration: underline;"><h5>Статус</h5></td>
       <td></td>
     </tr>
     <tr *ngFor="let project of filteredProjects">
-      <td>{{project?.name}}</td>
-      <td>{{project.getAllProfAreas()}}</td>
-      <td>{{project?.tags.join(", ")}}</td>
-      <td>{{project?.description}}</td>
-      <td>{{project?.projectStatus}}</td>
-      <td><button type="button" (click)="sendRequestToOwner(project);hide()" class="btn btn-outline-success my-2 my-sm-0">Отправить запрос на участие</button></td>
+      <td style="width: 300px; height: 35px;"><h6>{{project?.name}}</h6></td>
+      <td style="width: 450px; height: 35px;"><h6>{{project?.description}}</h6></td>
+      <td><h6>{{project?.projectStatus}}</h6></td>
+      <td><button type="button" (click)="sendRequestToOwner(project)" class="btn btn-outline-success my-2 my-sm-0">Отправить запрос на участие</button></td>
     </tr>
   </table>
 </div>

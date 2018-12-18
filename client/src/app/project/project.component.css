@@ -1,0 +1,47 @@
+.nameForm{
+  position: absolute;
+  left: 300px;
+  width: 1000px; /* Ширина слоя */
+  padding: 10px; /* Поля вокруг текста */
+  top:70px;
+}
+
+.descriptionForm{
+  position: absolute;
+  left: 300px;
+  width: 900px; /* Ширина слоя */
+  padding: 10px; /* Поля вокруг текста */
+  top:120px;
+}
+
+.filterForm{
+  position: absolute;
+  left: 300px;
+  width: 900px; /* Ширина слоя */
+  padding: 10px; /* Поля вокруг текста */
+  top:250px;
+}
+
+.tagForm{
+  position: relative;
+  top:20px;
+}
+
+.btn-success{
+  position: absolute;
+  left: 1050px;
+  top:80px;
+}
+
+.btn-group-lg{
+  position: absolute;
+  left: 1150px;
+  top:83px;
+}
+
+.participants{
+  position: relative;
+  top:20px;
+}
+
+

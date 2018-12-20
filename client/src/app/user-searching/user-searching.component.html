@@ -33,11 +33,120 @@
       <li class="nav-item active">
         <a routerLink="/user-searching" class="nav-link">Найти команду</a>
       </li>
+      <li class="nav-item">
+        <a routerLink="/notifications" class="nav-link">Уведомления</a>
+      </li>
     </ul>
   </div>
 </nav>
 <p>&#160;</p>
 
+<h5 align="center">Укажите фильтры, чтобы проще было найти подходящего пользователя</h5>
+
+<div class="filter">
+  <button type="button" (click)="filter()" class="btn btn-success">Применить</button>
+  <button type="button" (click)="clearFilter()" class="btn btn-warning">Очистить фильтры</button>
+  <div [formGroup]="nameForm" class="name">
+    <table>
+      <tr>
+        <td style="text-decoration: underline; width: 150px; height: 35px;">Имя</td>
+        <td style="width: 300px; height: 35px;"><input formControlName="name" class="form-control mr-sm-2"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div [formGroup]="descriptionForm" class="description">
+    <table>
+      <tr>
+        <td style="text-decoration: underline; width: 150px; height: 35px;">Поиск по описанию</td>
+        <td style="width: 300px; height: 35px;"><textarea cols="38" rows="5" formControlName="description" class="form-control mr-sm-2"></textarea></td>
+      </tr>
+    </table>
+  </div>
+
+  <div [formGroup]="tagForm" (ngSubmit)="onTagFormSubmit()" class="tag">
+    <table>
+      <tr>
+        <td style="text-decoration: underline; width: 150px; height: 35px;">Введите тег</td>
+        <td style="width: 150px; height: 35px;"><input formControlName="tag" class="form-control mr-sm-2"></td>
+        <td align="right"><button (click)="onTagFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
+      </tr>
+      <tr>
+        <td style="width: 150px; height: 15px;">Добавленные теги:</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let tag of tagFilterArray" >
+        <td></td>
+        <td style="width: 150px; height: 15px;">{{tag?.name}}</td>
+        <td><button type="button" (click)="deleteTagFilter(tag)" class="btn btn-danger">Удалить</button></td>
+      </tr>
+    </table>
+  </div>
+
+  <div [formGroup]="profAreaForm" (ngSubmit)="onProfAreaFormSubmit()" class="profArea">
+    <table>
+      <tr>
+        <td style="text-decoration: underline; width: 150px; height: 35px;">Проф. область</td>
+        <td style="width: 150px; height: 35px;"><select name="select" formControlName="profArea" class="form-control mr-sm-2">
+          <option *ngFor="let profArea of profAreas" value={{profArea.id}}>{{profArea.name}}</option>
+        </select></td>
+        <td align="right"><button (click)="onProfAreaFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
+      </tr>
+      <tr>
+        <td style="width: 150px; height: 15px;">Добавлено:</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let profArea of profAreaFilterArray" >
+        <td></td>
+        <td style="width: 150px; height: 15px;">{{profArea?.name}}</td>
+        <td><button type="button" (click)="deleteProfAreaFilter(profArea)" class="btn btn-danger">Удалить</button></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="choose">
+    <h6 style="text-decoration: underline; width: 250px; height: 35px;">Выберите проект</h6>
+  </div>
+
+  <div [formGroup]="projectForm" class="project">
+    <select name="select" formControlName="project" class="form-control mr-sm-2">
+      <option *ngFor="let project of userProjects" value={{project.id}}>{{project.name}}</option>
+    </select>
+  </div>
+
+  <div class="error" *ngIf="error">
+    <p style="color: red">Вы не выбрали проект!</p>
+  </div>
+
+  <div class="users">
+    <h4 align="center">Найденные пользователи</h4>
+    <table align="center" class="table">
+      <tr class="tr">
+        <td style="text-decoration: underline; width: 300px; height: 35px;" class="td"><h6>имя</h6></td>
+        <td style="text-decoration: underline; width: 450px; height: 35px;" class="td"><h6>информация</h6></td>
+        <td style="text-decoration: underline; width: 200px; height: 35px;" class="td"><h6>участий в проектах</h6></td>
+        <td style="text-decoration: underline; width: 200px; height: 35px;" class="td"><h6>создано проектов</h6></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let user of filteredUsers" class="tr">
+        <td style="width: 300px; height: 35px;" class="td"><h6><a routerLink="/project-info/{{user?.name}}">{{user?.name}} {{user?.lastName}}</a></h6></td>
+        <td style="width: 450px; height: 35px;" class="td"><h6>{{user?.description}}</h6></td>
+        <td style="width: 200px; height: 35px;" class="td"><h6>{{user?.projectsParticipated?.length}}</h6></td>
+        <td style="width: 200px; height: 35px;" class="td"><h6>{{user?.projectsCreated?.length}}</h6></td>
+        <td><button type="button" (click)="sendRequestToUser(user)" class="btn btn-outline-success my-2 my-sm-0">Отправить приглашение</button></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+</div>
 
 
 

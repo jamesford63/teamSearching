@@ -1,0 +1,82 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <a href="#" class="navbar-brand">
+    <img src="https://taylorstano.files.wordpress.com/2015/01/cropped-ts-logo.png"
+         width="80" height="40" alt="logo">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a routerLink="/start-page" class="nav-link">Главная страница</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/lk" class="nav-link">Личный кабинет</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/my-projects" class="nav-link">Мои проекты</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/participations" class="nav-link">Участие в проектах</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/create-project" class="nav-link">Создать проект</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/project-searching" class="nav-link">Поиск проекта</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/user-searching" class="nav-link">Найти команду</a>
+      </li>
+      <li class="nav-item active">
+        <a routerLink="/notifications" class="nav-link">Уведомления</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<p>&#160;</p>
+
+<h4 align="center" *ngIf="userNotifications?.length == 0">Увы, новых уведомлений нет. Возможно ваши проекты не особо-то кому-то интересны (так и есть). Если у вас их вообще нет, то неудивительно:)</h4>
+
+<div *ngIf="userNotifications?.length != 0" class="notifications">
+  <h4 align="center">Уведомления</h4>
+  <table align="center" class="table">
+    <tr class="tr">
+      <td align="center" style="text-decoration: underline; width: 200px; height: 35px;" class="td"><h6>пользователь</h6></td>
+      <td align="center" style="text-decoration: underline; width: 350px; height: 35px;" class="td"><h6>сообщение</h6></td>
+      <td align="center" style="text-decoration: underline; width: 200px; height: 35px;" class="td"><h6>почта отправителя</h6></td>
+      <td align="center" style="text-decoration: underline; width: 400px; height: 35px;" class="td"><h6>проект</h6></td>
+      <td align="center" style="text-decoration: underline; width: 200px; height: 35px;" class="td"><h6>принять/отклонить</h6></td>
+      <td align="center"></td>
+    </tr>
+    <tr *ngFor="let notification of userNotifications" class="tr">
+      <td align="center" style="width: 200px; height: 35px;" class="td"><h6><a routerLink="/user-info/{{notification?.from?.id}}">{{notification?.from?.name}} {{notification?.from?.lastName}}</a></h6></td>
+      <td align="center" style="width: 350px; height: 35px;" class="td"><h6>{{notification?.description}}</h6></td>
+      <td align="center" style="width: 200px; height: 35px;" class="td"><h6>{{notification?.from?.email}}</h6></td>
+      <td align="center" style="width: 400px; height: 35px;" class="td"><h6>{{notification?.project?.name}}</h6></td>
+      <td align="center">
+        <button type="button" style="width: 105px" (click)="accept(notification?.from, notification?.project, notification?.id, notification?.project?.id)" class="btn btn-outline-success my-2 my-sm-0">Принять</button>
+        <button type="button" (click)="decline(notification?.from, notification?.project, notification?.id)" class="btn btn-danger">Отклонить</button>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+

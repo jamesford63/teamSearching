@@ -1,6 +1,7 @@
 package com.example.server.repository;
 
 import com.example.server.entity.Project;
+import com.example.server.entity.User;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -63,4 +64,5 @@ public interface ProjectRepository
             "    }\n" +
             "}")
     List<Project> filterProjects(String profAreasNames, String tags, String name, String description, String city);
+    List<Project> findProjectsByOwner_Id(UUID userId);
 }

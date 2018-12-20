@@ -163,7 +163,6 @@ export class CreateProjectComponent implements OnInit {
         },
         errorCode => this.statusCodeProject = errorCode);
 
-    console.log(project);
     this.userSource.projectsCreated.push(project.id);
 
     this.userService.updateUser(this.userSource)
@@ -177,7 +176,6 @@ export class CreateProjectComponent implements OnInit {
     this.descriptionForm.reset();
     this.tagForm.reset();
     this.created = true;
-    //this.router.navigate(['/my-projects']);
   }
 
   preProcessConfigurations() {

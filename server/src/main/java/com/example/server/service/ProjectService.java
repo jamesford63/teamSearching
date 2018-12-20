@@ -2,9 +2,12 @@ package com.example.server.service;
 
 import com.example.server.entity.ProfArea;
 import com.example.server.entity.Project;
+import com.example.server.entity.User;
 import com.example.server.entity.Tag;
 import com.example.server.entity.requests.FilterRequest;
 import com.example.server.repository.ProjectRepository;
+import com.example.server.repository.UserRepository;
+import com.example.server.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +22,14 @@ import java.util.stream.Collectors;
 @Component
 public class ProjectService {
     private ProjectRepository projectRepository;
+    private UserRepository userRepository;
     private Client client;
 
     @Autowired
-    public void setProjectRepository(ProjectRepository projectRepository, Client client) {
+    public void setProjectRepository(ProjectRepository projectRepository, Client client, UserRepository userRepository) {
         this.projectRepository = projectRepository;
         this.client = client;
+        this.userRepository = userRepository;
     }
 
     public List<Project> getAllProjects() {
@@ -124,5 +129,14 @@ public class ProjectService {
         projectRepository.findAllById(ids).forEach(result::add);
         log.info("Request to get all projects with ids. END - SUCCESS");
         return result;
+    }
+
+    public List<Project> getUserProjects(UUID userId) {
+        log.info("Request to get projects of user with id = {}. BEGIN", userId);
+        //User user = userRepository.findById(userId).orElse(null);
+        List<Project> projects = projectRepository.findProjectsByOwner_Id(userId);
+        log.info("Request to get projects of user with id. END - SUCCESS.");
+
+        return projects;
     }
 }

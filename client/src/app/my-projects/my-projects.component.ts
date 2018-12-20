@@ -42,14 +42,10 @@ export class MyProjectsComponent implements OnInit {
   }
 
   getUserProjects(){
-    console.log(this.userSource);
-    this.preProcessConfigurations();
-    for(let id of this.userSource.projectsCreated){
-      let project = this.projectService.getProject(id.toString())
+      this.projectService.getUserProjects(this.userSource.id)
         .subscribe(
-          data => {this.userProjects.push(data); },
+          data => {this.userProjects = data; },
           errorCode => this.statusCodeProjects);
-    }
   }
 
   redirectToProject(project){

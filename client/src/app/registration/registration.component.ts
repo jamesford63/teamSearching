@@ -47,9 +47,9 @@ export class RegistrationComponent implements OnInit {
     this.userService.createUser(user)
       .subscribe(successCode => {
           this.statusCode = successCode;
-          this.router.navigate(['/lk']);
           this.backToCreateClient();
-          this.userService.authorize(login, password)},
+          this.userService.authorize(login, password);
+          this.router.navigate(['/lk']);},
         errorCode => {
         this.statusCode = errorCode
          console.log(this.statusCode);

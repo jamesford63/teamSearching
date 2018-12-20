@@ -37,10 +37,6 @@ export class ParticipationsComponent implements OnInit {
     this.router.navigate(['/project/' + project.id]);
   }
 
-  redirect(){
-    this.router.navigate(['/project-info/' + '1f309420-1e7d-b418-5426-fbfd3d054bb7']);
-  }
-
 
   preProcessConfigurations() {
     this.statusCode = null;

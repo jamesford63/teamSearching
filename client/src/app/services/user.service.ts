@@ -23,7 +23,7 @@ export class UserService {
   getFilteredUsers(filterRequest: FilterRequest): Observable<User[]> {
     const cpHeaders = new Headers({'Content-Type': 'application/json'});
     const options = new RequestOptions({headers: cpHeaders, withCredentials: true});
-    return this.http.put(this.APP_URL + + this.USERS_URL + '/filter', filterRequest, options)
+    return this.http.post(this.APP_URL + this.USERS_URL + '/filter', filterRequest, options)
       .pipe(map(this.extractData)
         , catchError(this.handleError));
   }

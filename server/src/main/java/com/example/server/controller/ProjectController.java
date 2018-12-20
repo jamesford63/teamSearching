@@ -32,6 +32,11 @@ public class ProjectController {
         return new ResponseEntity<>(projectService.getProjectById(id), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<Project>> getUserProjects(@PathVariable UUID id) {
+        return new ResponseEntity<>(projectService.getUserProjects(id), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/bulk", method = RequestMethod.POST)
     public ResponseEntity<List<Project>> getProjectByIds(@RequestBody List<UUID> ids) {
         return new ResponseEntity<>(projectService.getProjectByIds(ids), HttpStatus.OK);

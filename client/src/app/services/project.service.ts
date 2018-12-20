@@ -27,9 +27,9 @@ export class ProjectService {
         ,catchError(this.handleError));
   }
 
-  getUserProjects(userLogin: string): Observable<Project[]> {
+  getUserProjects(userId: string): Observable<Project[]> {
     const options = new RequestOptions({ withCredentials: true});
-    return this.http.get(this.projectUrl + '?user-login=' + userLogin, options)
+    return this.http.get(this.projectUrl + '/user/' + userId, options)
       .pipe(map(this.extractData)
         ,catchError(this.handleError))
   }
@@ -52,7 +52,7 @@ export class ProjectService {
 
   deleteProject(projectId: string): Observable<any> {
     const options = new RequestOptions({ withCredentials: true});
-    return this.http.delete(this.projectUrl + '?login=' + projectId, options)
+    return this.http.delete(this.projectUrl + '/' + projectId, options)
       .pipe(map(success => success.status)
       ,catchError(this.handleError))
   }

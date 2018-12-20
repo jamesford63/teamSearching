@@ -89,8 +89,8 @@ public class NotificationService {
 
     public List<Notification> getUserNotifications(UUID userId) {
         log.info("Request to get notifications of user with id = {}. BEGIN", userId);
-        User user = userRepository.findById(userId).orElse(null);
-        List<Notification> notifications = notificationRepository.findNotificationsByTo(user);
+        //User user = userRepository.findById(userId).orElse(null);
+        List<Notification> notifications = notificationRepository.findNotificationsByTo_Id(userId);
         log.info("Request to get notifications of user with id. END - SUCCESS.");
 
         return notifications;

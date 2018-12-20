@@ -11,6 +11,7 @@ import {MyProjectsComponent} from "./my-projects/my-projects.component";
 import {ParticipationsComponent} from "./participations/participations.component";
 import {ProjectComponent} from "./project/project.component";
 import {ProjectInfoComponent} from "./project-info/project-info.component";
+import {NotificationsComponent} from "./notifications/notifications.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'start-page', pathMatch: 'full'},
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path: 'my-projects', component: MyProjectsComponent},
   { path: 'participations', component: ParticipationsComponent},
   { path: 'project/:id', component: ProjectComponent},
-  { path: 'project-info/:id', component: ProjectInfoComponent}
+  { path: 'project-info/:id', component: ProjectInfoComponent},
+  { path: 'notifications', component: NotificationsComponent}
 ];
 
 @NgModule({

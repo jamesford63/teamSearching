@@ -33,110 +33,106 @@
       <li class="nav-item">
         <a routerLink="/user-searching" class="nav-link">Найти команду</a>
       </li>
+      <li class="nav-item">
+        <a routerLink="/notifications" class="nav-link">Уведомления</a>
+      </li>
     </ul>
   </div>
 </nav>
 <p>&#160;</p>
 
+<h5 align="center">Укажите фильтры, чтобы проще было найти проект, подходящий вам</h5>
+
 <div class="filter">
-Укажите фильтры, чтобы проще было найти проект, подходящий вам
-<p>&#160;</p>
-<div [formGroup]="nameForm">
-  <table>
-    <tr>
-      <td width="200">Имя проекта</td>
-      <td><input formControlName="name" class="form-control mr-sm-2"></td>
-      <td>&nbsp;&nbsp;<label *ngIf="nameForm.get('name').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
-    </tr>
-  </table>
+  <button type="button" (click)="filter()" class="btn btn-success">Применить</button>
+  <button type="button" (click)="clearFilter()" class="btn btn-warning">Очистить фильтры</button>
+  <div [formGroup]="nameForm" class="name">
+    <table>
+      <tr>
+        <td style="text-decoration: underline; width: 150px; height: 35px;">Имя проекта</td>
+        <td style="width: 300px; height: 35px;"><input formControlName="name" class="form-control mr-sm-2"></td>
+      </tr>
+    </table>
+  </div>
+
+  <div [formGroup]="descriptionForm" class="description">
+    <table>
+      <tr>
+        <td style="text-decoration: underline; width: 150px; height: 35px;">Поиск по описанию</td>
+        <td style="width: 300px; height: 35px;"><textarea cols="38" rows="5" formControlName="description" class="form-control mr-sm-2"></textarea></td>
+      </tr>
+    </table>
+  </div>
+
+  <div [formGroup]="tagForm" (ngSubmit)="onTagFormSubmit()" class="tag">
+    <table>
+      <tr>
+        <td style="text-decoration: underline; width: 150px; height: 35px;">Введите тег</td>
+        <td style="width: 150px; height: 35px;"><input formControlName="tag" class="form-control mr-sm-2"></td>
+        <td align="right"><button (click)="onTagFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
+      </tr>
+      <tr>
+        <td style="width: 150px; height: 15px;">Добавленные теги:</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let tag of tagFilterArray" >
+        <td></td>
+        <td style="width: 150px; height: 15px;">{{tag?.name}}</td>
+        <td><button type="button" (click)="deleteTagFilter(tag)" class="btn btn-danger">Удалить</button></td>
+      </tr>
+    </table>
+  </div>
+
+  <div [formGroup]="profAreaForm" (ngSubmit)="onProfAreaFormSubmit()" class="profArea">
+    <table>
+      <tr>
+        <td style="text-decoration: underline; width: 150px; height: 35px;">Проф. область</td>
+        <td style="width: 150px; height: 35px;"><select name="select" formControlName="profArea" class="form-control mr-sm-2">
+          <option *ngFor="let profArea of profAreas" value={{profArea.id}}>{{profArea.name}}</option>
+        </select></td>
+        <td align="right"><button (click)="onProfAreaFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
+      </tr>
+      <tr>
+        <td style="width: 150px; height: 15px;">Добавлено:</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let profArea of profAreaFilterArray" >
+        <td></td>
+        <td style="width: 150px; height: 15px;">{{profArea?.name}}</td>
+        <td><button type="button" (click)="deleteProfAreaFilter(profArea)" class="btn btn-danger">Удалить</button></td>
+      </tr>
+    </table>
+  </div>
+
+  <h5 *ngIf="filteredProjects?.length == 0" class="noProjects" align="center" style="color: red">Не найдено ни одного проекта</h5>
+
+  <div *ngIf="filteredProjects?.length != 0" class="projects">
+    <h4 align="center">Найденные проекты</h4>
+    <br>
+    <table align="center" class="table">
+      <tr class="tr">
+        <td style="text-decoration: underline; width: 300px; height: 35px;" class="td"><h5>название</h5></td>
+        <td style="text-decoration: underline; width: 450px; height: 35px;" class="td"><h5>описание</h5></td>
+        <td style="text-decoration: underline; width: 100px; height: 35px;" class="td"><h5>статус</h5></td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let project of filteredProjects" class="tr">
+        <td style="width: 300px; height: 35px;" class="td"><h6><a routerLink="/project-info/{{project?.id}}">{{project?.name}}</a></h6></td>
+        <td style="width: 450px; height: 35px;" class="td"><h6>{{project?.description}}</h6></td>
+        <td style="width: 100px; height: 35px;" class="td"><h6>{{project?.projectStatus}}</h6></td>
+        <td><button *ngIf="project.projectStatus.toString() == 'OPEN'" type="button" (click)="sendRequestToOwner(project)" class="btn btn-outline-success my-2 my-sm-0">Отправить запрос на участие</button></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
 </div>
-&nbsp;
-<div [formGroup]="descriptionForm">
-  <table>
-    <tr>
-      <td width="200">Поиск по описанию</td>
-      <td><textarea cols="38" rows="5" formControlName="description" class="form-control mr-sm-2"></textarea></td>
-      <td>&nbsp;&nbsp;<label *ngIf="descriptionForm.get('description').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
-    </tr>
-  </table>
-</div>
-&nbsp;
-<div [formGroup]="tagForm" (ngSubmit)="onTagFormSubmit()">
-  <table>
-    <tr>
-      <td width="200">Введите тег</td>
-      <td><input formControlName="tag" class="form-control mr-sm-2"></td>
-      <td>&nbsp;&nbsp;<label *ngIf="tagForm.get('tag').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
-      <td align="right"><button (click)="onTagFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
-    </tr>
-    <tr>
-      <td width="200">Добавленные теги:</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr *ngFor="let tag of tagFilterArray" >
-      <td></td>
-      <td>{{tag?.name}}</td>
-      <td></td>
-      <td><button type="button" (click)="deleteTagFilter(tag)" class="btn btn-danger">Удалить</button></td>
-    </tr>
-  </table>
-</div>
-&nbsp;
-<div [formGroup]="profAreaForm" (ngSubmit)="onProfAreaFormSubmit()">
-  <table>
-    <tr>
-      <td width="200">Введите проф. область&nbsp;&nbsp;&nbsp;</td>
-      <td><select name="select" formControlName="profArea" class="form-control mr-sm-2">
-        <option *ngFor="let profArea of profAreas" value={{profArea.id}}>{{profArea.name}}</option>
-      </select></td>
-      <td><label *ngIf="profAreaForm.get('profArea').invalid && processValidation" [ngClass] = "'error'" > Укажите название </label></td>
-      <td align="right"><button (click)="onProfAreaFormSubmit()" class="btn btn-outline-success my-2 my-sm-0">Добавить</button></td>
-    </tr>
-    <tr>
-      <td>Добавлено в фильтр:</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr *ngFor="let profArea of profAreaFilterArray" >
-      <td></td>
-      <td>{{profArea?.name}}</td>
-      <td></td>
-      <td><button type="button" (click)="deleteProfAreaFilter(profArea)" class="btn btn-danger">Удалить</button></td>
-    </tr>
-  </table>
-</div>
-<p>&#160;</p>
-<button type="button" (click)="filter()" class="btn btn-success">Применить фильтры</button>
-</div>
-
-<div class="projects">
-  <table>
-    <tr>
-      <td style="text-decoration: underline;"><h5>Название</h5></td>
-      <td style="text-decoration: underline;"><h5>Описание</h5></td>
-      <td style="text-decoration: underline;"><h5>Статус</h5></td>
-      <td></td>
-    </tr>
-    <tr *ngFor="let project of filteredProjects">
-      <td style="width: 300px; height: 35px;"><h6>{{project?.name}}</h6></td>
-      <td style="width: 450px; height: 35px;"><h6>{{project?.description}}</h6></td>
-      <td><h6>{{project?.projectStatus}}</h6></td>
-      <td><button type="button" (click)="sendRequestToOwner(project)" class="btn btn-outline-success my-2 my-sm-0">Отправить запрос на участие</button></td>
-    </tr>
-  </table>
-</div>
-
-
-
-
-
-
-
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

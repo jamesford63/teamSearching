@@ -3,7 +3,7 @@
   left: 300px;
   width: 1000px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
-  top:70px;
+  top:100px;
 }
 
 .descriptionForm{
@@ -11,7 +11,7 @@
   left: 300px;
   width: 900px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
-  top:120px;
+  top:150px;
 }
 
 .filterForm{
@@ -19,7 +19,7 @@
   left: 300px;
   width: 900px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
-  top:250px;
+  top:280px;
 }
 
 .tagForm{
@@ -30,13 +30,13 @@
 .btn-success{
   position: absolute;
   left: 1050px;
-  top:80px;
+  top:110px;
 }
 
 .btn-group-lg{
   position: absolute;
   left: 1150px;
-  top:83px;
+  top:113px;
 }
 
 .participants{

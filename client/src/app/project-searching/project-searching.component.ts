@@ -9,7 +9,6 @@ import {ProjectService} from "../services/project.service";
 import {FilterRequest} from "../table-classes/filter-request";
 import {Notification} from "../table-classes/notification";
 import {Project} from "../table-classes/project";
-import {log} from "util";
 import {NotificationType} from "../table-classes/notification-type";
 import {UUID} from "angular2-uuid";
 import {NotificationStatus} from "../table-classes/notification-status";
@@ -73,7 +72,8 @@ export class ProjectSearchingComponent implements OnInit {
       .subscribe(
         data => {this.userSource = data;
         this.getAllProjects();
-        this.getAllProfAreas()},
+        this.getAllProfAreas();
+        this.getNotMyProjects()},
         errorCode => this.statusCodeUser);
   }
 
@@ -89,8 +89,16 @@ export class ProjectSearchingComponent implements OnInit {
     this.preProcessConfigurations();
     this.projectService.getAllProjects()
       .subscribe(
-        data => {this.filteredProjects = data; },
+        data => {
+          this.filteredProjects = data;
+          this.getNotMyProjects()},
         errorCode => this.statusCodeProjects);
+  }
+
+  getNotMyProjects(){
+    for(var i = 0; i < this.userSource.projectsCreated.length; i++) {
+      this.filteredProjects = this.filteredProjects.filter(item => item.id !== this.userSource.projectsCreated[i]);
+    }
   }
 
   onProfAreaFormSubmit() {
@@ -139,7 +147,6 @@ export class ProjectSearchingComponent implements OnInit {
 
   deleteTagFilter(tag: Tag) {
     this.tagFilterArray = this.tagFilterArray.filter(item => item !== tag);
-    console.log(this.tagFilterArray);
   }
 
   deleteProfAreaFilter(profArea: ProfArea) {
@@ -150,7 +157,6 @@ export class ProjectSearchingComponent implements OnInit {
     this.preProcessConfigurations();
 
     let name = this.nameForm.get('name').value;
-    console.log(name);
     this.filterRequest.name = name;
 
     let description = this.descriptionForm.get('description').value;
@@ -158,23 +164,35 @@ export class ProjectSearchingComponent implements OnInit {
 
     this.filterRequest.tags = this.tagFilterArray;
     this.filterRequest.profAreas = this.profAreaFilterArray;
-    console.log(this.filterRequest);
+
     this.projectService.getFilteredProjects(this.filterRequest)
       .subscribe(
         data => {this.filteredProjects = data; },
         errorCode => this.statusCodeProjects);
+    for(var i = 0; i<this.userSource.projectsCreated.length; i++) {
+      this.filteredProjects = this.filteredProjects.filter(item => item.id !== this.userSource.projectsCreated[i]);
+    }
   }
 
   sendRequestToOwner(project: Project){
     this.preProcessConfigurations();
-    let request = new Notification(UUID.UUID(),NotificationType.REQUEST,this.userSource,project.owner,
-                                    NotificationStatus.UNREAD, "Привет! Я заинтересован в участии в вашем проекте!");
+    let request = new Notification(UUID.UUID(),NotificationType.REQUEST,this.userSource,project.owner,project,
+     NotificationStatus.UNREAD, "Привет! Я заинтересован в участии в вашем никчемном проекте!:)");
     this.notificationService.createNotification(request)
       .subscribe(successCode => {
           this.statusCodeNotification = successCode;
         },
         errorCode => this.statusCodeNotification = errorCode);
+  }
 
+  clearFilter(){
+    this.nameForm.reset();
+    this.descriptionForm.reset();
+    this.tagForm.reset();
+    this.tagFilterArray = [];
+    this.profAreaFilterArray = [];
+    this.filterRequest = new FilterRequest('',[],[],'','');
+    this.getAllProjects();
   }
 
   preProcessConfigurations() {

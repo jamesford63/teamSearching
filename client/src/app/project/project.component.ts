@@ -36,6 +36,7 @@ export class ProjectComponent implements OnInit {
   statusCodeProject: number;
   statusCodeProfArea: number;
   statusCodeNotification: number;
+  edited: boolean = false;
 
   nameForm: FormGroup;
   profAreaForm: FormGroup;
@@ -70,6 +71,7 @@ export class ProjectComponent implements OnInit {
     this.getUser();
     this.getAllProfAreas();
     this.isDeleted = false;
+    this.edited = false;
     this.checkParticipants();
   }
 
@@ -209,6 +211,7 @@ export class ProjectComponent implements OnInit {
           this.statusCodeProject = successCode;
         },
         errorCode => this.statusCodeProject = errorCode);
+    this.edited = true;
   }
 
   deleteProject(){
@@ -225,7 +228,7 @@ export class ProjectComponent implements OnInit {
 
   removeParticipant(user){
     let notification = new Notification(UUID.UUID(),NotificationType.INFORMATION,this.userSource,
-      user,NotificationStatus.UNREAD, "You are fired!");
+      user,this.projectSource,NotificationStatus.UNREAD, "You are fired!");
 
     this.notificationService.createNotification(notification)
       .subscribe(successCode => {

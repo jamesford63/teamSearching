@@ -30,6 +30,7 @@ import {TagService} from "./services/tag.service";
 import {NotificationService} from "./services/notification.service";
 import {ProjectComponent} from "./project/project.component";
 import {ProjectInfoComponent} from "./project-info/project-info.component";
+import {NotificationsComponent} from "./notifications/notifications.component";
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import {ProjectInfoComponent} from "./project-info/project-info.component";
     ParticipationsComponent,
     UserSearchingComponent,
     ProjectComponent,
-    ProjectInfoComponent
+    ProjectInfoComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,

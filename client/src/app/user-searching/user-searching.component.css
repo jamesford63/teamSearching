@@ -1,0 +1,97 @@
+
+.name{
+  position: absolute;
+  left: 5px;
+  width: 700px;
+  padding: 10px;
+  top:210px;
+}
+
+.description{
+  position: absolute;
+  left: 5px;
+  width: 700px;
+  padding: 10px;
+  top:270px;
+}
+
+.tag{
+  position: absolute;
+  left: 480px;
+  width: 700px;
+  padding: 10px;
+  top:210px;
+}
+
+.profArea{
+  position: absolute;
+  left: 900px;
+  width: 450px;
+  padding: 10px;
+  top:210px;
+}
+
+.btn-success{
+  position: absolute;
+  left: 10px;
+  padding: 10px;
+  top:150px;
+}
+
+.btn-warning{
+  position: absolute;
+  left: 120px;
+  padding: 10px;
+  top:150px;
+}
+
+.choose{
+  position: absolute;
+  left: 5px;
+  padding: 10px;
+  top:450px;
+}
+
+.project{
+  position: absolute;
+  left: 155px;
+  padding: 10px;
+  top:442px;
+  width: 320px;
+}
+
+.error{
+  position: absolute;
+  left: 480px;
+  padding: 10px;
+  top:450px;
+  width: 500px;
+}
+
+.users{
+  position: relative;
+  top: 400px;
+}
+
+
+
+.table {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  font-size: 14px;
+  background: white;
+  max-width: 70%;
+  width: 70%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.th {
+  font-weight: normal;
+  color: #039;
+  border-bottom: 2px solid #6678b1;
+  padding: 10px 8px;
+}
+.td {
+  border-bottom: 1px solid #ccc;
+  padding: 9px 8px;
+  transition: .3s linear;
+}

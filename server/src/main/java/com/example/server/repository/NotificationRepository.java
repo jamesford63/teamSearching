@@ -10,5 +10,5 @@ import java.util.UUID;
 
 public interface NotificationRepository
         extends ElasticsearchRepository<Notification, UUID>, PagingAndSortingRepository<Notification, UUID> {
-    List<Notification> findNotificationsByTo(User to);
+    List<Notification> findNotificationsByTo_Id(UUID userId);
 }

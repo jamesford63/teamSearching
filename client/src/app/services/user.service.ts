@@ -67,7 +67,7 @@ export class UserService {
   authorize(userLogin: string, userPassword: string): Observable<any> {
     return this.http.post(this.APP_URL + '/login?username=' + userLogin + '&password=' + userPassword,
       null, {withCredentials: true})
-      .pipe(map(this.extractData),
+      .pipe(map(success => success.status),
         catchError(this.handleError))
   }
 

@@ -41,12 +41,22 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+        try {
+            User created = userService.createUser(user);
+            return new ResponseEntity<>(created, HttpStatus.CREATED);
+        } catch (IllegalArgumentException iae) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
+        try {
+            User updated = userService.updateUser(user);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (IllegalArgumentException iae) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

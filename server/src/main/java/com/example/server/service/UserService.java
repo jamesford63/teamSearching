@@ -62,6 +62,10 @@ public class UserService {
 
     public User createUser(User user) {
         log.info("Request to save user. BEGIN");
+        if (!checkIfLoginUnique(user)) {
+            log.warn("Request to save user. END -FAILED. Login must be unique!", user.getId());
+            throw new IllegalArgumentException("Login must be unique!");
+        }
         User savedUser;
         if (user.getId() == null)
             user.setId(UUID.randomUUID());
@@ -75,6 +79,13 @@ public class UserService {
     public User updateUser(User user) {
         log.info("Request to update user with id = {}. BEGIN", user.getId());
         User existedUser = userRepository.findById(user.getId()).orElse(null);
+        if (user.getLogin() != null)
+            if (checkIfLoginUnique(user))
+                existedUser.setLogin(user.getLogin());
+            else {
+                log.warn("Request to update user with id = {}. END -FAILED. Login must be unique!", user.getId());
+                throw new IllegalArgumentException("Login must be unique!");
+            }
         if (user.getName() != null)
             existedUser.setName(user.getName());
         if (user.getLastName() != null)
@@ -134,5 +145,10 @@ public class UserService {
         }
         log.info("Request to get all users matching filter. END - SUCCESS");
         return users;
+    }
+
+    private boolean checkIfLoginUnique(User user) {
+        User existed = userRepository.findByLogin(user.getLogin());
+        return existed == null;
     }
 }

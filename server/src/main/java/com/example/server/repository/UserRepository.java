@@ -7,7 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 import java.util.UUID;
-//TODO change filters
+
 public interface UserRepository
         extends ElasticsearchRepository<User, UUID>, PagingAndSortingRepository<User, UUID> {
     User findByLogin(String login);

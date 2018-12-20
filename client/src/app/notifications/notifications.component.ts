@@ -31,9 +31,10 @@ export class NotificationsComponent implements OnInit {
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private notificationService: NotificationService,
-    private router: Router) {}
+    private router: Router) {
+  }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getUser();
   }
 
@@ -41,22 +42,26 @@ export class NotificationsComponent implements OnInit {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
-        data => {this.userSource = data;
-          this.getUserNotifications();},
+        data => {
+          this.userSource = data;
+          this.getUserNotifications();
+        },
         errorCode => this.statusCodeUser);
   }
 
-  getUserNotifications(){
+  getUserNotifications() {
     this.preProcessConfigurations();
-      this.notificationService.getUserNotifications(this.userSource.id)
-        .subscribe(
-          data => {this.userNotifications = data; },
-          errorCode => this.statusCodeNotifications);
+    this.notificationService.getUserNotifications(this.userSource.id)
+      .subscribe(
+        data => {
+          this.userNotifications = data;
+        },
+        errorCode => this.statusCodeNotifications);
   }
 
-  accept(toUser,project,notificationId,projectId){
+  accept(toUser, project, notificationId, projectId) {
     let confirmation = new Notification(UUID.UUID(), NotificationType.INFORMATION, this.userSource, toUser,
-      project, NotificationStatus.UNREAD, this.userSource.name + " " + this.userSource.lastName + "утвердил ваше участие в проекте");
+      project, NotificationStatus.UNREAD, this.userSource.name + " " + this.userSource.lastName + " утвердил ваше участие в проекте");
     this.notificationService.createNotification(confirmation)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;
@@ -72,23 +77,22 @@ export class NotificationsComponent implements OnInit {
     this.projectService.getProject(projectId)
       .subscribe(
         data => {
+          console.log(toUser);
           this.projectToUpdate = data;
           this.projectToUpdate.participants.push(toUser);
+          this.projectService.updateProject(this.projectToUpdate)
+            .subscribe(successCode => {
+                this.statusCodeProject = successCode;
+              },
+              errorCode => this.statusCodeProject = errorCode);
+          this.projectToUpdate = null;
         },
         errorCode => this.statusCodeProject);
-
-    this.projectService.updateProject(this.projectToUpdate)
-      .subscribe(successCode => {
-          this.statusCodeProject = successCode;
-        },
-        errorCode => this.statusCodeProject = errorCode);
-
-    this.projectToUpdate = null;
   }
 
-  decline(toUser,project,notificationId){
+  decline(toUser, project, notificationId) {
     let confirmation = new Notification(UUID.UUID(), NotificationType.INFORMATION, this.userSource, toUser,
-      project, NotificationStatus.UNREAD, this.userSource.name + " " + this.userSource.lastName + "отклонил вашу заявку на участие в проекте");
+      project, NotificationStatus.UNREAD, this.userSource.name + " " + this.userSource.lastName + " отклонил вашу заявку на участие в проекте");
     this.notificationService.createNotification(confirmation)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;

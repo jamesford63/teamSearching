@@ -16,12 +16,10 @@ import java.util.UUID;
 @Component
 public class NotificationService {
     private NotificationRepository notificationRepository;
-    private UserRepository userRepository;
 
     @Autowired
     public NotificationService(NotificationRepository notificationRepository, UserRepository userRepository) {
         this.notificationRepository = notificationRepository;
-        this.userRepository = userRepository;
     }
 
     public List<Notification> getAllNotifications() {
@@ -89,7 +87,6 @@ public class NotificationService {
 
     public List<Notification> getUserNotifications(UUID userId) {
         log.info("Request to get notifications of user with id = {}. BEGIN", userId);
-        //User user = userRepository.findById(userId).orElse(null);
         List<Notification> notifications = notificationRepository.findNotificationsByTo_Id(userId);
         log.info("Request to get notifications of user with id. END - SUCCESS.");
 

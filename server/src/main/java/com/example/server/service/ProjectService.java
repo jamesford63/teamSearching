@@ -22,14 +22,10 @@ import java.util.stream.Collectors;
 @Component
 public class ProjectService {
     private ProjectRepository projectRepository;
-    private UserRepository userRepository;
-    private Client client;
 
     @Autowired
     public void setProjectRepository(ProjectRepository projectRepository, Client client, UserRepository userRepository) {
         this.projectRepository = projectRepository;
-        this.client = client;
-        this.userRepository = userRepository;
     }
 
     public List<Project> getAllProjects() {
@@ -133,7 +129,6 @@ public class ProjectService {
 
     public List<Project> getUserProjects(UUID userId) {
         log.info("Request to get projects of user with id = {}. BEGIN", userId);
-        //User user = userRepository.findById(userId).orElse(null);
         List<Project> projects = projectRepository.findProjectsByOwner_Id(userId);
         log.info("Request to get projects of user with id. END - SUCCESS.");
 

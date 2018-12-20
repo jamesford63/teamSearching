@@ -1,4 +1,3 @@
-
 import {Component, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../services/user.service";
@@ -24,7 +23,8 @@ export class RegistrationComponent implements OnInit {
     email: new FormControl('', Validators.required)
   });
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router) {
+  }
 
   ngOnInit() {
   }
@@ -43,19 +43,21 @@ export class RegistrationComponent implements OnInit {
     const city = this.registrationForm.get('city').value.trim();
     const email = this.registrationForm.get('email').value;
     // Handle create user
-    const user = new User(UUID.UUID(), login, password, email, name, lastName, city, [], [], [],[],0,'');
+    const user = new User(UUID.UUID(), login, password, email, name, lastName, city, [], [], [], [], 0, '');
     this.userService.createUser(user)
       .subscribe(successCode => {
           this.statusCode = successCode;
           this.backToCreateClient();
-          this.userService.authorize(login, password);
-          this.router.navigate(['/lk']);},
+          this.userService.authorize(login, password)
+            .subscribe(next => this.router.navigate(['/lk']));
+        },
         errorCode => {
-        this.statusCode = errorCode
-         console.log(this.statusCode);
+          this.statusCode = errorCode
+          console.log(this.statusCode);
         });
 
   }
+
   // Perform preliminary processing configurations
   preProcessConfigurations() {
     this.statusCode = null;

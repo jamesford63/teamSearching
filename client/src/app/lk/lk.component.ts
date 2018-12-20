@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {User} from "../table-classes/user";
@@ -16,7 +16,6 @@ import {UUID} from "angular2-uuid";
 })
 
 export class LkComponent implements OnInit {
-
   userSource: User;
   statusCode: number;
   userIdToUpdate = null;
@@ -24,20 +23,17 @@ export class LkComponent implements OnInit {
   requestProcessing = false;
   statusCodeUser: number;
   statusCodeProfArea: number;
-  statusCodeTag: number;
   profAreas: ProfArea[];
-  tags: Tag[];
   tag: Tag;
   userForm: FormGroup;
   newTagForm: FormGroup;
   newProfAreaForm: FormGroup;
 
   constructor(
-              private userService: UserService,
-              private profAreaService: ProfAreaService,
-              private tagService: TagService,
-              private route: ActivatedRoute,
-              private router: Router) {}
+    private userService: UserService,
+    private profAreaService: ProfAreaService,
+    private tagService: TagService) {
+  }
 
   ngOnInit() {
     this.userForm = new FormGroup({
@@ -63,42 +59,40 @@ export class LkComponent implements OnInit {
 
   getUser() {
     this.preProcessConfigurations();
-    this.userService.getCurrentUser()
-      .subscribe(
-        user => {this.userSource = user;
-          this.getAllProfAreas();
-          this.getAllTags();
-          this.userForm.setValue({
-            login: user.login,
-            password: "",
-            name: user.name,
-            lastName: user.lastName,
-            city: user.city,
-            email: user.email,
-            description: user.description});
-          this.processValidationUser = true;
-          this.requestProcessing = false;},
-        errorCode => this.statusCodeUser);
+    setTimeout(() =>
+        this.userService.getCurrentUser()
+          .subscribe(
+            user => {
+              this.userSource = user;
+              this.getAllProfAreas();
+              this.userForm.setValue({
+                login: user.login,
+                password: "",
+                name: user.name,
+                lastName: user.lastName,
+                city: user.city,
+                email: user.email,
+                description: user.description
+              });
+              this.processValidationUser = true;
+              this.requestProcessing = false;
+            },
+            () => this.statusCodeUser),
+      150
+    )
   }
 
-  getAllProfAreas(){
+  getAllProfAreas() {
     this.preProcessConfigurations();
     this.profAreaService.getAllProfAreas()
       .subscribe(
-        data => {this.profAreas = data; },
+        data => {
+          this.profAreas = data;
+        },
         errorCode => this.statusCodeProfArea);
   }
 
-  getAllTags(){
-    this.preProcessConfigurations();
-    this.tagService.getAllTags()
-      .subscribe(
-        data => {this.tags = data; },
-        errorCode => this.statusCodeTag);
-  }
-
   onUserFormSubmit() {
-
     this.processValidationUser = true;
     // Form is valid, now perform update
     this.preProcessConfigurations();
@@ -109,10 +103,10 @@ export class LkComponent implements OnInit {
     const city = this.userForm.get('city').value;
     const email = this.userForm.get('email').value;
     const description = this.userForm.get('description').value;
-    if(password == "")
+    if (password == "")
       password = this.userSource.password;
     // Handle update user
-    const user = new User(this.userSource.id, login, password, email, name, lastName,city, this.userSource.profAreas,
+    const user = new User(this.userSource.id, login, password, email, name, lastName, city, this.userSource.profAreas,
       this.userSource.tags, this.userSource.projectsCreated, this.userSource.projectsParticipated,
       this.userSource.userStatus, description);
     this.userService.updateUser(user)
@@ -140,12 +134,13 @@ export class LkComponent implements OnInit {
               lastName: user.lastName,
               city: user.city,
               email: user.email,
-              description: user.description});
+              description: user.description
+            });
             this.processValidationUser = true;
             this.requestProcessing = false;
             this.userSource = user;
           },
-          errorCode =>  this.statusCodeUser = errorCode);
+          errorCode => this.statusCodeUser = errorCode);
     } else {
       this.userService.getCurrentUser()
         .subscribe(user => {
@@ -157,11 +152,12 @@ export class LkComponent implements OnInit {
               lastName: user.lastName,
               city: user.city,
               email: user.email,
-              description: user.description});
+              description: user.description
+            });
             this.processValidationUser = true;
             this.requestProcessing = false;
           },
-          errorCode =>  this.statusCodeUser = errorCode);
+          errorCode => this.statusCodeUser = errorCode);
     }
   }
 
@@ -232,11 +228,11 @@ export class LkComponent implements OnInit {
     this.processValidationUser = false;
   }
 
-  backToCreateProfArea(){
+  backToCreateProfArea() {
     this.newProfAreaForm.reset();
   }
 
-  backToCreateTag(){
+  backToCreateTag() {
     this.newTagForm.reset();
   }
 

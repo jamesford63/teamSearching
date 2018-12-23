@@ -1,7 +1,5 @@
 package com.example.server.entity;
 
-import com.example.server.entity.enums.UserStatus;
-import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -28,6 +26,5 @@ public class User {
     private List<Tag> tags;
     private List<UUID> projectsCreated;
     private List<UUID> projectsParticipated;
-    private UserStatus userStatus;
     private String description;
 }

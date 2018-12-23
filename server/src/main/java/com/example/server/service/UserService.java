@@ -105,8 +105,6 @@ public class UserService {
             existedUser.setTags(user.getTags());
         if (user.getProfAreas() != null)
             existedUser.setProfAreas(user.getProfAreas());
-        if (user.getUserStatus() != null)
-            existedUser.setUserStatus(user.getUserStatus());
         if(user.getProjectsCreated() != null)
             existedUser.setProjectsCreated(user.getProjectsCreated());
         if(user.getProjectsParticipated() != null)

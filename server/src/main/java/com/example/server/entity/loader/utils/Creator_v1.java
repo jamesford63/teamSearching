@@ -3,7 +3,6 @@ package com.example.server.entity.loader.utils;
 import com.example.server.entity.*;
 import com.example.server.entity.enums.NotificationStatus;
 import com.example.server.entity.enums.NotificationType;
-import com.example.server.entity.enums.UserStatus;
 import lombok.Data;
 import org.apache.commons.lang.RandomStringUtils;
 
@@ -60,7 +59,6 @@ public class Creator_v1 {
         user.setLastName(RandomStringUtils.randomAlphabetic(length));
         user.setEmail(RandomStringUtils.randomAlphabetic(length));
         user.setCity(RandomStringUtils.randomAlphabetic(length));
-        user.setUserStatus(UserStatus.OFFLINE);
         user.setCity(RandomStringUtils.randomAlphabetic(length));
         user.setDescription(RandomStringUtils.randomAlphabetic(length));
         List<ProfArea> areas = new ArrayList<>();

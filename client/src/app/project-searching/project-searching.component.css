@@ -15,6 +15,14 @@
   top:270px;
 }
 
+.city{
+  position: absolute;
+  left: 5px;
+  width: 700px;
+  padding: 10px;
+  top:420px;
+}
+
 .tag{
   position: absolute;
   left: 480px;
@@ -47,7 +55,7 @@
 
 .projects{
   position: relative;
-  top: 300px;
+  top: 350px;
 }
 
 .table {

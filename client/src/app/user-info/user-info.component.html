@@ -1,8 +1,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
   <a href="#" class="navbar-brand">
     <img src="https://taylorstano.files.wordpress.com/2015/01/cropped-ts-logo.png"
@@ -14,77 +12,83 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a href="#" class="nav-link">Главная страница</a>
+      <li class="nav-item">
+        <a routerLink="/start-page" class="nav-link">Главная страница</a>
       </li>
-      <li *ngIf="!this.isAuthorized" class="nav-item">
-        <a routerLink="/login" class="nav-link">Войти</a>
-      </li>
-      <li *ngIf="!this.isAuthorized" class="nav-item">
-        <a routerLink="/user-reg" class="nav-link">Зарегистрироваться</a>
-      </li>
-      <li *ngIf="this.isAuthorized" class="nav-item">
+      <li class="nav-item">
         <a routerLink="/lk" class="nav-link">Личный кабинет</a>
       </li>
-      <li *ngIf="this.isAuthorized" class="nav-item">
+      <li class="nav-item">
         <a routerLink="/my-projects" class="nav-link">Мои проекты</a>
       </li>
-      <li *ngIf="this.isAuthorized" class="nav-item">
+      <li class="nav-item">
         <a routerLink="/participations" class="nav-link">Участие в проектах</a>
       </li>
-      <li *ngIf="this.isAuthorized" class="nav-item">
+      <li class="nav-item">
         <a routerLink="/create-project" class="nav-link">Создать проект</a>
       </li>
-      <li *ngIf="this.isAuthorized" class="nav-item">
+      <li class="nav-item">
         <a routerLink="/project-searching" class="nav-link">Поиск проекта</a>
       </li>
-      <li *ngIf="this.isAuthorized" class="nav-item">
+      <li class="nav-item">
         <a routerLink="/user-searching" class="nav-link">Найти команду</a>
       </li>
-      <li *ngIf="this.isAuthorized" class="nav-item">
+      <li class="nav-item">
         <a routerLink="/notifications" class="nav-link">Уведомления</a>
       </li>
-      <!--<li *ngIf="this.isAuthorized" class="nav-item">-->
-        <!--<button class="btn btn-outline-success my-2 my-sm-0" (click)="logout()">Выйти из аккаунта</button>-->
-      <!--</li>-->
     </ul>
   </div>
 </nav>
+<p>&#160;</p>
 
-&#160;
-&#160;
-&#160;
-<h1 align="center">TeamSearching - это платформа, на которой Вы сможете:</h1>
-<table align="center">
-  <tr>&#160;</tr>
-  <tr>&#160;</tr>
-  <tr>
-    <td>
-      <h3>&#160;&#160;&#160;&#160;Найти команду людей<br>&#160;&#160;&#160;&#160;для совместного выполнения<br>&#160;&#160;&#160;&#160;Вашего проекта&#160;&#160;</h3>
-    </td>
-    <td>&#160;</td>
-    <td>&#160;</td>
-    <td>
-      <img src="http://test.keepmoving.pro/assets/images/teamsearch.jpg"
-           width="200" height="100" alt="logo">
-    </td>
-  </tr>
-  <tr>&#160;</tr>
-  <tr>&#160;</tr>
-  <tr>
-    <td>
-      <h3>&#160;&#160;&#160;&#160;Найти интересный для себя проект<br>&#160;&#160;&#160;&#160;и принять в нем участие</h3>
-    </td>
-    <td>&#160;</td>
-    <td>&#160;</td>
-    <td>
-      <img src="http://www.proimpakt.com/wp-content/uploads/2017/12/AdobeStock_81808080-1.jpeg"
-           width="200" height="100" alt="logo">
-    </td>
-  </tr>
-  <tr>&#160;</tr>
-  <tr>&#160;</tr>
-</table>
+<div class="userName">
+  <table>
+    <tr>
+      <td style="text-decoration: underline; width: 200px; height: 35px;"><h5>Имя</h5></td>
+      <td style="width: 500px; height: 35px;"><h6>{{userToCheck?.name}} {{userToCheck?.lastName}}</h6></td>
+    </tr>
+  </table>
+</div>
+
+<div class="descriptionForm">
+  <table>
+    <tr>
+      <td style="text-decoration: underline; width: 200px; height: 35px;"><h5>О себе</h5></td>
+      <td style="width: 500px; height: 35px;"><h6>{{userToCheck?.description}}</h6></td>
+    </tr>
+  </table>
+</div>
+
+<div class="filterForm">
+  <div class="filter">
+    <div class="profAreaForm">
+      <table>
+        <tr>
+          <td width="200px" style="text-decoration: underline;"><h5>Проф. области</h5></td>
+          <td></td>
+        </tr>
+        <tr *ngFor="let profArea of userToCheck?.profAreas" >
+          <td></td>
+          <td><h6>{{profArea?.name}}</h6></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="tagForm">
+      <table>
+        <tr>
+          <td width="200px" style="text-decoration: underline;"><h5>Теги</h5></td>
+          <td></td>
+        </tr>
+        <tr *ngFor="let tag of userToCheck?.tags" >
+          <td></td>
+          <td><h6>{{tag?.name}}</h6></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
 
 
 
@@ -92,3 +96,4 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+

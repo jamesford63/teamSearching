@@ -15,6 +15,14 @@
   top:270px;
 }
 
+.city{
+  position: absolute;
+  left: 5px;
+  width: 700px;
+  padding: 10px;
+  top:425px;
+}
+
 .tag{
   position: absolute;
   left: 480px;
@@ -49,14 +57,14 @@
   position: absolute;
   left: 5px;
   padding: 10px;
-  top:450px;
+  top:490px;
 }
 
 .project{
   position: absolute;
   left: 155px;
   padding: 10px;
-  top:442px;
+  top:482px;
   width: 320px;
 }
 
@@ -64,16 +72,14 @@
   position: absolute;
   left: 480px;
   padding: 10px;
-  top:450px;
+  top:490px;
   width: 500px;
 }
 
 .users{
   position: relative;
-  top: 400px;
+  top: 430px;
 }
-
-
 
 .table {
   font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;

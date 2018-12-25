@@ -31,10 +31,11 @@ export class CreateProjectComponent implements OnInit {
   profAreaForm: FormGroup;
   tagForm: FormGroup;
   descriptionForm: FormGroup;
+  cityForm: FormGroup;
   profAreaArray: ProfArea[] = [];
   tagArray: Tag[] = [];
   profAreas: ProfArea[];
-  newProject: Project = new Project(UUID.UUID(),'',[],[],this.userSource,[],'',ProjectStatus.OPEN);
+  newProject: Project = new Project(UUID.UUID(),'',[],[],this.userSource,[],'',ProjectStatus.OPEN,'');
   created : boolean = false;
 
   ngOnInit() {
@@ -49,6 +50,9 @@ export class CreateProjectComponent implements OnInit {
     });
     this.descriptionForm = new FormGroup({
       description: new FormControl('', Validators.required),
+    });
+    this.cityForm = new FormGroup({
+      city: new FormControl('', Validators.required),
     });
     this.created = false;
     this.getUser();
@@ -137,7 +141,19 @@ export class CreateProjectComponent implements OnInit {
       this.newProject.name = name;
     }
     else this.newProject.name = name;
+  }
 
+  onCityFormSubmit(){
+    console.log(this.cityForm.get('city').value);
+    if (this.cityForm.invalid) {
+      return; // Validation failed, exit from method.
+    }
+    let city = this.cityForm.get('city').value;
+    if(city == null){
+      city = '';
+      this.newProject.city = city;
+    }
+    else this.newProject.city = city;
   }
 
 
@@ -150,12 +166,13 @@ export class CreateProjectComponent implements OnInit {
   }
 
   createProject(){
-    this.preProcessConfigurations()
+    this.preProcessConfigurations();
     this.onNameFormSubmit();
     this.onDescriptionFormSubmit();
-    const project = new Project(UUID.UUID(), this.newProject.name, this.profAreaArray, null,
+    this.onCityFormSubmit();
+    const project = new Project(UUID.UUID(), this.newProject.name, this.profAreaArray,[],
                                 this.userSource,this.tagArray,this.newProject.description,
-                                ProjectStatus.OPEN)
+                                ProjectStatus.OPEN,this.newProject.city);
     this.projectService.createProject(project)
       .subscribe(successCode => {
           this.statusCodeProject = successCode;

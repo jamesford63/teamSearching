@@ -1,4 +1,6 @@
 export enum NotificationType {
   REQUEST,
-  INFORMATION
+  INFORMATION,
+  ACCEPTINFO,
+  DECLINEINFO
 }

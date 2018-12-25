@@ -3,7 +3,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
   <a href="#" class="navbar-brand">
-    <img src="https://taylorstano.files.wordpress.com/2015/01/cropped-ts-logo.png"
+    <img src="https://vk.com/doc130774926_485681556?hash=127deac89fd5fb7723&dl=e6cb1d2e348c4b0fab"
          width="80" height="40" alt="logo">
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -60,6 +60,18 @@
       <tr>
         <td width="200px" style="text-decoration: underline;">Описание</td>
         <td width="200"><textarea style="width: 500px; height: 100px;" formControlName="description" class="form-control mr-sm-2"></textarea></td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+<div *ngIf="!isDeleted" class="cityForm">
+  <form [formGroup]="cityForm" (ngSubmit)="onCityFormSubmit()">
+    <table>
+      <tr>
+        <td width="200px" style="text-decoration: underline;">Город</td>
+        <td></td>
+        <td width="200px"><input style="width: 500px; height: 35px;" formControlName="city" class="form-control mr-sm-2"></td>
       </tr>
     </table>
   </form>
@@ -126,8 +138,8 @@
       </tr>
       <tr *ngFor="let user of projectSource.participants">
         <td></td>
-        <td>{{user?.name}} {{user?.lastName}}</td>
-        <td><button type="button" (click)="removeParticipant(user)" class="btn btn-success">Послать его нахуй</button></td>
+        <td style="width: 260px;"><a routerLink="/user-info/{{user?.id}}">{{user?.name}} {{user?.lastName}}</a></td>
+        <td><button type="button" (click)="removeParticipant(user)" class="btn btn-outline-success my-2 my-sm-0">Под трибунал</button></td>
       </tr>
     </table>
   </div>

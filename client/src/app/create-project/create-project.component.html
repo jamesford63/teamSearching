@@ -66,6 +66,17 @@
   </form>
 </div>
 
+<div *ngIf="!created" class="cityForm">
+  <form [formGroup]="cityForm" (ngSubmit)="onCityFormSubmit()">
+    <table>
+      <tr>
+        <td width="200px" style="text-decoration: underline;">Город</td>
+        <td width="200"><input style="width: 500px; height: 35px;" formControlName="city" class="form-control mr-sm-2"></td>
+      </tr>
+    </table>
+  </form>
+</div>
+
 <div class="filter">
 <div *ngIf="!created" [formGroup]="profAreaForm" (ngSubmit)="onProfAreaFormSubmit()" class="profAreaForm">
   <table>

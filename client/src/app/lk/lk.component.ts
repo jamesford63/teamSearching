@@ -104,7 +104,7 @@ export class LkComponent implements OnInit {
     const email = this.userForm.get('email').value;
     const description = this.userForm.get('description').value;
     if (password == "")
-      password = this.userSource.password;
+      password = null;
     // Handle update user
     const user = new User(this.userSource.id, login, password, email, name, lastName, city, this.userSource.profAreas,
       this.userSource.tags, this.userSource.projectsCreated, this.userSource.projectsParticipated,
@@ -192,9 +192,16 @@ export class LkComponent implements OnInit {
     this.preProcessConfigurations();
     let tag = this.newTagForm.get('tag').value.trim();
     let newTag = new Tag(UUID.UUID(), tag);
-    this.tagService.createTag(newTag);
+    this.tagService.createTag(newTag)
+      .subscribe(successCode => {
+          this.statusCode = successCode;},
+        errorCode => this.statusCode = errorCode);
     this.userSource.tags.push(newTag);
-    this.userService.updateUser(this.userSource);
+    this.userSource.password = null;
+    this.userService.updateUser(this.userSource)
+      .subscribe(successCode => {
+          this.statusCodeUser = successCode;},
+        errorCode => this.statusCodeUser = errorCode);
     this.backToCreateTag();
   }
 

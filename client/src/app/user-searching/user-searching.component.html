@@ -64,6 +64,15 @@
     </table>
   </div>
 
+  <div [formGroup]="cityForm" class="city">
+    <table>
+      <tr>
+        <td style="text-decoration: underline; width: 150px; height: 35px;">Город</td>
+        <td style="width: 300px; height: 35px;"><input formControlName="city" class="form-control mr-sm-2"></td>
+      </tr>
+    </table>
+  </div>
+
   <div [formGroup]="tagForm" (ngSubmit)="onTagFormSubmit()" class="tag">
     <table>
       <tr>

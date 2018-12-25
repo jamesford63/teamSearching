@@ -31,6 +31,7 @@ import {NotificationService} from "./services/notification.service";
 import {ProjectComponent} from "./project/project.component";
 import {ProjectInfoComponent} from "./project-info/project-info.component";
 import {NotificationsComponent} from "./notifications/notifications.component";
+import {UserInfoComponent} from "./user-info/user-info.component";
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import {NotificationsComponent} from "./notifications/notifications.component";
     UserSearchingComponent,
     ProjectComponent,
     ProjectInfoComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    UserInfoComponent
   ],
   imports: [
     BrowserModule,

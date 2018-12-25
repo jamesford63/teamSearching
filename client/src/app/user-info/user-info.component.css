@@ -1,44 +1,28 @@
 .nameForm{
   position: absolute;
-  left: 300px;
+  left: 350px;
   width: 1000px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
-  top:170px;
-}
-
-.filter{
-  position: absolute;
-  left: 300px;
-  width: 900px; /* Ширина слоя */
-  padding: 10px; /* Поля вокруг текста */
-  top:395px;
+  top:70px;
 }
 
 .descriptionForm{
   position: absolute;
-  left: 300px;
+  left: 350px;
   width: 900px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
-  top:220px;
+  top:120px;
 }
 
-.cityForm{
+.filterForm{
   position: absolute;
-  left: 300px;
+  left: 350px;
   width: 900px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
-  top:340px;
+  top:190px;
 }
 
 .tagForm{
   position: relative;
-  top:20px;
+  top:0px;
 }
-
-.btn-success{
-  position: absolute;
-  left: 1050px;
-  top:180px;
-}
-
-

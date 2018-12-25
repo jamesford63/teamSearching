@@ -1,6 +1,5 @@
 package com.example.server.entity;
 
-import com.example.server.entity.enums.NotificationStatus;
 import com.example.server.entity.enums.NotificationType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +20,5 @@ public class Notification {
     private User from;
     private User to;
     private Project project;
-    private NotificationStatus status;
     private String description;
 }

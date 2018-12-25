@@ -60,8 +60,12 @@
       <td align="center" style="width: 200px; height: 35px;" class="td"><h6>{{notification?.from?.email}}</h6></td>
       <td align="center" style="width: 400px; height: 35px;" class="td"><h6>{{notification?.project?.name}}</h6></td>
       <td align="center">
-        <button type="button" style="width: 105px" (click)="accept(notification?.from, notification?.project, notification?.id, notification?.project?.id)" class="btn btn-outline-success my-2 my-sm-0">Принять</button>
-        <button type="button" (click)="decline(notification?.from, notification?.project, notification?.id)" class="btn btn-danger">Отклонить</button>
+        <button *ngIf="notification.type.toString() === 'REQUEST'" type="button" style="width: 105px" (click)="accept(notification?.from, notification?.project, notification?.id, notification?.project?.id)" class="btn btn-outline-success my-2 my-sm-0">Принять</button>
+        <button *ngIf="notification.type.toString() === 'REQUEST'" type="button" (click)="decline(notification?.from, notification?.project, notification?.id)" class="btn btn-danger">Отклонить</button>
+        <button *ngIf="notification.type.toString() === 'ACCEPTINFO'" type="button" style="width: 105px" (click)="ok(notification?.id, notification?.project?.id)" class="btn btn-outline-success my-2 my-sm-0">Ок</button>
+        <button *ngIf="notification.type.toString() === 'DECLINEINFO'" type="button" style="width: 105px" (click)="declined(notification?.id)" class="btn btn-outline-success my-2 my-sm-0">Ок</button>
+        <button *ngIf="notification.type.toString() === 'FIREDINFO'" type="button" style="width: 105px" (click)="fired(notification?.project?.id, notification?.id)" class="btn btn-outline-success my-2 my-sm-0">Ок</button>
+        <button *ngIf="notification.type.toString() === 'LEAVEINFO'" type="button" style="width: 105px" (click)="left(notification?.project?.id, notification?.from?.id, notification?.id)" class="btn btn-outline-success my-2 my-sm-0">Ок</button>
       </td>
     </tr>
     <tr>

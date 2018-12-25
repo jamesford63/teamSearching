@@ -35,6 +35,7 @@ export class UserSearchingComponent implements OnInit {
   tagForm: FormGroup;
   descriptionForm: FormGroup;
   nameForm: FormGroup;
+  cityForm: FormGroup;
   projectForm: FormGroup;
   profAreaFilterArray: ProfArea[] = null;
   tagFilterArray: Tag[] = null;
@@ -65,6 +66,9 @@ export class UserSearchingComponent implements OnInit {
     this.nameForm = new FormGroup({
       name: new FormControl('', Validators.required),
     });
+    this.cityForm = new FormGroup({
+      city: new FormControl('', Validators.required),
+    });
 
     this.projectForm = new FormGroup({
       project: new FormControl('', Validators.required),
@@ -80,7 +84,7 @@ export class UserSearchingComponent implements OnInit {
         data => {this.userSource = data;
           this.getAllProfAreas();
           this.getAllUsers();
-          this.getUserProjects()},
+          this.getUserProjects();},
         errorCode => this.statusCodeUser);
   }
 
@@ -104,8 +108,13 @@ export class UserSearchingComponent implements OnInit {
     this.preProcessConfigurations();
     this.userService.getAllUsers()
       .subscribe(
-        data => {this.filteredUsers = data; },
+        data => {this.filteredUsers = data;
+        this.removeMyName()},
         errorCode => this.statusCodeUsers);
+  }
+
+  removeMyName(){
+    this.filteredUsers = this.filteredUsers.filter(item => item.id !== this.userSource.id);
   }
 
   onProfAreaFormSubmit() {
@@ -139,8 +148,8 @@ export class UserSearchingComponent implements OnInit {
     let tag = this.tagForm.get('tag').value.trim();
 
     let was = false;
-    for(var i = 0; i<this.tagFilterArray.length; i++) {
-      if (tag == this.tagFilterArray[i]) {
+    for(var i = 0; i < this.tagFilterArray.length; i++) {
+      if (tag == this.tagFilterArray[i].name) {
         was = true;
         break;
       }
@@ -168,14 +177,17 @@ export class UserSearchingComponent implements OnInit {
     let description = this.descriptionForm.get('description').value;
     this.filterRequest.description = description;
 
+    let city = this.cityForm.get('city').value;
+    this.filterRequest.city = city;
+
     this.filterRequest.tags = this.tagFilterArray;
     this.filterRequest.profAreas = this.profAreaFilterArray;
 
     this.userService.getFilteredUsers(this.filterRequest)
       .subscribe(
-        data => {this.filteredUsers = data; },
+        data => {this.filteredUsers = data;
+          this.filteredUsers = this.filteredUsers.filter(item => item !== this.userSource);},
         errorCode => this.statusCodeUsers);
-    this.filteredUsers = this.filteredUsers.filter(item => item !== this.userSource);
   }
 
   sendRequestToUser(user: User){
@@ -206,11 +218,11 @@ export class UserSearchingComponent implements OnInit {
     this.nameForm.reset();
     this.descriptionForm.reset();
     this.tagForm.reset();
+    this.cityForm.reset();
     this.tagFilterArray = [];
     this.profAreaFilterArray = [];
     this.filterRequest = new FilterRequest('',[],[],'','');
     this.getAllUsers();
-    console.log(this.filteredUsers);
   }
 
   preProcessConfigurations() {

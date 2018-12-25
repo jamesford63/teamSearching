@@ -14,12 +14,20 @@
   top:150px;
 }
 
+.cityForm{
+  position: absolute;
+  left: 300px;
+  width: 900px; /* Ширина слоя */
+  padding: 10px; /* Поля вокруг текста */
+  top:267px;
+}
+
 .filterForm{
   position: absolute;
   left: 300px;
   width: 900px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
-  top:280px;
+  top:320px;
 }
 
 .tagForm{

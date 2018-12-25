@@ -46,9 +46,9 @@
     <tr>
       <td><h5 style="text-decoration: underline;">Название</h5></td>
     </tr>
-    <tr *ngFor="let project of userSource.projectsParticipated" >
-      <td ><h6 style="width: 700px;">{{project?.name}}</h6></td>
-      <td><button (click)="redirectToProject(project)" class="btn btn-success">Просмотреть/Выйти с проекта</button></td>
+    <tr *ngFor="let project of userParticipations" >
+      <td ><h6 style="width: 700px;"><a routerLink="/project-info/{{project?.id}}">{{project?.name}}</a></h6></td>
+      <td><button (click)="leaveProject(project?.id)" class="btn btn-success">Покинуть проект</button></td>
     </tr>
   </table>
 </div>

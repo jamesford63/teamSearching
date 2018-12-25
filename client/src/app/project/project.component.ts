@@ -42,6 +42,7 @@ export class ProjectComponent implements OnInit {
   profAreaForm: FormGroup;
   tagForm: FormGroup;
   descriptionForm: FormGroup;
+  cityForm: FormGroup;
 
   isDeleted: boolean = false;
   haveParticipants: boolean = false;
@@ -68,11 +69,13 @@ export class ProjectComponent implements OnInit {
     this.descriptionForm = new FormGroup({
       description: new FormControl('', Validators.required),
     });
+    this.cityForm = new FormGroup({
+      city: new FormControl('', Validators.required),
+    });
     this.getUser();
     this.getAllProfAreas();
     this.isDeleted = false;
     this.edited = false;
-    this.checkParticipants();
   }
 
   getUser() {
@@ -95,6 +98,7 @@ export class ProjectComponent implements OnInit {
   checkParticipants(){
     if(this.projectSource.participants.length != 0)
       this.haveParticipants = true;
+    console.log(this.haveParticipants);
   }
 
   onProfAreaFormSubmit() {
@@ -144,6 +148,16 @@ export class ProjectComponent implements OnInit {
     this.projectSource.description = description;
   }
 
+  onCityFormSubmit() {
+    if (this.cityForm.invalid) {
+      return; // Validation failed, exit from method.
+    }
+    // Form is valid, now perform create
+    let city = this.cityForm.get('city').value;
+
+    this.projectSource.city = city;
+  }
+
   onNameFormSubmit() {
     if (this.nameForm.invalid) {
       return; // Validation failed, exit from method.
@@ -171,14 +185,19 @@ export class ProjectComponent implements OnInit {
         .subscribe(
           data => {
             this.projectSource = data;
+            console.log(this.projectSource);
             this.nameForm.setValue({
               name: data.name
             });
             this.descriptionForm.setValue({
               description: data.description
             });
+            this.cityForm.setValue({
+              city: data.city
+            });
             this.projectTags = data.tags;
             this.projectProfAreas = data.profArea;
+            this.checkParticipants();
           },
           errorCode => this.statusCodeProject);
     }
@@ -187,8 +206,12 @@ export class ProjectComponent implements OnInit {
         .subscribe(
           data => {
             this.projectSource = data;
+            console.log(this.projectSource);
             this.nameForm.setValue({
               name: data.name
+            });
+            this.cityForm.setValue({
+              city: data.city
             });
             this.descriptionForm.setValue({
               description: data.description
@@ -201,9 +224,10 @@ export class ProjectComponent implements OnInit {
     }
 
   updateProject(){
-    this.preProcessConfigurations()
+    this.preProcessConfigurations();
     this.onNameFormSubmit();
     this.onDescriptionFormSubmit();
+    this.onCityFormSubmit();
     this.projectSource.profArea = this.projectProfAreas;
     this.projectSource.tags = this.projectTags;
     this.projectService.updateProject(this.projectSource)
@@ -218,17 +242,22 @@ export class ProjectComponent implements OnInit {
     this.projectService.deleteProject(this.projectSource.id)
       .subscribe(successCode => {
           this.statusCodeProject = successCode;
-          this.userSource.projectsCreated = this.userSource.projectsCreated.filter(item =>
-            item !== this.projectSource.id);
-          this.userService.updateUser(this.userSource);
           this.isDeleted = true;
         },
         errorCode => this.statusCodeProject = errorCode);
+    this.userSource.projectsCreated = this.userSource.projectsCreated.filter(item =>
+      item !== this.projectSource.id);
+    this.userSource.password = null;
+    this.userService.updateUser(this.userSource)
+      .subscribe(successCode => {
+          this.statusCodeUser = successCode;
+        },
+        errorCode => this.statusCodeUser = errorCode);
   }
 
   removeParticipant(user){
-    let notification = new Notification(UUID.UUID(),NotificationType.INFORMATION,this.userSource,
-      user,this.projectSource,NotificationStatus.UNREAD, "You are fired!");
+    let notification = new Notification(UUID.UUID(),NotificationType.FIREDINFO, this.userSource,
+      user,this.projectSource,NotificationStatus.UNREAD, "Вы слишком дорого обходитесь нашему проекту. Вы уволены!");
 
     this.notificationService.createNotification(notification)
       .subscribe(successCode => {

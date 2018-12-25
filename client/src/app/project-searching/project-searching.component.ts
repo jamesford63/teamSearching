@@ -33,12 +33,14 @@ export class ProjectSearchingComponent implements OnInit {
   profAreaForm: FormGroup;
   tagForm: FormGroup;
   descriptionForm: FormGroup;
+  cityForm: FormGroup;
   nameForm: FormGroup;
   profAreaFilterArray: ProfArea[] = null;
   tagFilterArray: Tag[] = null;
   filterRequest: FilterRequest = new FilterRequest('',[],[],'','');
   profAreas: ProfArea[];
   filteredProjects: Project[];
+  hideArray: boolean[];
 
   constructor(
     private userService: UserService,
@@ -61,6 +63,9 @@ export class ProjectSearchingComponent implements OnInit {
     });
     this.nameForm = new FormGroup({
       name: new FormControl('', Validators.required),
+    });
+    this.cityForm = new FormGroup({
+      city: new FormControl('', Validators.required),
     });
 
     this.getUser();
@@ -162,6 +167,9 @@ export class ProjectSearchingComponent implements OnInit {
     let description = this.descriptionForm.get('description').value;
     this.filterRequest.description = description;
 
+    let city = this.cityForm.get('city').value;
+    this.filterRequest.city = name;
+
     this.filterRequest.tags = this.tagFilterArray;
     this.filterRequest.profAreas = this.profAreaFilterArray;
 
@@ -177,7 +185,7 @@ export class ProjectSearchingComponent implements OnInit {
   sendRequestToOwner(project: Project){
     this.preProcessConfigurations();
     let request = new Notification(UUID.UUID(),NotificationType.REQUEST,this.userSource,project.owner,project,
-     NotificationStatus.UNREAD, "Привет! Я заинтересован в участии в вашем никчемном проекте!:)");
+     NotificationStatus.UNREAD, "Привет! Я заинтересован в участии в вашем проекте!:)");
     this.notificationService.createNotification(request)
       .subscribe(successCode => {
           this.statusCodeNotification = successCode;
@@ -189,6 +197,7 @@ export class ProjectSearchingComponent implements OnInit {
     this.nameForm.reset();
     this.descriptionForm.reset();
     this.tagForm.reset();
+    this.cityForm.reset();
     this.tagFilterArray = [];
     this.profAreaFilterArray = [];
     this.filterRequest = new FilterRequest('',[],[],'','');

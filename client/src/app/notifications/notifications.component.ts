@@ -9,6 +9,7 @@ import {NotificationType} from "../table-classes/notification-type";
 import {UUID} from "angular2-uuid";
 import {NotificationStatus} from "../table-classes/notification-status";
 import {Project} from "../table-classes/project";
+import {ProjectStatus} from "../table-classes/project-status";
 
 @Component({
   selector: 'app-notifications',
@@ -25,11 +26,12 @@ export class NotificationsComponent implements OnInit {
   statusCodeUser: number;
   statusCodeNotifications: number;
   statusCodeProject: number;
+  requestedUser: User;
 
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute,
     private projectService: ProjectService,
+    private route: ActivatedRoute,
     private notificationService: NotificationService,
     private router: Router) {
   }
@@ -49,6 +51,14 @@ export class NotificationsComponent implements OnInit {
         errorCode => this.statusCodeUser);
   }
 
+  getProject(projectId){
+    this.projectService.getProject(projectId)
+      .subscribe(
+        data => {this.projectToUpdate = data;
+        console.log(this.projectToUpdate)},
+        errorCode => this.statusCodeProject);
+  }
+
   getUserNotifications() {
     this.preProcessConfigurations();
     this.notificationService.getUserNotifications(this.userSource.id)
@@ -60,7 +70,9 @@ export class NotificationsComponent implements OnInit {
   }
 
   accept(toUser, project, notificationId, projectId) {
-    let confirmation = new Notification(UUID.UUID(), NotificationType.INFORMATION, this.userSource, toUser,
+    this.getProject(projectId);
+
+    let confirmation = new Notification(UUID.UUID(), NotificationType.ACCEPTINFO, this.userSource, toUser,
       project, NotificationStatus.UNREAD, this.userSource.name + " " + this.userSource.lastName + " утвердил ваше участие в проекте");
     this.notificationService.createNotification(confirmation)
       .subscribe(successCode => {
@@ -71,27 +83,18 @@ export class NotificationsComponent implements OnInit {
     this.notificationService.deleteNotification(notificationId)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;
-        },
+          this.getUserNotifications()},
         errorCode => this.statusCodeNotifications = errorCode);
 
-    this.projectService.getProject(projectId)
-      .subscribe(
-        data => {
-          console.log(toUser);
-          this.projectToUpdate = data;
-          this.projectToUpdate.participants.push(toUser);
-          this.projectService.updateProject(this.projectToUpdate)
-            .subscribe(successCode => {
-                this.statusCodeProject = successCode;
-              },
-              errorCode => this.statusCodeProject = errorCode);
-          this.projectToUpdate = null;
-        },
-        errorCode => this.statusCodeProject);
+    this.projectToUpdate.participants.push(toUser);
+    this.projectService.updateProject(this.projectToUpdate)
+      .subscribe(successCode => {
+          this.statusCode = successCode;},
+        errorCode => this.statusCode = errorCode);
   }
 
   decline(toUser, project, notificationId) {
-    let confirmation = new Notification(UUID.UUID(), NotificationType.INFORMATION, this.userSource, toUser,
+    let confirmation = new Notification(UUID.UUID(), NotificationType.DECLINEINFO, this.userSource, toUser,
       project, NotificationStatus.UNREAD, this.userSource.name + " " + this.userSource.lastName + " отклонил вашу заявку на участие в проекте");
     this.notificationService.createNotification(confirmation)
       .subscribe(successCode => {
@@ -102,7 +105,76 @@ export class NotificationsComponent implements OnInit {
     this.notificationService.deleteNotification(notificationId)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;
+          this.getUserNotifications()},
+        errorCode => this.statusCodeNotifications = errorCode);
+  }
+
+  ok(notificationId,projectId,from){
+    this.userSource.projectsParticipated.push(projectId.toString());
+    this.userSource.password = null;
+    this.userService.updateUser(this.userSource)
+      .subscribe(successCode => {this.statusCodeUser = successCode;},
+        errorCode => this.statusCodeUser = errorCode);
+
+    this.notificationService.deleteNotification(notificationId)
+      .subscribe(successCode => {
+          this.statusCodeNotifications = successCode;
+          this.getUserNotifications()},
+        errorCode => this.statusCodeNotifications = errorCode);
+
+    this.projectService.getProject(projectId)
+      .subscribe(
+        data => {this.projectToUpdate = data;
+        this.projectToUpdate.participants.push(this.userSource);
+        this.projectService.updateProject(this.projectToUpdate)
+          .subscribe(successCode => {
+              this.statusCodeProject = successCode;},
+            errorCode => this.statusCodeProject = errorCode)},
+        errorCode => this.statusCodeProject);
+  }
+
+  declined(notificationId){
+    this.notificationService.deleteNotification(notificationId)
+      .subscribe(successCode => {
+          this.statusCodeNotifications = successCode;
+          this.getUserNotifications()},
+        errorCode => this.statusCodeNotifications = errorCode);
+  }
+
+  fired(projectId, notificationId){
+    var index = this.userSource.projectsParticipated.indexOf(projectId);
+    if (index > -1) {
+      this.userSource.projectsParticipated.splice(index, 1);
+    }
+    this.userSource.password = null;
+    this.userService.updateUser(this.userSource)
+      .subscribe(successCode => {
+          this.statusCodeUser = successCode;
         },
+        errorCode => this.statusCodeUser = errorCode);
+
+    this.notificationService.deleteNotification(notificationId)
+      .subscribe(successCode => {
+          this.statusCodeNotifications = successCode;
+          this.getUserNotifications()},
+        errorCode => this.statusCodeNotifications = errorCode);
+  }
+
+  left(projectId, userId, notificationId){
+    this.projectService.getProject(projectId)
+      .subscribe(
+        data => {this.projectToUpdate = data;
+          this.projectToUpdate.participants.filter(item => item.id !== userId);
+          this.projectService.updateProject(this.projectToUpdate)
+            .subscribe(successCode => {
+                this.statusCodeProject = successCode;},
+              errorCode => this.statusCodeProject = errorCode)},
+        errorCode => this.statusCodeProject);
+
+    this.notificationService.deleteNotification(notificationId)
+      .subscribe(successCode => {
+          this.statusCodeNotifications = successCode;
+          this.getUserNotifications()},
         errorCode => this.statusCodeNotifications = errorCode);
   }
 

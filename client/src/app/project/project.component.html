@@ -65,6 +65,18 @@
   </form>
 </div>
 
+<div *ngIf="!isDeleted" class="cityForm">
+  <form [formGroup]="cityForm" (ngSubmit)="onCityFormSubmit()">
+    <table>
+      <tr>
+        <td width="200px" style="text-decoration: underline;">Город</td>
+        <td></td>
+        <td width="200px"><input style="width: 500px; height: 35px;" formControlName="city" class="form-control mr-sm-2"></td>
+      </tr>
+    </table>
+  </form>
+</div>
+
 <div *ngIf="!isDeleted" class="filterForm">
   <div *ngIf="!isDeleted" class="filter">
     <div [formGroup]="profAreaForm" (ngSubmit)="onProfAreaFormSubmit()" class="profAreaForm">
@@ -126,8 +138,8 @@
       </tr>
       <tr *ngFor="let user of projectSource.participants">
         <td></td>
-        <td>{{user?.name}} {{user?.lastName}}</td>
-        <td><button type="button" (click)="removeParticipant(user)" class="btn btn-success">Послать его нахуй</button></td>
+        <td style="width: 260px;"><a routerLink="/user-info/{{user?.id}}">{{user?.name}} {{user?.lastName}}</a></td>
+        <td><button type="button" (click)="removeParticipant(user)" class="btn btn-outline-success my-2 my-sm-0">Исключить</button></td>
       </tr>
     </table>
   </div>

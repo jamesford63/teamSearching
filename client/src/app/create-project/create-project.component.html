@@ -41,7 +41,7 @@
 </nav>
 <p>&#160;</p>
 
-<h3 *ngIf="!created" align="center">Создайте свой проект, найдите участников и приступайте к работе, братья</h3>
+<h3 *ngIf="!created" align="center">Создайте свой проект, найдите участников и приступайте к совместной работе</h3>
 
 <div *ngIf="!created" class="nameForm">
   <form [formGroup]="nameForm" (ngSubmit)="onNameFormSubmit()">
@@ -61,6 +61,17 @@
       <tr>
         <td width="200px" style="text-decoration: underline;">Описание</td>
         <td width="200"><textarea style="width: 500px; height: 100px;" formControlName="description" class="form-control mr-sm-2"></textarea></td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+<div *ngIf="!created" class="cityForm">
+  <form [formGroup]="cityForm" (ngSubmit)="onCityFormSubmit()">
+    <table>
+      <tr>
+        <td width="200px" style="text-decoration: underline;">Город</td>
+        <td width="200"><input style="width: 500px; height: 35px;" formControlName="city" class="form-control mr-sm-2"></td>
       </tr>
     </table>
   </form>

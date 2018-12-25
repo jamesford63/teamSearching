@@ -133,7 +133,7 @@ export class UserSearchingComponent implements OnInit {
 
   onProfAreaFormSubmit() {
     if (this.profAreaForm.invalid) {
-      return; // Validation failed, exit from method.
+      return;
     }
     this.profAreaFilterArray = this.profAreaFilterArray || [];
     // Form is valid, now perform create
@@ -155,7 +155,7 @@ export class UserSearchingComponent implements OnInit {
 
   onTagFormSubmit() {
     if (this.tagForm.invalid) {
-      return; // Validation failed, exit from method.
+      return;
     }
     this.tagFilterArray = this.tagFilterArray || [];
     // Form is valid, now perform create

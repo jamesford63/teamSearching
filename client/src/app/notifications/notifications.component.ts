@@ -61,7 +61,20 @@ export class NotificationsComponent implements OnInit {
       .subscribe(
         data => {
           this.projectToUpdate = data;
-          console.log(this.projectToUpdate)
+        },
+        errorCode => this.statusCodeProject);
+  }
+
+  getOwnerProject(projectId){
+    this.projectService.getProject(projectId)
+      .subscribe(
+        data => {
+          this.projectToUpdate = data;
+          this.projectToUpdate.participants.push(this.userSource);
+          this.projectService.updateProject(this.projectToUpdate)
+            .subscribe(successCode => {
+                this.statusCode = successCode;},
+              errorCode => this.statusCode = errorCode);
         },
         errorCode => this.statusCodeProject);
   }
@@ -103,9 +116,15 @@ export class NotificationsComponent implements OnInit {
   }
 
   acceptToOwner(toUser, project, notificationId, projectId){
-    this.getProject(projectId);
+    this.getOwnerProject(projectId);
 
-    let confirmation = new Notification(UUID.UUID(), NotificationType.ACCEPTINFO, this.userSource, toUser,
+    this.userSource.projectsParticipated.push(projectId.toString());
+    this.userSource.password = null;
+    this.userService.updateUser(this.userSource)
+      .subscribe(successCode => {this.statusCodeUser = successCode;},
+        errorCode => this.statusCodeUser = errorCode);
+
+    let confirmation = new Notification(UUID.UUID(), NotificationType.INFORMATION, this.userSource, toUser,
       project, NotificationStatus.UNREAD, this.userSource.name + " " + this.userSource.lastName + " утвердил свое участие в проекте");
     this.notificationService.createNotification(confirmation)
       .subscribe(successCode => {
@@ -118,18 +137,6 @@ export class NotificationsComponent implements OnInit {
           this.statusCodeNotifications = successCode;
           this.getUserNotifications()},
         errorCode => this.statusCodeNotifications = errorCode);
-
-    this.projectToUpdate.participants.push(this.userSource);
-    this.projectService.updateProject(this.projectToUpdate)
-      .subscribe(successCode => {
-          this.statusCode = successCode;},
-        errorCode => this.statusCode = errorCode);
-
-    this.userSource.projectsParticipated.push(projectId.toString());
-    this.userSource.password = null;
-    this.userService.updateUser(this.userSource)
-      .subscribe(successCode => {this.statusCodeUser = successCode;},
-        errorCode => this.statusCodeUser = errorCode);
   }
 
   decline(toUser, project, notificationId) {
@@ -177,6 +184,15 @@ export class NotificationsComponent implements OnInit {
               errorCode => this.statusCodeProject = errorCode)
         },
         errorCode => this.statusCodeProject);
+  }
+
+  deleteNotification(notificationId){
+    this.notificationService.deleteNotification(notificationId)
+      .subscribe(successCode => {
+          this.statusCodeNotifications = successCode;
+          this.getUserNotifications()
+        },
+        errorCode => this.statusCodeNotifications = errorCode);
   }
 
   declined(notificationId) {

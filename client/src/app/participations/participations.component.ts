@@ -95,20 +95,6 @@ export class ParticipationsComponent implements OnInit {
               errorCode => this.statusCodeProject);
         },
         errorCode => this.statusCodeUser = errorCode);
-
-    // this.projectService.getProject(projectId)
-    //   .subscribe(
-    //     data => {this.currentProject = data;},
-    //     errorCode => this.statusCodeProject);
-    //
-    // let notification = new Notification(UUID.UUID(),NotificationType.LEAVEINFO, this.userSource,
-    //   this.currentProject.owner,this.currentProject,NotificationStatus.UNREAD, "Вынужден покинуть проект");
-    //
-    // this.notificationService.createNotification(notification)
-    //   .subscribe(successCode => {
-    //       this.statusCodeNotification = successCode;},
-    //     errorCode => this.statusCodeNotification = errorCode);
-
   }
 
   logout() {

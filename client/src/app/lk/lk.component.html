@@ -54,27 +54,24 @@
   </div>
 </div>
 
-<div align="right">
-  <button (click)="deleteAccount()" class="btn btn-danger">Удалить аккаунт</button>
-</div>
-
 <h1 align="center">Информация о вашем профиле</h1>
 <table align="center">
   <tr>
-    <th>Имя&#160;&#160;&#160;&#160;</th>
-    <th>Фамилия&#160;&#160;&#160;&#160;</th>
-    <th>Логин&#160;&#160;&#160;&#160;</th>
-    <th>Город&#160;&#160;&#160;&#160;</th>
-    <th>Email&#160;&#160;&#160;&#160;</th>
-    <th>Дополнительные данные&#160;&#160;&#160;&#160;</th>
+    <th style="width: 100px; height: 35px;">Имя</th>
+    <th style="width: 100px; height: 35px;">Фамилия</th>
+    <th style="width: 100px; height: 35px;">Логин</th>
+    <th style="width: 100px; height: 35px;">Город</th>
+    <th style="width: 200px; height: 35px;">Email</th>
+    <th style="width: 500px; height: 35px;">Дополнительные данные</th>
   </tr>
   <tr>
-    <td>{{userSource?.name}}</td>
-    <td>{{userSource?.lastName}}</td>
-    <td>{{userSource?.login}}</td>
-    <td>{{userSource?.city}}</td>
-    <td>{{userSource?.email}}</td>
-    <td>{{userSource?.description}}</td>
+    <td style="width: 100px; height: 35px;">{{userSource?.name}}</td>
+    <td style="width: 100px; height: 35px;">{{userSource?.lastName}}</td>
+    <td style="width: 100px; height: 35px;">{{userSource?.login}}</td>
+    <td style="width: 100px; height: 35px;">{{userSource?.city}}</td>
+    <td style="width: 200px; height: 35px;">{{userSource?.email}}</td>
+    <td style="width: 100px; height: 35px;">{{userSource?.description}}</td>
+    <td><button (click)="deleteAccount()" class="btn btn-danger">Удалить аккаунт</button></td>
   </tr>
 </table>
 <p>&#160;</p>

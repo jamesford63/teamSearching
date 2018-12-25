@@ -58,7 +58,6 @@ export class RegistrationComponent implements OnInit {
 
   }
 
-  // Perform preliminary processing configurations
   preProcessConfigurations() {
     this.statusCode = null;
   }

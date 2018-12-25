@@ -52,4 +52,8 @@
   top:20px;
 }
 
-
+.delete{
+  position: absolute;
+  left: 1150px;
+  top:110px;
+}

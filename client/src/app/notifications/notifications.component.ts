@@ -48,14 +48,21 @@ export class NotificationsComponent implements OnInit {
           this.userSource = data;
           this.getUserNotifications();
         },
-        errorCode => this.statusCodeUser);
+        errorCode => {
+          this.statusCodeUser = errorCode;
+          if (errorCode === 404) {
+            this.router.navigate(['/login']);
+          }
+        });
   }
 
-  getProject(projectId){
+  getProject(projectId) {
     this.projectService.getProject(projectId)
       .subscribe(
-        data => {this.projectToUpdate = data;
-        console.log(this.projectToUpdate)},
+        data => {
+          this.projectToUpdate = data;
+          console.log(this.projectToUpdate)
+        },
         errorCode => this.statusCodeProject);
   }
 
@@ -83,13 +90,15 @@ export class NotificationsComponent implements OnInit {
     this.notificationService.deleteNotification(notificationId)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;
-          this.getUserNotifications()},
+          this.getUserNotifications()
+        },
         errorCode => this.statusCodeNotifications = errorCode);
 
     this.projectToUpdate.participants.push(toUser);
     this.projectService.updateProject(this.projectToUpdate)
       .subscribe(successCode => {
-          this.statusCode = successCode;},
+          this.statusCode = successCode;
+        },
         errorCode => this.statusCode = errorCode);
   }
 
@@ -105,43 +114,51 @@ export class NotificationsComponent implements OnInit {
     this.notificationService.deleteNotification(notificationId)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;
-          this.getUserNotifications()},
+          this.getUserNotifications()
+        },
         errorCode => this.statusCodeNotifications = errorCode);
   }
 
-  ok(notificationId,projectId,from){
+  ok(notificationId, projectId, from) {
     this.userSource.projectsParticipated.push(projectId.toString());
     this.userSource.password = null;
     this.userService.updateUser(this.userSource)
-      .subscribe(successCode => {this.statusCodeUser = successCode;},
+      .subscribe(successCode => {
+          this.statusCodeUser = successCode;
+        },
         errorCode => this.statusCodeUser = errorCode);
 
     this.notificationService.deleteNotification(notificationId)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;
-          this.getUserNotifications()},
+          this.getUserNotifications()
+        },
         errorCode => this.statusCodeNotifications = errorCode);
 
     this.projectService.getProject(projectId)
       .subscribe(
-        data => {this.projectToUpdate = data;
-        this.projectToUpdate.participants.push(this.userSource);
-        this.projectService.updateProject(this.projectToUpdate)
-          .subscribe(successCode => {
-              this.statusCodeProject = successCode;},
-            errorCode => this.statusCodeProject = errorCode)},
+        data => {
+          this.projectToUpdate = data;
+          this.projectToUpdate.participants.push(this.userSource);
+          this.projectService.updateProject(this.projectToUpdate)
+            .subscribe(successCode => {
+                this.statusCodeProject = successCode;
+              },
+              errorCode => this.statusCodeProject = errorCode)
+        },
         errorCode => this.statusCodeProject);
   }
 
-  declined(notificationId){
+  declined(notificationId) {
     this.notificationService.deleteNotification(notificationId)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;
-          this.getUserNotifications()},
+          this.getUserNotifications()
+        },
         errorCode => this.statusCodeNotifications = errorCode);
   }
 
-  fired(projectId, notificationId){
+  fired(projectId, notificationId) {
     var index = this.userSource.projectsParticipated.indexOf(projectId);
     if (index > -1) {
       this.userSource.projectsParticipated.splice(index, 1);
@@ -156,25 +173,30 @@ export class NotificationsComponent implements OnInit {
     this.notificationService.deleteNotification(notificationId)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;
-          this.getUserNotifications()},
+          this.getUserNotifications()
+        },
         errorCode => this.statusCodeNotifications = errorCode);
   }
 
-  left(projectId, userId, notificationId){
+  left(projectId, userId, notificationId) {
     this.projectService.getProject(projectId)
       .subscribe(
-        data => {this.projectToUpdate = data;
+        data => {
+          this.projectToUpdate = data;
           this.projectToUpdate.participants.filter(item => item.id !== userId);
           this.projectService.updateProject(this.projectToUpdate)
             .subscribe(successCode => {
-                this.statusCodeProject = successCode;},
-              errorCode => this.statusCodeProject = errorCode)},
+                this.statusCodeProject = successCode;
+              },
+              errorCode => this.statusCodeProject = errorCode)
+        },
         errorCode => this.statusCodeProject);
 
     this.notificationService.deleteNotification(notificationId)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;
-          this.getUserNotifications()},
+          this.getUserNotifications()
+        },
         errorCode => this.statusCodeNotifications = errorCode);
   }
 

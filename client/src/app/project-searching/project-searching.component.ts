@@ -37,7 +37,7 @@ export class ProjectSearchingComponent implements OnInit {
   nameForm: FormGroup;
   profAreaFilterArray: ProfArea[] = null;
   tagFilterArray: Tag[] = null;
-  filterRequest: FilterRequest = new FilterRequest('',[],[],'','');
+  filterRequest: FilterRequest = new FilterRequest('', [], [], '', '');
   profAreas: ProfArea[];
   filteredProjects: Project[];
   hideArray: boolean[];
@@ -47,14 +47,13 @@ export class ProjectSearchingComponent implements OnInit {
     private profAreaService: ProfAreaService,
     private projectService: ProjectService,
     private notificationService: NotificationService,
-    private route: ActivatedRoute,
     private router: Router) {
   }
 
   ngOnInit() {
     this.profAreaForm = new FormGroup({
       profArea: new FormControl('', Validators.required),
-      });
+    });
     this.tagForm = new FormGroup({
       tag: new FormControl('', Validators.required),
     });
@@ -75,33 +74,43 @@ export class ProjectSearchingComponent implements OnInit {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
-        data => {this.userSource = data;
-        this.getAllProjects();
-        this.getAllProfAreas();
-        this.getNotMyProjects()},
-        errorCode => this.statusCodeUser);
+        data => {
+          this.userSource = data;
+          this.getAllProjects();
+          this.getAllProfAreas();
+          this.getNotMyProjects()
+        },
+        errorCode => {
+          this.statusCodeUser = errorCode;
+          if (errorCode === 404) {
+            this.router.navigate(['/login']);
+          }
+        });
   }
 
-  getAllProfAreas(){
+  getAllProfAreas() {
     this.preProcessConfigurations();
     this.profAreaService.getAllProfAreas()
       .subscribe(
-        data => {this.profAreas = data; },
+        data => {
+          this.profAreas = data;
+        },
         errorCode => this.statusCodeProfArea);
   }
 
-  getAllProjects(){
+  getAllProjects() {
     this.preProcessConfigurations();
     this.projectService.getAllProjects()
       .subscribe(
         data => {
           this.filteredProjects = data;
-          this.getNotMyProjects()},
+          this.getNotMyProjects()
+        },
         errorCode => this.statusCodeProjects);
   }
 
-  getNotMyProjects(){
-    for(var i = 0; i < this.userSource.projectsCreated.length; i++) {
+  getNotMyProjects() {
+    for (var i = 0; i < this.userSource.projectsCreated.length; i++) {
       this.filteredProjects = this.filteredProjects.filter(item => item.id !== this.userSource.projectsCreated[i]);
     }
   }
@@ -119,13 +128,13 @@ export class ProjectSearchingComponent implements OnInit {
       }
     }
     let was = false;
-    for(var i = 0; i<this.profAreaFilterArray.length; i++) {
+    for (var i = 0; i < this.profAreaFilterArray.length; i++) {
       if (profArea == this.profAreaFilterArray[i]) {
         was = true;
         break;
       }
     }
-    if(!was) this.profAreaFilterArray.push(profArea);
+    if (!was) this.profAreaFilterArray.push(profArea);
 
   }
 
@@ -138,14 +147,14 @@ export class ProjectSearchingComponent implements OnInit {
     let tag = this.tagForm.get('tag').value.trim();
 
     let was = false;
-    for(var i = 0; i<this.tagFilterArray.length; i++) {
+    for (var i = 0; i < this.tagFilterArray.length; i++) {
       if (tag == this.tagFilterArray[i]) {
         was = true;
         break;
       }
     }
-    let newTag = new Tag(UUID.UUID(),tag);
-    if(!was) this.tagFilterArray.push(newTag);
+    let newTag = new Tag(UUID.UUID(), tag);
+    if (!was) this.tagFilterArray.push(newTag);
 
     this.tagForm.reset();
   }
@@ -158,7 +167,7 @@ export class ProjectSearchingComponent implements OnInit {
     this.profAreaFilterArray = this.profAreaFilterArray.filter(item => item !== profArea);
   }
 
-  filter(){
+  filter() {
     this.preProcessConfigurations();
 
     let name = this.nameForm.get('name').value;
@@ -175,17 +184,19 @@ export class ProjectSearchingComponent implements OnInit {
 
     this.projectService.getFilteredProjects(this.filterRequest)
       .subscribe(
-        data => {this.filteredProjects = data; },
+        data => {
+          this.filteredProjects = data;
+        },
         errorCode => this.statusCodeProjects);
-    for(var i = 0; i<this.userSource.projectsCreated.length; i++) {
+    for (var i = 0; i < this.userSource.projectsCreated.length; i++) {
       this.filteredProjects = this.filteredProjects.filter(item => item.id !== this.userSource.projectsCreated[i]);
     }
   }
 
-  sendRequestToOwner(project: Project){
+  sendRequestToOwner(project: Project) {
     this.preProcessConfigurations();
-    let request = new Notification(UUID.UUID(),NotificationType.REQUEST,this.userSource,project.owner,project,
-     NotificationStatus.UNREAD, "Привет! Я заинтересован в участии в вашем проекте!:)");
+    let request = new Notification(UUID.UUID(), NotificationType.REQUEST, this.userSource, project.owner, project,
+      NotificationStatus.UNREAD, "Привет! Я заинтересован в участии в вашем проекте!:)");
     this.notificationService.createNotification(request)
       .subscribe(successCode => {
           this.statusCodeNotification = successCode;
@@ -193,14 +204,14 @@ export class ProjectSearchingComponent implements OnInit {
         errorCode => this.statusCodeNotification = errorCode);
   }
 
-  clearFilter(){
+  clearFilter() {
     this.nameForm.reset();
     this.descriptionForm.reset();
     this.tagForm.reset();
     this.cityForm.reset();
     this.tagFilterArray = [];
     this.profAreaFilterArray = [];
-    this.filterRequest = new FilterRequest('',[],[],'','');
+    this.filterRequest = new FilterRequest('', [], [], '', '');
     this.getAllProjects();
   }
 

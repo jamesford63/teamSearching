@@ -26,7 +26,7 @@ export class ProjectComponent implements OnInit {
 
   userSource: User;
   projectSource: Project;
-  projectTags : Tag[];
+  projectTags: Tag[];
   projectProfAreas: ProfArea[];
   projectStatus: ProjectStatus;
   profAreas: ProfArea[];
@@ -54,9 +54,10 @@ export class ProjectComponent implements OnInit {
     private profAreaService: ProfAreaService,
     private tagService: TagService,
     private notificationService: NotificationService,
-    private router: Router) {}
+    private router: Router) {
+  }
 
-  ngOnInit(){
+  ngOnInit() {
     this.nameForm = new FormGroup({
       name: new FormControl('', Validators.required),
     });
@@ -82,21 +83,30 @@ export class ProjectComponent implements OnInit {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
-        data => {this.userSource = data;
-          this.loadProjectToEdit(this.route.snapshot.paramMap.get('id'));},
-        errorCode => this.statusCodeUser);
+        data => {
+          this.userSource = data;
+          this.loadProjectToEdit(this.route.snapshot.paramMap.get('id'));
+        },
+        errorCode => {
+          this.statusCodeUser = errorCode;
+          if (errorCode === 404) {
+            this.router.navigate(['/login']);
+          }
+        });
   }
 
-  getAllProfAreas(){
+  getAllProfAreas() {
     this.preProcessConfigurations();
     this.profAreaService.getAllProfAreas()
       .subscribe(
-        data => {this.profAreas = data; },
+        data => {
+          this.profAreas = data;
+        },
         errorCode => this.statusCodeProfArea);
   }
 
-  checkParticipants(){
-    if(this.projectSource.participants.length != 0)
+  checkParticipants() {
+    if (this.projectSource.participants.length != 0)
       this.haveParticipants = true;
     console.log(this.haveParticipants);
   }
@@ -107,8 +117,8 @@ export class ProjectComponent implements OnInit {
     }
     // Form is valid, now perform create
     let profArea = this.profAreaForm.get('profArea').value.trim();
-    for(const a of this.projectProfAreas){
-      if(a.id == profArea){
+    for (const a of this.projectProfAreas) {
+      if (a.id == profArea) {
         return;
       }
     }
@@ -126,13 +136,13 @@ export class ProjectComponent implements OnInit {
     }
     // Form is valid, now perform create
     let tag = this.tagForm.get('tag').value.trim();
-    for(const a of this.projectTags){
-      if(tag == a.name){
+    for (const a of this.projectTags) {
+      if (tag == a.name) {
         this.tagForm.reset();
         return;
       }
     }
-    let newTag = new Tag(UUID.UUID(),tag);
+    let newTag = new Tag(UUID.UUID(), tag);
     this.tagService.createTag(newTag);
     this.projectTags.push(newTag);
     this.tagForm.reset();
@@ -164,7 +174,7 @@ export class ProjectComponent implements OnInit {
     }
     // Form is valid, now perform create
     let name = this.nameForm.get('name').value;
-    if(name == null){
+    if (name == null) {
       name = '';
       this.projectSource.name = name;
     }
@@ -179,7 +189,7 @@ export class ProjectComponent implements OnInit {
     this.projectProfAreas = this.projectProfAreas.filter(item => item !== profArea);
   }
 
-  loadProjectToEdit(id){
+  loadProjectToEdit(id) {
     if (this.projectSource == null) {
       this.projectService.getProject(id)
         .subscribe(
@@ -201,7 +211,7 @@ export class ProjectComponent implements OnInit {
           },
           errorCode => this.statusCodeProject);
     }
-    else{
+    else {
       this.projectService.getProject(id)
         .subscribe(
           data => {
@@ -220,10 +230,10 @@ export class ProjectComponent implements OnInit {
             this.projectProfAreas = data.profArea;
           },
           errorCode => this.statusCodeProject);
-      }
     }
+  }
 
-  updateProject(){
+  updateProject() {
     this.preProcessConfigurations();
     this.onNameFormSubmit();
     this.onDescriptionFormSubmit();
@@ -238,7 +248,7 @@ export class ProjectComponent implements OnInit {
     this.edited = true;
   }
 
-  deleteProject(){
+  deleteProject() {
     this.projectService.deleteProject(this.projectSource.id)
       .subscribe(successCode => {
           this.statusCodeProject = successCode;
@@ -255,9 +265,9 @@ export class ProjectComponent implements OnInit {
         errorCode => this.statusCodeUser = errorCode);
   }
 
-  removeParticipant(user){
-    let notification = new Notification(UUID.UUID(),NotificationType.FIREDINFO, this.userSource,
-      user,this.projectSource,NotificationStatus.UNREAD, "Вы слишком дорого обходитесь нашему проекту. Вы уволены!");
+  removeParticipant(user) {
+    let notification = new Notification(UUID.UUID(), NotificationType.FIREDINFO, this.userSource,
+      user, this.projectSource, NotificationStatus.UNREAD, "Вы слишком дорого обходитесь нашему проекту. Вы уволены!");
 
     this.notificationService.createNotification(notification)
       .subscribe(successCode => {

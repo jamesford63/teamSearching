@@ -1,4 +1,3 @@
-
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {UserService} from "../services/user.service";
@@ -23,7 +22,6 @@ export class CreateProjectComponent implements OnInit {
   statusCode: number;
   statusCodeProject: number;
   statusCodeProfArea: number;
-  statusCodeTag: number;
   requestProcessing = false;
   userSource: User;
   statusCodeUser: number;
@@ -35,8 +33,8 @@ export class CreateProjectComponent implements OnInit {
   profAreaArray: ProfArea[] = [];
   tagArray: Tag[] = [];
   profAreas: ProfArea[];
-  newProject: Project = new Project(UUID.UUID(),'',[],[],this.userSource,[],'',ProjectStatus.OPEN,'');
-  created : boolean = false;
+  newProject: Project = new Project(UUID.UUID(), '', [], [], this.userSource, [], '', ProjectStatus.OPEN, '');
+  created: boolean = false;
 
   ngOnInit() {
     this.nameForm = new FormGroup({
@@ -64,22 +62,32 @@ export class CreateProjectComponent implements OnInit {
               private router: Router,
               private profAreaService: ProfAreaService,
               private projectService: ProjectService,
-              private tagService: TagService) { }
+              private tagService: TagService) {
+  }
 
 
   getUser() {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
-        data => {this.userSource = data; },
-        errorCode => this.statusCodeUser);
+        data => {
+          this.userSource = data;
+        },
+        errorCode => {
+          this.statusCodeUser = errorCode;
+          if (errorCode === 404) {
+            this.router.navigate(['/login']);
+          }
+            });
   }
 
-  getAllProfAreas(){
+  getAllProfAreas() {
     this.preProcessConfigurations();
     this.profAreaService.getAllProfAreas()
       .subscribe(
-        data => {this.profAreas = data; },
+        data => {
+          this.profAreas = data;
+        },
         errorCode => this.statusCodeProfArea);
   }
 
@@ -89,8 +97,8 @@ export class CreateProjectComponent implements OnInit {
     }
     // Form is valid, now perform create
     let profArea = this.profAreaForm.get('profArea').value.trim();
-    for(const a of this.profAreaArray){
-      if(a.id == profArea){
+    for (const a of this.profAreaArray) {
+      if (a.id == profArea) {
         return;
       }
     }
@@ -108,13 +116,13 @@ export class CreateProjectComponent implements OnInit {
     }
     // Form is valid, now perform create
     let tag = this.tagForm.get('tag').value.trim();
-    for(const a of this.tagArray){
-      if(tag == a.name){
+    for (const a of this.tagArray) {
+      if (tag == a.name) {
         this.tagForm.reset();
         return;
       }
     }
-    let newTag = new Tag(UUID.UUID(),tag);
+    let newTag = new Tag(UUID.UUID(), tag);
     this.tagService.createTag(newTag);
     this.tagArray.push(newTag);
     this.tagForm.reset();
@@ -136,20 +144,20 @@ export class CreateProjectComponent implements OnInit {
     }
     // Form is valid, now perform create
     let name = this.nameForm.get('name').value;
-    if(name == null){
+    if (name == null) {
       name = '';
       this.newProject.name = name;
     }
     else this.newProject.name = name;
   }
 
-  onCityFormSubmit(){
+  onCityFormSubmit() {
     console.log(this.cityForm.get('city').value);
     if (this.cityForm.invalid) {
       return; // Validation failed, exit from method.
     }
     let city = this.cityForm.get('city').value;
-    if(city == null){
+    if (city == null) {
       city = '';
       this.newProject.city = city;
     }
@@ -165,14 +173,14 @@ export class CreateProjectComponent implements OnInit {
     this.profAreaArray = this.profAreaArray.filter(item => item !== profArea);
   }
 
-  createProject(){
+  createProject() {
     this.preProcessConfigurations();
     this.onNameFormSubmit();
     this.onDescriptionFormSubmit();
     this.onCityFormSubmit();
-    const project = new Project(UUID.UUID(), this.newProject.name, this.profAreaArray,[],
-                                this.userSource,this.tagArray,this.newProject.description,
-                                ProjectStatus.OPEN,this.newProject.city);
+    const project = new Project(UUID.UUID(), this.newProject.name, this.profAreaArray, [],
+      this.userSource, this.tagArray, this.newProject.description,
+      ProjectStatus.OPEN, this.newProject.city);
     this.projectService.createProject(project)
       .subscribe(successCode => {
           this.statusCodeProject = successCode;

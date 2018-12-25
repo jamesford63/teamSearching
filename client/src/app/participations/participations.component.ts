@@ -33,9 +33,10 @@ export class ParticipationsComponent implements OnInit {
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private notificationService: NotificationService,
-    private router: Router) {}
+    private router: Router) {
+  }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getUser();
   }
 
@@ -43,14 +44,21 @@ export class ParticipationsComponent implements OnInit {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
-        data => {this.userSource = data;
-        console.log(data);
-        this.getMyParticipations()},
-        errorCode => this.statusCodeUser);
+        data => {
+          this.userSource = data;
+          console.log(data);
+          this.getMyParticipations()
+        },
+        errorCode => {
+          this.statusCodeUser = errorCode;
+          if (errorCode === 404) {
+            this.router.navigate(['/login']);
+          }
+        });
   }
 
-  getMyParticipations(){
-    for(var i = 0; i < this.userSource.projectsParticipated.length; i++) {
+  getMyParticipations() {
+    for (var i = 0; i < this.userSource.projectsParticipated.length; i++) {
       this.projectService.getProject(this.userSource.projectsParticipated[i])
         .subscribe(
           data => {
@@ -61,7 +69,7 @@ export class ParticipationsComponent implements OnInit {
     }
   }
 
-  leaveProject(projectId){
+  leaveProject(projectId) {
     var index = this.userSource.projectsParticipated.indexOf(projectId);
     if (index > -1) {
       this.userSource.projectsParticipated.splice(index, 1);
@@ -73,14 +81,17 @@ export class ParticipationsComponent implements OnInit {
           this.getMyParticipations();
           this.projectService.getProject(projectId)
             .subscribe(
-              data => {this.currentProject = data;
-                let notification = new Notification(UUID.UUID(),NotificationType.LEAVEINFO, this.userSource,
-                  this.currentProject.owner,this.currentProject,NotificationStatus.UNREAD, "Вынужден покинуть проект");
+              data => {
+                this.currentProject = data;
+                let notification = new Notification(UUID.UUID(), NotificationType.LEAVEINFO, this.userSource,
+                  this.currentProject.owner, this.currentProject, NotificationStatus.UNREAD, "Вынужден покинуть проект");
 
                 this.notificationService.createNotification(notification)
                   .subscribe(successCode => {
-                      this.statusCodeNotification = successCode;},
-                    errorCode => this.statusCodeNotification = errorCode);},
+                      this.statusCodeNotification = successCode;
+                    },
+                    errorCode => this.statusCodeNotification = errorCode);
+              },
               errorCode => this.statusCodeProject);
         },
         errorCode => this.statusCodeUser = errorCode);

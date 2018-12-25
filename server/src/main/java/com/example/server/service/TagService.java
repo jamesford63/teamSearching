@@ -67,6 +67,8 @@ public class TagService {
 
     public Tag createTag(Tag tag) {
         log.info("Request to save tag. BEGIN");
+        if (!checkIfNameUnique(tag))
+            throw new IllegalArgumentException("Tag name not unique");
         Tag savedTag;
         if(tag.getId() == null)
             tag.setId(UUID.randomUUID());
@@ -85,5 +87,10 @@ public class TagService {
         log.info("Request to update tag. END - SUCCESS.");
 
         return tag;
+    }
+
+    private boolean checkIfNameUnique(Tag tag) {
+        Tag existed = tagRepository.findByName(tag.getName());
+        return existed == null;
     }
 }

@@ -53,6 +53,8 @@ public class ProfAreaService {
 
     public ProfArea createProfArea(ProfArea profArea) {
         log.info("Request to save profArea. BEGIN");
+        if (!checkIfNameUnique(profArea))
+            throw new IllegalArgumentException("Prof area name not unique");
         ProfArea savedProfArea;
         if(profArea.getId() == null)
             profArea.setId(UUID.randomUUID());
@@ -71,5 +73,10 @@ public class ProfAreaService {
         log.info("Request to update profArea. END - SUCCESS.");
 
         return profArea;
+    }
+
+    private boolean checkIfNameUnique(ProfArea profArea) {
+        ProfArea existed = profAreaRepository.findByName(profArea.getName());
+        return existed == null;
     }
 }

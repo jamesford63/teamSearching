@@ -33,7 +33,12 @@ public class ProfAreaController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<ProfArea> createProfArea(@RequestBody ProfArea profArea) {
-		return new ResponseEntity<>(profAreaService.createProfArea(profArea), HttpStatus.CREATED);
+		try {
+			ProfArea saved = profAreaService.createProfArea(profArea);
+			return new ResponseEntity<>(saved, HttpStatus.CREATED);
+		} catch (IllegalArgumentException iea) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)

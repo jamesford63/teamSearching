@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
         data => {
           this.userSource = data;
           this.router.navigate(['/lk']);
-          console.log(data);
         },
         errorCode => {
           this.statusCodeUser = errorCode.toString().replace('Error:', '');

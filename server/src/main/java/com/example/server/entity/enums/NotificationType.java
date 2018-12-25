@@ -4,6 +4,8 @@ package com.example.server.entity.enums;
 public enum NotificationType {
     REQUEST,
     INFORMATION,
+    FIREDINFO,
+    LEAVEINFO,
     ACCEPTINFO,
     DECLINEINFO
 }

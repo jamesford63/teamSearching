@@ -181,7 +181,7 @@ export class CreateProjectComponent implements OnInit {
         errorCode => this.statusCodeProject = errorCode);
 
     this.userSource.projectsCreated.push(project.id);
-
+    this.userSource.password = null;
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {
         this.statusCodeUser = successCode;

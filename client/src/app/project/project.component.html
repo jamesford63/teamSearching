@@ -3,7 +3,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
   <a href="#" class="navbar-brand">
-    <img src="https://vk.com/doc130774926_485681556?hash=127deac89fd5fb7723&dl=e6cb1d2e348c4b0fab"
+    <img src="https://taylorstano.files.wordpress.com/2015/01/cropped-ts-logo.png"
          width="80" height="40" alt="logo">
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -139,7 +139,7 @@
       <tr *ngFor="let user of projectSource.participants">
         <td></td>
         <td style="width: 260px;"><a routerLink="/user-info/{{user?.id}}">{{user?.name}} {{user?.lastName}}</a></td>
-        <td><button type="button" (click)="removeParticipant(user)" class="btn btn-outline-success my-2 my-sm-0">Под трибунал</button></td>
+        <td><button type="button" (click)="removeParticipant(user)" class="btn btn-outline-success my-2 my-sm-0">Исключить</button></td>
       </tr>
     </table>
   </div>

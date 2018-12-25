@@ -174,6 +174,7 @@ export class LkComponent implements OnInit {
       }
     }
     this.userSource.profAreas.push(profArea);
+    this.userSource.password = null;
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {
         this.statusCodeUser = successCode;
@@ -208,6 +209,7 @@ export class LkComponent implements OnInit {
   deleteUserTag(tag: Tag) {
     this.preProcessConfigurations();
     this.userSource.tags = this.userSource.tags.filter(item => item !== tag);
+    this.userSource.password = null;
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {
         this.statusCodeUser = successCode;
@@ -220,6 +222,7 @@ export class LkComponent implements OnInit {
   deleteUserProfArea(profArea: ProfArea) {
     this.preProcessConfigurations();
     this.userSource.profAreas = this.userSource.profAreas.filter(item => item !== profArea);
+    this.userSource.password = null;
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {
         this.statusCodeUser = successCode;

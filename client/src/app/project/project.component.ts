@@ -247,6 +247,7 @@ export class ProjectComponent implements OnInit {
         errorCode => this.statusCodeProject = errorCode);
     this.userSource.projectsCreated = this.userSource.projectsCreated.filter(item =>
       item !== this.projectSource.id);
+    this.userSource.password = null;
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {
           this.statusCodeUser = successCode;
@@ -255,8 +256,8 @@ export class ProjectComponent implements OnInit {
   }
 
   removeParticipant(user){
-    let notification = new Notification(UUID.UUID(),NotificationType.INFORMATION,this.userSource,
-      user,this.projectSource,NotificationStatus.UNREAD, "Вы уволены!");
+    let notification = new Notification(UUID.UUID(),NotificationType.FIREDINFO, this.userSource,
+      user,this.projectSource,NotificationStatus.UNREAD, "Вы слишком дорого обходитесь нашему проекту. Вы уволены!");
 
     this.notificationService.createNotification(notification)
       .subscribe(successCode => {

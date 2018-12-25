@@ -111,6 +111,7 @@ export class NotificationsComponent implements OnInit {
 
   ok(notificationId,projectId,from){
     this.userSource.projectsParticipated.push(projectId.toString());
+    this.userSource.password = null;
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {this.statusCodeUser = successCode;},
         errorCode => this.statusCodeUser = errorCode);
@@ -132,7 +133,44 @@ export class NotificationsComponent implements OnInit {
         errorCode => this.statusCodeProject);
   }
 
-  cry(notificationId){
+  declined(notificationId){
+    this.notificationService.deleteNotification(notificationId)
+      .subscribe(successCode => {
+          this.statusCodeNotifications = successCode;
+          this.getUserNotifications()},
+        errorCode => this.statusCodeNotifications = errorCode);
+  }
+
+  fired(projectId, notificationId){
+    var index = this.userSource.projectsParticipated.indexOf(projectId);
+    if (index > -1) {
+      this.userSource.projectsParticipated.splice(index, 1);
+    }
+    this.userSource.password = null;
+    this.userService.updateUser(this.userSource)
+      .subscribe(successCode => {
+          this.statusCodeUser = successCode;
+        },
+        errorCode => this.statusCodeUser = errorCode);
+
+    this.notificationService.deleteNotification(notificationId)
+      .subscribe(successCode => {
+          this.statusCodeNotifications = successCode;
+          this.getUserNotifications()},
+        errorCode => this.statusCodeNotifications = errorCode);
+  }
+
+  left(projectId, userId, notificationId){
+    this.projectService.getProject(projectId)
+      .subscribe(
+        data => {this.projectToUpdate = data;
+          this.projectToUpdate.participants.filter(item => item.id !== userId);
+          this.projectService.updateProject(this.projectToUpdate)
+            .subscribe(successCode => {
+                this.statusCodeProject = successCode;},
+              errorCode => this.statusCodeProject = errorCode)},
+        errorCode => this.statusCodeProject);
+
     this.notificationService.deleteNotification(notificationId)
       .subscribe(successCode => {
           this.statusCodeNotifications = successCode;

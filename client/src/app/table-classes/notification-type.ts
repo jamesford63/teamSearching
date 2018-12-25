@@ -1,6 +1,8 @@
 export enum NotificationType {
   REQUEST,
   INFORMATION,
+  FIREDINFO,
+  LEAVEINFO,
   ACCEPTINFO,
   DECLINEINFO
 }

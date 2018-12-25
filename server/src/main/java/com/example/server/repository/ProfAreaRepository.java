@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface ProfAreaRepository
         extends ElasticsearchRepository<ProfArea, UUID>, PagingAndSortingRepository<ProfArea, UUID> {
+    ProfArea findByName(String name);
 }

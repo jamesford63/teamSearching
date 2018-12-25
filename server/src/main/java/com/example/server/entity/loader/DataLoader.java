@@ -3,6 +3,7 @@ package com.example.server.entity.loader;
 import com.example.server.entity.*;
 import com.example.server.entity.loader.utils.Creator_v2;
 import com.example.server.repository.*;
+import com.example.server.service.ProfAreaService;
 import com.example.server.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -20,17 +21,17 @@ public class DataLoader implements InitializingBean {
     private ElasticsearchOperations operations;
     private UserService userService;
     private NotificationRepository notificationRepository;
-    private ProfAreaRepository profAreaRepository;
+    private ProfAreaService profAreaService;
     private ProjectRepository projectRepository;
     private TagRepository tagRepository;
 
     @Autowired
     public DataLoader(ElasticsearchOperations operations, UserService userService, NotificationRepository notificationRepository,
-                      ProfAreaRepository profAreaRepository, ProjectRepository projectRepository, TagRepository tagRepository) {
+                      ProfAreaService profAreaService, ProjectRepository projectRepository, TagRepository tagRepository) {
         this.operations = operations;
         this.userService = userService;
         this.notificationRepository = notificationRepository;
-        this.profAreaRepository = profAreaRepository;
+        this.profAreaService = profAreaService;
         this.projectRepository = projectRepository;
         this.tagRepository = tagRepository;
     }
@@ -46,7 +47,7 @@ public class DataLoader implements InitializingBean {
             creatorV2.init(10);
             log.info("Loading data");
             creatorV2.getTags().forEach(tag -> tagRepository.save(tag));
-            creatorV2.getProfAreas().forEach(profArea -> profAreaRepository.save(profArea));
+            creatorV2.getProfAreas().forEach(profArea -> profAreaService.createProfArea(profArea));
             creatorV2.getProjects().forEach(project -> projectRepository.save(project));
             System.out.println(creatorV2.getUsers());
             creatorV2.getUsers().forEach(u -> userService.createUser(u));

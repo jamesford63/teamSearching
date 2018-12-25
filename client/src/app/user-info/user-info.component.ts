@@ -56,6 +56,15 @@ export class UserInfoComponent implements OnInit {
         errorCode => this.statusCodeUser);
   }
 
+  logout() {
+    this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/start-page']);
+      },
+      () => this.statusCodeUser
+    )
+  }
+
   preProcessConfigurations() {
     this.statusCode = null;
     this.statusCodeUser = null;

@@ -240,6 +240,16 @@ export class LkComponent implements OnInit {
         this.statusCodeUser = errorCode);
   }
 
+  logout() {
+    this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/start-page']);
+      },
+      () => {
+        this.router.navigate(['/start-page']);
+      }
+    )
+  }
 
   backToCreateUser() {
     this.userIdToUpdate = null;

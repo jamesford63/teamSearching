@@ -200,6 +200,17 @@ export class NotificationsComponent implements OnInit {
         errorCode => this.statusCodeNotifications = errorCode);
   }
 
+  logout() {
+    this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/start-page']);
+      },
+      () => {
+        this.router.navigate(['/start-page']);
+      }
+    )
+  }
+
   preProcessConfigurations() {
     this.statusCode = null;
     this.statusCodeUser = null;

@@ -61,6 +61,17 @@ export class MyProjectsComponent implements OnInit {
     this.router.navigate(['/project/' + project.id]);
   }
 
+  logout() {
+    this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/start-page']);
+      },
+      () => {
+        this.router.navigate(['/start-page']);
+      }
+    )
+  }
+
   preProcessConfigurations() {
     this.statusCode = null;
     this.statusCodeUser = null;

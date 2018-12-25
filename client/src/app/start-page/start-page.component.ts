@@ -30,7 +30,14 @@ export class StartPageComponent implements OnInit {
   }
 
   logout() {
-    this.userService.logout();
+    this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/start-page']);
+      },
+      () => {
+        this.router.navigate(['/start-page']);
+      }
+    )
   }
 
   preProcessConfigurations() {

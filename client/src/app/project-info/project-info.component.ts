@@ -60,6 +60,17 @@ export class ProjectInfoComponent implements OnInit {
         errorCode => this.statusCodeProject);
   }
 
+  logout() {
+    this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/start-page']);
+      },
+      () => {
+        this.router.navigate(['/start-page']);
+      }
+    )
+  }
+
   preProcessConfigurations() {
     this.statusCode = null;
     this.statusCodeUser = null;

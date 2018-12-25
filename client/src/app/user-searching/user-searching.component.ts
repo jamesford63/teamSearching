@@ -241,6 +241,17 @@ export class UserSearchingComponent implements OnInit {
     this.getAllUsers();
   }
 
+  logout() {
+    this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/start-page']);
+      },
+      () => {
+        this.router.navigate(['/start-page']);
+      }
+    )
+  }
+
   preProcessConfigurations() {
     this.statusCode = null;
     this.statusCodeUser = null;

@@ -1,7 +1,6 @@
 package com.example.server.entity.loader.utils;
 
 import com.example.server.entity.*;
-import com.example.server.entity.enums.NotificationStatus;
 import com.example.server.entity.enums.NotificationType;
 import lombok.Data;
 import org.apache.commons.lang.RandomStringUtils;
@@ -40,7 +39,6 @@ public class Creator_v2 {
         for (int j = 0; j < depth; j++) {
             Notification notification = new Notification();
             notification.setId(UUID.randomUUID());
-            notification.setStatus(NotificationStatus.UNREAD);
             notification.setType(NotificationType.INFORMATION);
             int from = random.nextInt(users.size());
             int to = random.nextInt(users.size());

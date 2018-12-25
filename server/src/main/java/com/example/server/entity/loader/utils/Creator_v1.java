@@ -1,7 +1,6 @@
 package com.example.server.entity.loader.utils;
 
 import com.example.server.entity.*;
-import com.example.server.entity.enums.NotificationStatus;
 import com.example.server.entity.enums.NotificationType;
 import lombok.Data;
 import org.apache.commons.lang.RandomStringUtils;

@@ -73,8 +73,6 @@ public class NotificationService {
             existedNotification.setFrom(notification.getFrom());
         if (notification.getTo() != null)
             existedNotification.setFrom(notification.getTo());
-        if (notification.getStatus() != null)
-            existedNotification.setStatus(notification.getStatus());
         if (notification.getType() != null)
             existedNotification.setType(notification.getType());
         if (notification.getProject() != null)

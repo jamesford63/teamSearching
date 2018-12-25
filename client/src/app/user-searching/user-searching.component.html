@@ -140,7 +140,7 @@
         <td></td>
       </tr>
       <tr *ngFor="let user of filteredUsers" class="tr">
-        <td style="width: 300px; height: 35px;" class="td"><h6><a routerLink="/project-info/{{user?.name}}">{{user?.name}} {{user?.lastName}}</a></h6></td>
+        <td style="width: 300px; height: 35px;" class="td"><h6><a routerLink="/user-info/{{user?.id}}">{{user?.name}} {{user?.lastName}}</a></h6></td>
         <td style="width: 450px; height: 35px;" class="td"><h6>{{user?.description}}</h6></td>
         <td style="width: 200px; height: 35px;" class="td"><h6>{{user?.projectsParticipated?.length}}</h6></td>
         <td style="width: 200px; height: 35px;" class="td"><h6>{{user?.projectsCreated?.length}}</h6></td>

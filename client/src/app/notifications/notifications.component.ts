@@ -164,7 +164,7 @@ export class NotificationsComponent implements OnInit {
     this.projectService.getProject(projectId)
       .subscribe(
         data => {this.projectToUpdate = data;
-          this.projectToUpdate.participants.filter(item => item.id !== userId);
+          this.projectToUpdate.participants = this.projectToUpdate.participants.filter(item => item.id !== userId);
           this.projectService.updateProject(this.projectToUpdate)
             .subscribe(successCode => {
                 this.statusCodeProject = successCode;},

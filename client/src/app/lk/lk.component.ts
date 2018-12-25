@@ -251,6 +251,16 @@ export class LkComponent implements OnInit {
     )
   }
 
+  deleteAccount() {
+    this.userService.deleteUser(this.userSource.id)
+      .subscribe(
+        () => {
+          this.router.navigate(['/start-page']);
+        },
+        errorCode => this.statusCodeUser = errorCode
+  )
+  }
+
   backToCreateUser() {
     this.userIdToUpdate = null;
     this.processValidationUser = false;

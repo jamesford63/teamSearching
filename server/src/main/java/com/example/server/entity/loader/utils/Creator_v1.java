@@ -40,7 +40,6 @@ public class Creator_v1 {
     private Notification randomNotification() {
         Notification notification = new Notification();
         notification.setId(UUID.randomUUID());
-        notification.setStatus(NotificationStatus.UNREAD);
         notification.setType(NotificationType.INFORMATION);
         notification.setFrom(randomUser());
         notification.setTo(randomUser());

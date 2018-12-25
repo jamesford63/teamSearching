@@ -24,7 +24,8 @@ export class UserInfoComponent implements OnInit {
     private profAreaService: ProfAreaService,
     private projectService: ProjectService,
     private route: ActivatedRoute,
-    private router: Router) {}
+    private router: Router) {
+  }
 
   ngOnInit() {
     this.getUser();
@@ -34,16 +35,34 @@ export class UserInfoComponent implements OnInit {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
-        data => {this.userSource = data;
-          this.getUserInfo()},
+        data => {
+          this.userSource = data;
+          this.getUserInfo()
+        },
+        errorCode => {
+          this.statusCodeUser = errorCode;
+          if (errorCode === 404) {
+            this.router.navigate(['/login']);
+          }
+        });
+  }
+
+  getUserInfo() {
+    this.userService.getUserById(this.route.snapshot.paramMap.get('id'))
+      .subscribe(
+        data => {
+          this.userToCheck = data;
+        },
         errorCode => this.statusCodeUser);
   }
 
-  getUserInfo(){
-    this.userService.getUserById(this.route.snapshot.paramMap.get('id'))
-      .subscribe(
-        data => {this.userToCheck = data;},
-        errorCode => this.statusCodeUser);
+  logout() {
+    this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/start-page']);
+      },
+      () => this.statusCodeUser
+    )
   }
 
   preProcessConfigurations() {

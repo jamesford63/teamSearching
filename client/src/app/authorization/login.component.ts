@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {User} from "../table-classes/user";
@@ -10,7 +10,6 @@ import {UserService} from "../services/user.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  statusCode: number;
   statusCodeUser: number;
   requestProcessing = false;
   userSource: User;
@@ -20,7 +19,8 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', Validators.required),
   });
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router) {
+  }
 
   ngOnInit() {
   }
@@ -35,13 +35,17 @@ export class LoginComponent implements OnInit {
     const password = this.loginForm.get('password').value.trim();
     this.userService.authorize(login, password)
       .subscribe(
-        data => {this.userSource = data;},
-        errorCode => this.statusCodeUser);
-    this.router.navigate(['/lk']);
+        data => {
+          this.userSource = data;
+          this.router.navigate(['/lk']);
+          console.log(data);
+        },
+        errorCode => {
+          this.statusCodeUser = errorCode.toString().replace('Error:', '');
+        });
   }
 
   preProcessConfigurations() {
-    this.statusCode = null;
     this.statusCodeUser = null;
     this.requestProcessing = true;
   }

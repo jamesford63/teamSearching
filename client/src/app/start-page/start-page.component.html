@@ -44,6 +44,9 @@
       <li *ngIf="this.isAuthorized" class="nav-item">
         <a routerLink="/notifications" class="nav-link">Уведомления</a>
       </li>
+      <li *ngIf="this.isAuthorized" class="nav-item">
+        <button (click)="logout()" class="btn btn-outline-success my-2 my-sm-0">Выйти</button>
+      </li>
       <!--<li *ngIf="this.isAuthorized" class="nav-item">-->
         <!--<button class="btn btn-outline-success my-2 my-sm-0" (click)="logout()">Выйти из аккаунта</button>-->
       <!--</li>-->

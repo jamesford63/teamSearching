@@ -1,4 +1,3 @@
-
 import {Component, OnInit} from "@angular/core";
 import {User} from "../table-classes/user";
 import {UserService} from "../services/user.service";
@@ -26,9 +25,10 @@ export class MyProjectsComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private projectService: ProjectService,
-    private router: Router) {}
+    private router: Router) {
+  }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getUser();
   }
 
@@ -36,20 +36,40 @@ export class MyProjectsComponent implements OnInit {
     this.preProcessConfigurations();
     this.userService.getCurrentUser()
       .subscribe(
-        data => {this.userSource = data;
-        this.getUserProjects();},
-        errorCode => this.statusCodeUser);
+        data => {
+          this.userSource = data;
+          this.getUserProjects();
+        },
+        errorCode => {
+          this.statusCodeUser = errorCode;
+          if (errorCode === 404) {
+            this.router.navigate(['/login']);
+          }
+        });
   }
 
-  getUserProjects(){
-      this.projectService.getUserProjects(this.userSource.id)
-        .subscribe(
-          data => {this.userProjects = data; },
-          errorCode => this.statusCodeProjects);
+  getUserProjects() {
+    this.projectService.getUserProjects(this.userSource.id)
+      .subscribe(
+        data => {
+          this.userProjects = data;
+        },
+        errorCode => this.statusCodeProjects);
   }
 
-  redirectToProject(project){
+  redirectToProject(project) {
     this.router.navigate(['/project/' + project.id]);
+  }
+
+  logout() {
+    this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/start-page']);
+      },
+      () => {
+        this.router.navigate(['/start-page']);
+      }
+    )
   }
 
   preProcessConfigurations() {

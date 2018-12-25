@@ -32,7 +32,8 @@ export class LkComponent implements OnInit {
   constructor(
     private userService: UserService,
     private profAreaService: ProfAreaService,
-    private tagService: TagService) {
+    private tagService: TagService,
+    private router: Router) {
   }
 
   ngOnInit() {
@@ -77,8 +78,13 @@ export class LkComponent implements OnInit {
               this.processValidationUser = true;
               this.requestProcessing = false;
             },
-            () => this.statusCodeUser),
-      150
+            errorCode => {
+              this.statusCodeUser = errorCode;
+              if (errorCode === 404) {
+                this.router.navigate(['/login']);
+              }
+            }),
+      250
     )
   }
 
@@ -195,13 +201,15 @@ export class LkComponent implements OnInit {
     let newTag = new Tag(UUID.UUID(), tag);
     this.tagService.createTag(newTag)
       .subscribe(successCode => {
-          this.statusCode = successCode;},
+          this.statusCode = successCode;
+        },
         errorCode => this.statusCode = errorCode);
     this.userSource.tags.push(newTag);
     this.userSource.password = null;
     this.userService.updateUser(this.userSource)
       .subscribe(successCode => {
-          this.statusCodeUser = successCode;},
+          this.statusCodeUser = successCode;
+        },
         errorCode => this.statusCodeUser = errorCode);
     this.backToCreateTag();
   }
@@ -232,6 +240,26 @@ export class LkComponent implements OnInit {
         this.statusCodeUser = errorCode);
   }
 
+  logout() {
+    this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/start-page']);
+      },
+      () => {
+        this.router.navigate(['/start-page']);
+      }
+    )
+  }
+
+  deleteAccount() {
+    this.userService.deleteUser(this.userSource.id)
+      .subscribe(
+        () => {
+          this.router.navigate(['/start-page']);
+        },
+        errorCode => this.statusCodeUser = errorCode
+  )
+  }
 
   backToCreateUser() {
     this.userIdToUpdate = null;

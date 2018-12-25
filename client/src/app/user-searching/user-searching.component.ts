@@ -204,7 +204,7 @@ export class UserSearchingComponent implements OnInit {
     else{
       this.error = false;
       this.preProcessConfigurations();
-      let request = new Notification(UUID.UUID(),NotificationType.REQUEST,this.userSource,user,this.userProjects[0],
+      let request = new Notification(UUID.UUID(),NotificationType.OWNERREQUEST,this.userSource,user,project,
         NotificationStatus.UNREAD, "Привет! Приглашаю принять участие в моем проекте!:)");
       this.notificationService.createNotification(request)
         .subscribe(successCode => {

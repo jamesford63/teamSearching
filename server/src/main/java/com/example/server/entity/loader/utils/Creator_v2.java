@@ -42,7 +42,7 @@ public class Creator_v2 {
             notification.setType(NotificationType.INFORMATION);
             int from = random.nextInt(users.size());
             int to = random.nextInt(users.size());
-            while (from != to)
+            while (from == to)
                 to = random.nextInt(users.size());
             notification.setFrom(users.get(from));
             notification.setTo(users.get(to));
@@ -59,12 +59,12 @@ public class Creator_v2 {
             User user = new User();
             user.setId(UUID.randomUUID());
             user.setLogin(RandomStringUtils.randomAlphabetic(length));
-            user.setPassword(RandomStringUtils.randomAlphabetic(length));
+            user.setPassword("test");
             int num = random.nextInt(names.size());
             user.setName(names.get(num));
             num = random.nextInt(lastnames.size());
             user.setLastName(lastnames.get(num));
-            user.setEmail(RandomStringUtils.randomAlphabetic(length));
+            user.setEmail(RandomStringUtils.randomAlphabetic(length) + "@gmail.com");
             num = random.nextInt(cities.size());
             user.setCity(cities.get(num));
             user.setDescription(RandomStringUtils.randomAlphabetic(length));

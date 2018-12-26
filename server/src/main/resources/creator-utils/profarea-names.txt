@@ -2,3 +2,10 @@ music
 programming
 management
 movies
+analytics
+games
+sport
+science
+TV
+Internet
+artificial intelligence

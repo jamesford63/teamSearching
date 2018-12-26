@@ -14,47 +14,43 @@ import java.util.UUID;
 @RequestMapping("/prof-areas")
 @CrossOrigin(origins = {"http://localhost:4200"})
 public class ProfAreaController {
-	private ProfAreaService profAreaService;
+    private ProfAreaService profAreaService;
 
-	@Autowired
-	void setProfAreaService(ProfAreaService profAreaService) {
-		this.profAreaService = profAreaService;
-	}
+    @Autowired
+    void setProfAreaService(ProfAreaService profAreaService) {
+        this.profAreaService = profAreaService;
+    }
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<ProfArea>> getAllProfAreas() {
-		return new ResponseEntity<>(profAreaService.getAllProfAreas(), HttpStatus.OK);
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<ProfArea>> getAllProfAreas() {
+        return new ResponseEntity<>(profAreaService.getAllProfAreas(), HttpStatus.OK);
+    }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<ProfArea> getProfAreaById(@PathVariable UUID id) {
-		return new ResponseEntity<>(profAreaService.getProfAreaById(id), HttpStatus.OK);
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<ProfArea> getProfAreaById(@PathVariable UUID id) {
+        return new ResponseEntity<>(profAreaService.getProfAreaById(id), HttpStatus.OK);
+    }
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<ProfArea> createProfArea(@RequestBody ProfArea profArea) {
-		try {
-			ProfArea saved = profAreaService.createProfArea(profArea);
-			return new ResponseEntity<>(saved, HttpStatus.CREATED);
-		} catch (IllegalArgumentException iea) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
-	}
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<ProfArea> createProfArea(@RequestBody ProfArea profArea) {
+        ProfArea saved = profAreaService.createProfArea(profArea);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<ProfArea> updateProfArea(@RequestBody ProfArea profArea) {
-		return new ResponseEntity<>(profAreaService.updateProfArea(profArea), HttpStatus.OK);
-	}
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<ProfArea> updateProfArea(@RequestBody ProfArea profArea) {
+        return new ResponseEntity<>(profAreaService.updateProfArea(profArea), HttpStatus.OK);
+    }
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteProfAreaById(@PathVariable UUID id) {
-		profAreaService.deleteProfAreaById(id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteProfAreaById(@PathVariable UUID id) {
+        profAreaService.deleteProfAreaById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
-	@RequestMapping(method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteAllProfAreas() {
-		profAreaService.deleteAllProfAreas();
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteAllProfAreas() {
+        profAreaService.deleteAllProfAreas();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

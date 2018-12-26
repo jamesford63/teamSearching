@@ -134,7 +134,7 @@
         <td style="width: 300px; height: 35px;" class="td"><h6><a routerLink="/project-info/{{project?.id}}">{{project?.name}}</a></h6></td>
         <td style="width: 450px; height: 35px;" class="td"><h6>{{project?.description}}</h6></td>
         <td style="width: 100px; height: 35px;" class="td"><h6>{{project?.projectStatus}}</h6></td>
-        <td><button *ngIf="project.projectStatus.toString() == 'OPEN'" type="button" (click)="sendRequestToOwner(project)" class="btn btn-outline-success my-2 my-sm-0">Отправить запрос на участие</button></td>
+        <td><button *ngIf="project.projectStatus.toString() == 'OPEN'" type="button" [disabled]="isHide(project)" (click)="sendRequestToOwner(project)" class="btn btn-outline-success my-2 my-sm-0">Отправить запрос на участие</button></td>
       </tr>
       <tr>
         <td></td>

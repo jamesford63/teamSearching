@@ -108,6 +108,7 @@ export class CreateProjectComponent implements OnInit {
       }
     }
     this.profAreaArray.push(profArea);
+    this.profAreaForm.reset();
   }
 
   onTagFormSubmit() {
@@ -178,6 +179,7 @@ export class CreateProjectComponent implements OnInit {
     this.onNameFormSubmit();
     this.onDescriptionFormSubmit();
     this.onCityFormSubmit();
+    this.onTagFormSubmit();
     const project = new Project(UUID.UUID(), this.newProject.name, this.profAreaArray, [],
       this.userSource, this.tagArray, this.newProject.description,
       ProjectStatus.OPEN, this.newProject.city);

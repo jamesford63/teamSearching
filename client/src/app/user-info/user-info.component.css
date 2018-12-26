@@ -1,6 +1,6 @@
 .nameForm{
   position: absolute;
-  left: 350px;
+  left: 450px;
   width: 1000px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
   top:70px;
@@ -8,7 +8,7 @@
 
 .descriptionForm{
   position: absolute;
-  left: 350px;
+  left: 450px;
   width: 900px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
   top:120px;
@@ -16,7 +16,7 @@
 
 .filterForm{
   position: absolute;
-  left: 350px;
+  left: 450px;
   width: 900px; /* Ширина слоя */
   padding: 10px; /* Поля вокруг текста */
   top:190px;

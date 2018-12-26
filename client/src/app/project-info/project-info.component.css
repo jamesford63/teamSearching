@@ -1,24 +1,24 @@
 .nameForm{
   position: absolute;
-  left: 350px;
-  width: 1000px; /* Ширина слоя */
-  padding: 10px; /* Поля вокруг текста */
+  left: 475px;
+  width: 1000px;
+  padding: 10px;
   top:70px;
 }
 
 .descriptionForm{
   position: absolute;
-  left: 350px;
-  width: 900px; /* Ширина слоя */
-  padding: 10px; /* Поля вокруг текста */
+  left: 475px;
+  width: 900px;
+  padding: 10px;
   top:120px;
 }
 
 .filterForm{
   position: absolute;
-  left: 350px;
-  width: 900px; /* Ширина слоя */
-  padding: 10px; /* Поля вокруг текста */
+  left: 475px;
+  width: 900px;
+  padding: 10px;
   top:190px;
 }
 
@@ -34,7 +34,7 @@
 
 .image{
   position: absolute;
-  left: 350px;
-  padding: 10px; /* Поля вокруг текста */
+  left: 475px;
+  padding: 10px;
   top:320px;
 }

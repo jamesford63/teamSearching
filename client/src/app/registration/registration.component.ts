@@ -52,7 +52,7 @@ export class RegistrationComponent implements OnInit {
             .subscribe(next => this.router.navigate(['/lk']));
         },
         errorCode => {
-          this.statusCode = errorCode;
+          this.statusCode = errorCode.toString().replace('Error:', '');
           console.log(this.statusCode);
         });
 

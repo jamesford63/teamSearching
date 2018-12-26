@@ -128,6 +128,7 @@ export class ProjectComponent implements OnInit {
       }
     }
     this.projectProfAreas.push(profArea);
+    this.profAreaForm.reset();
   }
 
   onTagFormSubmit() {

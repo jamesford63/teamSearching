@@ -88,6 +88,8 @@ public class ProjectService {
             existedProject.setTags(project.getTags());
         if (project.getCity() != null)
             existedProject.setCity(project.getCity());
+        if (project.getProjectStatus() != null)
+            existedProject.setProjectStatus(project.getProjectStatus());
 
         project = projectRepository.save(existedProject);
 

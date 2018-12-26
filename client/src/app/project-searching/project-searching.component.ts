@@ -40,14 +40,13 @@ export class ProjectSearchingComponent implements OnInit {
   filterRequest: FilterRequest = new FilterRequest('', [], [], '', '');
   profAreas: ProfArea[];
   filteredProjects: Project[];
-  hideArray: boolean[];
+  hideArray: Map<string, boolean> = new Map();
 
-  constructor(
-    private userService: UserService,
-    private profAreaService: ProfAreaService,
-    private projectService: ProjectService,
-    private notificationService: NotificationService,
-    private router: Router) {
+  constructor(private userService: UserService,
+              private profAreaService: ProfAreaService,
+              private projectService: ProjectService,
+              private notificationService: NotificationService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -104,7 +103,8 @@ export class ProjectSearchingComponent implements OnInit {
       .subscribe(
         data => {
           this.filteredProjects = data;
-          this.getNotMyProjects()
+          this.getNotMyProjects();
+          this.setHideArray(this.filteredProjects);
         },
         errorCode => this.statusCodeProjects);
   }
@@ -113,6 +113,11 @@ export class ProjectSearchingComponent implements OnInit {
     for (var i = 0; i < this.userSource.projectsCreated.length; i++) {
       this.filteredProjects = this.filteredProjects.filter(item => item.id !== this.userSource.projectsCreated[i]);
     }
+  }
+
+  setHideArray(projects) {
+    for (let project of projects)
+      this.hideArray.set(project.id, false);
   }
 
   onProfAreaFormSubmit() {
@@ -177,7 +182,7 @@ export class ProjectSearchingComponent implements OnInit {
     this.filterRequest.description = description;
 
     let city = this.cityForm.get('city').value;
-    this.filterRequest.city = name;
+    this.filterRequest.city = city;
 
     this.filterRequest.tags = this.tagFilterArray;
     this.filterRequest.profAreas = this.profAreaFilterArray;
@@ -200,8 +205,17 @@ export class ProjectSearchingComponent implements OnInit {
     this.notificationService.createNotification(request)
       .subscribe(successCode => {
           this.statusCodeNotification = successCode;
+          this.changeHide(project);
         },
         errorCode => this.statusCodeNotification = errorCode);
+  }
+
+  changeHide(project) {
+    this.hideArray.set(project.id, true);
+  }
+
+  isHide(project) {
+    return this.hideArray.get(project.id);
   }
 
   clearFilter() {

@@ -29,11 +29,10 @@ export class LkComponent implements OnInit {
   newTagForm: FormGroup;
   newProfAreaForm: FormGroup;
 
-  constructor(
-    private userService: UserService,
-    private profAreaService: ProfAreaService,
-    private tagService: TagService,
-    private router: Router) {
+  constructor(private userService: UserService,
+              private profAreaService: ProfAreaService,
+              private tagService: TagService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -174,6 +173,12 @@ export class LkComponent implements OnInit {
     // Form is valid, now perform create
     this.preProcessConfigurations();
     let profArea = this.newProfAreaForm.get('profArea').value.trim();
+    for (var i = 0; i < this.userSource.profAreas.length; i++) {
+      if(profArea === this.userSource.profAreas[i].id){
+        this.newProfAreaForm.reset();
+        return;
+      }
+    }
     for (const a of this.profAreas) {
       if (a.id == profArea) {
         profArea = a;
@@ -198,6 +203,12 @@ export class LkComponent implements OnInit {
     // Form is valid, now perform create
     this.preProcessConfigurations();
     let tag = this.newTagForm.get('tag').value.trim();
+    for (var i = 0; i < this.userSource.tags.length; i++) {
+      if(tag === this.userSource.tags[i].name){
+        this.newTagForm.reset();
+        return;
+      }
+    }
     let newTag = new Tag(UUID.UUID(), tag);
     this.tagService.createTag(newTag)
       .subscribe(successCode => {
@@ -258,7 +269,7 @@ export class LkComponent implements OnInit {
           this.router.navigate(['/start-page']);
         },
         errorCode => this.statusCodeUser = errorCode
-  )
+      )
   }
 
   backToCreateUser() {
